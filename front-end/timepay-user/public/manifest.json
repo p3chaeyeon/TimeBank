@@ -1,0 +1,25 @@
+{
+  "short_name": "타임페이",
+  "name": "타임페이",
+  "icons": [
+    {
+      "src": "timepay-icon.svg",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "timepay-icon.svg",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "timepay-icon.svg",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
