@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  db:
+    container_name: db
+    image: mysql:8.0
+    restart: always
+    environment:
+      - MYSQL_USER=timebank
+      - MYSQL_PASSWORD=timebank
+      - MYSQL_ROOT_PASSWORD=timebank
+      - MYSQL_DATABASE=timebank
+    ports:
+      - "3306:3306"
