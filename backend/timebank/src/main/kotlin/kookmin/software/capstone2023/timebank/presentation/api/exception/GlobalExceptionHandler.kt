@@ -1,21 +1,49 @@
 package kookmin.software.capstone2023.timebank.presentation.api.exception
 
 import kookmin.software.capstone2023.timebank.application.exception.*
+import kookmin.software.capstone2023.timebank.core.logger
 import kookmin.software.capstone2023.timebank.presentation.api.model.ErrorResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
-
 
 @RestControllerAdvice
-class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
+class GlobalExceptionHandler {
+    private val logger by logger()
+
     @ExceptionHandler(Exception::class)
     fun handleException(e: Exception): ResponseEntity<ErrorResponse> {
+        logger.error(e.message, e)
+
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .build()
     }
+
+    @ExceptionHandler(HttpMessageNotReadableException::class)
+    fun handleHttpMessageNotReadableException(e: HttpMessageNotReadableException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(
+                ErrorResponse(
+                    code = ApplicationErrorCode.BAD_REQUEST.value,
+                    message = ApplicationErrorCode.BAD_REQUEST.message
+                )
+            )
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(
+                ErrorResponse(
+                    code = ApplicationErrorCode.BAD_REQUEST.value,
+                    message = e.bindingResult.allErrors.firstOrNull()?.defaultMessage
+                )
+            )
+    }
+
 
     @ExceptionHandler(ApplicationException::class)
     fun handleApplicationException(e: ApplicationException): ResponseEntity<ErrorResponse> {
