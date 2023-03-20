@@ -1,5 +1,6 @@
 package kookmin.software.capstone2023.timebank.presentation.api.exception
 
+import jakarta.validation.ConstraintViolationException
 import kookmin.software.capstone2023.timebank.application.exception.*
 import kookmin.software.capstone2023.timebank.core.logger
 import kookmin.software.capstone2023.timebank.presentation.api.model.ErrorResponse
@@ -40,6 +41,17 @@ class GlobalExceptionHandler {
                 ErrorResponse(
                     code = ApplicationErrorCode.BAD_REQUEST.value,
                     message = e.bindingResult.allErrors.firstOrNull()?.defaultMessage
+                )
+            )
+    }
+
+    @ExceptionHandler(ConstraintViolationException::class)
+    fun handleConstraintViolationException(e: ConstraintViolationException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(
+                ErrorResponse(
+                    code = ApplicationErrorCode.BAD_REQUEST.value,
+                    message = e.constraintViolations.firstOrNull()?.message
                 )
             )
     }
