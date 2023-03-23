@@ -36,11 +36,13 @@ class InquiryController(
 
     /**
      * 문의ID겁색 조회
+     *
      */
     @GetMapping("/{id}")
     fun getInquiryById(@PathVariable id: Long): InquiryService.InquiryDto {
-        return inquiryService.getInquiryById(id)
+         return inquiryService.getInquiryById(id)
     }
+
 
     /**
      * userId검색 조회
@@ -67,26 +69,5 @@ class InquiryController(
         return ResponseEntity.noContent().build()
     }
 
-    /**
-     * 재문의
-     */
-    @PostMapping("/{id}/reopen")
-    fun reopenInquiry(
-            @PathVariable id: Long,
-            @RequestBody request: InquiryService.InquiryReopenRequest
-    ): ResponseEntity<InquiryService.InquiryDto> {
-        val reopenedInquiryDto = inquiryService.reopenInquiry(id, request)
-        return ResponseEntity.ok(reopenedInquiryDto)
-    }
 
-    /**
-     * 재답변
-     */
-    @PutMapping("/{id}/reply")
-    fun replyToInquiry(
-            @PathVariable id: Long,
-            @RequestBody request: InquiryService.InquiryReplyRequest
-    ): InquiryService.InquiryDto {
-        return inquiryService.replyToInquiry(id, request)
-    }
 }

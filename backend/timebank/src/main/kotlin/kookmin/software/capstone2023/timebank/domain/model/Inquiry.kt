@@ -15,7 +15,7 @@ class Inquiry(
         val title: String,
 
         @Column(nullable = false, columnDefinition = "TEXT")
-        val content: String,
+        var content: String,
 
         @Column(columnDefinition = "TEXT")
         var replyContent: String? = null,
@@ -33,9 +33,8 @@ class Inquiry(
         @JoinColumn(name = "user_id", nullable = false)
         val user: User,
 
-        @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "parent_inquiry_id")
-        val parentInquiry: Inquiry? = null
+        
+
 )
 
 enum class InquiryStatus {
