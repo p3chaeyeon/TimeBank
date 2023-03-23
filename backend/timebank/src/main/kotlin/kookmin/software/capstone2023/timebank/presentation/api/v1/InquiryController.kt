@@ -24,6 +24,7 @@ class InquiryController(
         val inquiryDto = inquiryService.createInquiry(request)
         return ResponseEntity.ok(inquiryDto)
     }
+
     /**
      * 문의 전체 조회
      */
@@ -32,6 +33,7 @@ class InquiryController(
         val inquiries = inquiryService.getInquiries()
         return ResponseEntity.ok(inquiries)
     }
+
     /**
      * 문의ID겁색 조회
      */
@@ -47,11 +49,44 @@ class InquiryController(
     fun getInquiriesByUserId(@PathVariable userId: Long): List<InquiryService.InquiryDto> {
         return inquiryService.getInquiriesByUserId(userId)
     }
+
     /**
      * 답변
      */
     @PutMapping("/{id}")
     fun updateInquiry(@PathVariable id: Long, @RequestBody request: InquiryService.InquiryUpdateRequest): InquiryService.InquiryDto {
         return inquiryService.updateInquiry(id, request)
+    }
+
+    /**
+     * 문의 삭제
+     */
+    @DeleteMapping("/user/{userId}/{inquiryId}")
+    fun deleteInquiryByUserId(@PathVariable userId: Long, @PathVariable inquiryId: Long): ResponseEntity<Void> {
+        inquiryService.deleteInquiryByUserId(userId, inquiryId)
+        return ResponseEntity.noContent().build()
+    }
+
+    /**
+     * 재문의
+     */
+    @PostMapping("/{id}/reopen")
+    fun reopenInquiry(
+            @PathVariable id: Long,
+            @RequestBody request: InquiryService.InquiryReopenRequest
+    ): ResponseEntity<InquiryService.InquiryDto> {
+        val reopenedInquiryDto = inquiryService.reopenInquiry(id, request)
+        return ResponseEntity.ok(reopenedInquiryDto)
+    }
+
+    /**
+     * 재답변
+     */
+    @PutMapping("/{id}/reply")
+    fun replyToInquiry(
+            @PathVariable id: Long,
+            @RequestBody request: InquiryService.InquiryReplyRequest
+    ): InquiryService.InquiryDto {
+        return inquiryService.replyToInquiry(id, request)
     }
 }

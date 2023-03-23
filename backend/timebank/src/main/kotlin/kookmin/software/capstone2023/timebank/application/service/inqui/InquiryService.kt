@@ -16,7 +16,10 @@ class InquiryService(
         private val userJpaRepository: UserJpaRepository
 ) {
 
-    // Dto 클래스 정의
+    /**
+     * Dto 클래스 정의
+     */
+
     data class InquiryDto(
             val inquiryid: Long,
             val title: String,
@@ -28,6 +31,9 @@ class InquiryService(
             val userId: Long
     )
 
+    /**
+     * 질문생성Dto
+     */
     data class InquiryCreateRequest(
             val title: String,
             val content: String,
@@ -35,11 +41,30 @@ class InquiryService(
             val inquiryDate: LocalDateTime = LocalDateTime.now()
     )
 
+    /**
+     * 답변 Dto
+     */
     data class InquiryUpdateRequest(
             val replyContent: String?,
             val replyStatus: InquiryStatus?,
             val replyDate: LocalDateTime? = LocalDateTime.now()
     )
+
+    /**
+     * 재문의(REOPENED) Dto
+     */
+    data class InquiryReopenRequest(
+            val title: String,
+            val content: String
+    )
+
+    /**
+     * 재답변 Dto
+     */
+    data class InquiryReplyRequest(
+            val replyContent: String
+    )
+
     /**
      * 서비스 메소드 정의
      */
@@ -92,6 +117,58 @@ class InquiryService(
         inquiry.replyStatus = request.replyStatus ?: inquiry.replyStatus
         inquiry.replyDate = request.replyDate ?: inquiry.replyDate
         val updatedInquiry = inquiryRepository.save(inquiry)
+        return inquiryToDto(updatedInquiry)
+    }
+
+    /**
+     * 문의삭제 service
+     */
+    fun deleteInquiryByUserId(userId: Long, inquiryId: Long) {
+        val user = userJpaRepository.findById(userId).orElseThrow { IllegalArgumentException("User not found with id: $userId") }
+        val inquiry = inquiryRepository.findById(inquiryId).orElseThrow { IllegalArgumentException("Inquiry not found with id: $inquiryId") }
+
+        if (inquiry.user.id != user.id) {
+            throw IllegalArgumentException("User does not have permission to delete this inquiry")
+        }
+
+        inquiryRepository.deleteById(inquiryId)
+    }
+
+    /**
+     * 재문의 service
+     */
+    fun reopenInquiry(parentInquiryId: Long, request: InquiryReopenRequest): InquiryDto {
+        val parentInquiry = inquiryRepository.findById(parentInquiryId)
+                .orElseThrow { IllegalArgumentException("Inquiry not found with id: $parentInquiryId") }
+
+        val reopenedInquiry = Inquiry(
+                title = request.title,
+                content = request.content,
+                user = parentInquiry.user,
+                parentInquiry = parentInquiry
+        )
+
+        val savedReopenedInquiry = inquiryRepository.save(reopenedInquiry)
+        parentInquiry.replyStatus = InquiryStatus.REOPENED
+        inquiryRepository.save(parentInquiry)
+
+        return inquiryToDto(savedReopenedInquiry)
+    }
+
+    /**
+     * 재답변 service
+     */
+
+    fun replyToInquiry(inquiryId: Long, request: InquiryReplyRequest): InquiryDto {
+        val inquiry = inquiryRepository.findById(inquiryId)
+                .orElseThrow { IllegalArgumentException("Inquiry not found with id: $inquiryId") }
+
+        inquiry.replyContent = request.replyContent
+        inquiry.replyDate = LocalDateTime.now()
+        inquiry.replyStatus = InquiryStatus.ANSWERED
+
+        val updatedInquiry = inquiryRepository.save(inquiry)
+
         return inquiryToDto(updatedInquiry)
     }
 

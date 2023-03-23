@@ -31,10 +31,15 @@ class Inquiry(
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "user_id", nullable = false)
-        val user: User
+        val user: User,
+
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "parent_inquiry_id")
+        val parentInquiry: Inquiry? = null
 )
 
 enum class InquiryStatus {
     PENDING,
-    ANSWERED
+    ANSWERED,
+    REOPENED
 }
