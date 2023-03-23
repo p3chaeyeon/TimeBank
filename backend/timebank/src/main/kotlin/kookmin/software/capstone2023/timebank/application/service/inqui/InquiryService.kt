@@ -40,8 +40,13 @@ class InquiryService(
             val replyStatus: InquiryStatus?,
             val replyDate: LocalDateTime? = LocalDateTime.now()
     )
+    /**
+     * 서비스 메소드 정의
+     */
 
-    // 서비스 메소드 정의
+    /**
+     * 문의 생성 service
+     */
     @Transactional
     fun createInquiry(request: InquiryCreateRequest): InquiryDto {
         val user = userJpaRepository.findById(request.userId)
@@ -50,17 +55,36 @@ class InquiryService(
         val savedInquiry = inquiryRepository.save(inquiry)
         return inquiryToDto(savedInquiry)
     }
+
+    /**
+     * 전체 문의 검색 service
+     */
     fun getInquiries(): List<InquiryDto> {
         val inquiries = inquiryRepository.findAll()
         return inquiries.map(::inquiryToDto)
     }
 
+    /**
+     * 문의ID검색 service
+     */
     fun getInquiryById(id: Long): InquiryDto {
         val inquiry = inquiryRepository.findById(id)
                 .orElseThrow { IllegalArgumentException("Inquiry not found with id: $id") }
         return inquiryToDto(inquiry)
     }
 
+    /**
+     * userId 검색 service
+     */
+    fun getInquiriesByUserId(userId: Long): List<InquiryDto> {
+        val user = userJpaRepository.findById(userId).orElseThrow { IllegalArgumentException("User not found with id: $userId") }
+        val inquiries = inquiryRepository.findByUser(user)
+        return inquiries.map { inquiry -> inquiryToDto(inquiry) }
+    }
+
+    /**
+     * 답변 service
+     */
     fun updateInquiry(id: Long, request: InquiryUpdateRequest): InquiryDto {
         val inquiry = inquiryRepository.findById(id)
                 .orElseThrow { IllegalArgumentException("Inquiry not found with id: $id") }
@@ -71,7 +95,9 @@ class InquiryService(
         return inquiryToDto(updatedInquiry)
     }
 
-    // 유틸리티 메소드 정의
+    /**
+     * 유틸 메소드 정의
+     */
     private fun inquiryToDto(inquiry: Inquiry): InquiryDto {
         return InquiryDto(
                 inquiryid = inquiry.inquiryid,

@@ -25,7 +25,7 @@ class InquiryController(
         return ResponseEntity.ok(inquiryDto)
     }
     /**
-     * 문의 조회
+     * 문의 전체 조회
      */
     @GetMapping
     fun getInquiries(): ResponseEntity<List<InquiryService.InquiryDto>> {
@@ -33,20 +33,25 @@ class InquiryController(
         return ResponseEntity.ok(inquiries)
     }
     /**
-     * UserID겁색 조회
+     * 문의ID겁색 조회
      */
     @GetMapping("/{id}")
-    fun getInquiryById(@PathVariable id: Long): ResponseEntity<InquiryService.InquiryDto> {
-        val inquiry = inquiryService.getInquiryById(id)
-        return ResponseEntity.ok(inquiry)
+    fun getInquiryById(@PathVariable id: Long): InquiryService.InquiryDto {
+        return inquiryService.getInquiryById(id)
     }
 
+    /**
+     * userId검색 조회
+     */
+    @GetMapping("/user/{userId}")
+    fun getInquiriesByUserId(@PathVariable userId: Long): List<InquiryService.InquiryDto> {
+        return inquiryService.getInquiriesByUserId(userId)
+    }
     /**
      * 답변
      */
     @PutMapping("/{id}")
-    fun updateInquiry(@PathVariable id: Long, @RequestBody request: InquiryService.InquiryUpdateRequest): ResponseEntity<InquiryService.InquiryDto> {
-        val updatedInquiry = inquiryService.updateInquiry(id, request)
-        return ResponseEntity.ok(updatedInquiry)
+    fun updateInquiry(@PathVariable id: Long, @RequestBody request: InquiryService.InquiryUpdateRequest): InquiryService.InquiryDto {
+        return inquiryService.updateInquiry(id, request)
     }
 }
