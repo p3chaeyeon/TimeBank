@@ -20,9 +20,8 @@ class InquiryController(
      * 문의 작성
      */
     @PostMapping
-    fun createInquiry(@RequestBody request: InquiryService.InquiryCreateRequest): ResponseEntity<InquiryService.InquiryDto> {
-        val inquiryDto = inquiryService.createInquiry(request)
-        return ResponseEntity.ok(inquiryDto)
+    fun createInquiry(@RequestBody request: InquiryService.InquiryCreateRequest): InquiryService.InquiryDto {
+        return inquiryService.createInquiry(request)
     }
 
     /**

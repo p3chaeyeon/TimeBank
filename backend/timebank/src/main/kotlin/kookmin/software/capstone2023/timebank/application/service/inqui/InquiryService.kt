@@ -81,7 +81,7 @@ class InquiryService(
      */
     fun getInquiryById(id: Long): InquiryDto {
         val inquiry = inquiryRepository.findById(id)
-                .orElseThrow { UnauthorizedException(message = "\"User not found with id: $id\"") }
+                .orElseThrow { UnauthorizedException(message = "\"Inquiry not found with id: $id\"") }
         return inquiryToDto(inquiry)
     }
 
@@ -99,7 +99,7 @@ class InquiryService(
      */
     fun updateInquiry(id: Long, request: InquiryUpdateRequest): InquiryDto {
         val inquiry = inquiryRepository.findById(id)
-                .orElseThrow { UnauthorizedException(message = "\"User not found with id: $id\"") }
+                .orElseThrow { UnauthorizedException(message = "\"Inquiry not found with id: $id\"") }
         inquiry.replyContent = request.replyContent ?: inquiry.replyContent
         inquiry.replyStatus = request.replyStatus ?: inquiry.replyStatus
         inquiry.replyDate = request.replyDate ?: inquiry.replyDate
