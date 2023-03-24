@@ -9,4 +9,5 @@ import java.util.Optional
 @Repository
 interface InquiryRepository : JpaRepository<Inquiry, Long>{
     fun findByUser(user: User): List<Inquiry>
+    fun findByUserId(userId: Long): List<Inquiry>
 }

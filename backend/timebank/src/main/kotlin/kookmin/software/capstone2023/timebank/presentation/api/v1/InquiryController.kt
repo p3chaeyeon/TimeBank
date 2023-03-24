@@ -47,7 +47,7 @@ class InquiryController(
     /**
      * userId검색 조회
      */
-    @GetMapping("/user/{userId}")
+    @GetMapping("/users/{userId}")
     fun getInquiriesByUserId(@PathVariable userId: Long): List<InquiryService.InquiryDto> {
         return inquiryService.getInquiriesByUserId(userId)
     }
@@ -63,8 +63,8 @@ class InquiryController(
     /**
      * 문의 삭제
      */
-    @DeleteMapping("/user/{userId}/{inquiryId}")
-    fun deleteInquiryByUserId(@PathVariable userId: Long, @PathVariable inquiryId: Long): ResponseEntity<Void> {
+    @DeleteMapping("/users/{userId}/{inquiryId}")
+    fun deleteInquiryByUserId(@PathVariable userId: Long, @PathVariable inquiryId: Long): ResponseEntity<Unit> {
         inquiryService.deleteInquiryByUserId(userId, inquiryId)
         return ResponseEntity.noContent().build()
     }

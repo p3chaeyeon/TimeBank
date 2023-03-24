@@ -4,12 +4,12 @@ import java.time.LocalDateTime
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "inquiries")
+@Table(name = "inquiry")
 class Inquiry(
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val inquiryid: Long = 0,
+        val id: Long = 0,
 
         @Column(nullable = false)
         val title: String,
@@ -35,10 +35,9 @@ class Inquiry(
 
         
 
-)
-
-enum class InquiryStatus {
-    PENDING,
-    ANSWERED,
-    REOPENED
+){
+        @Column(name = "user_id", insertable = false, updatable = false)
+        val userId: Long = user.id
 }
+
+

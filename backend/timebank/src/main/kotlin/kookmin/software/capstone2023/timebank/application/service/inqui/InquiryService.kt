@@ -1,11 +1,13 @@
 package kookmin.software.capstone2023.timebank.application.service.inqui
 
 
+import kookmin.software.capstone2023.timebank.application.exception.UnauthorizedException
 import kookmin.software.capstone2023.timebank.domain.model.Inquiry
 import kookmin.software.capstone2023.timebank.domain.model.InquiryStatus
 import kookmin.software.capstone2023.timebank.domain.model.User
 import kookmin.software.capstone2023.timebank.domain.repository.InquiryRepository
 import kookmin.software.capstone2023.timebank.domain.repository.UserJpaRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -59,8 +61,8 @@ class InquiryService(
      */
     @Transactional
     fun createInquiry(request: InquiryCreateRequest): InquiryDto {
-        val user = userJpaRepository.findById(request.userId)
-                .orElseThrow { IllegalArgumentException("User not found with id: ${request.userId}") }
+        val user = userJpaRepository.findByIdOrNull(request.userId)
+                ?: throw UnauthorizedException(message = "\"User not found with id: ${request.userId}\"")
         val inquiry = Inquiry(title = request.title, content = request.content, user = user, inquiryDate = request.inquiryDate)
         val savedInquiry = inquiryRepository.save(inquiry)
         return inquiryToDto(savedInquiry)
@@ -79,7 +81,7 @@ class InquiryService(
      */
     fun getInquiryById(id: Long): InquiryDto {
         val inquiry = inquiryRepository.findById(id)
-                .orElseThrow { IllegalArgumentException("Inquiry not found with id: $id") }
+                .orElseThrow { UnauthorizedException(message = "\"User not found with id: $id\"") }
         return inquiryToDto(inquiry)
     }
 
@@ -87,7 +89,7 @@ class InquiryService(
      * userId 검색 service
      */
     fun getInquiriesByUserId(userId: Long): List<InquiryDto> {
-        val user = userJpaRepository.findById(userId).orElseThrow { IllegalArgumentException("User not found with id: $userId") }
+        val user = userJpaRepository.findById(userId).orElseThrow { UnauthorizedException(message = "\"User not found with id: $userId\"") }
         val inquiries = inquiryRepository.findByUser(user)
         return inquiries.map { inquiry -> inquiryToDto(inquiry) }
     }
@@ -97,7 +99,7 @@ class InquiryService(
      */
     fun updateInquiry(id: Long, request: InquiryUpdateRequest): InquiryDto {
         val inquiry = inquiryRepository.findById(id)
-                .orElseThrow { IllegalArgumentException("Inquiry not found with id: $id") }
+                .orElseThrow { UnauthorizedException(message = "\"User not found with id: $id\"") }
         inquiry.replyContent = request.replyContent ?: inquiry.replyContent
         inquiry.replyStatus = request.replyStatus ?: inquiry.replyStatus
         inquiry.replyDate = request.replyDate ?: inquiry.replyDate
@@ -109,11 +111,11 @@ class InquiryService(
      * 문의삭제 service
      */
     fun deleteInquiryByUserId(userId: Long, inquiryId: Long) {
-        val user = userJpaRepository.findById(userId).orElseThrow { IllegalArgumentException("User not found with id: $userId") }
-        val inquiry = inquiryRepository.findById(inquiryId).orElseThrow { IllegalArgumentException("Inquiry not found with id: $inquiryId") }
+        val user = userJpaRepository.findById(userId).orElseThrow { UnauthorizedException(message = "\"User not found with id: $userId\"") }
+        val inquiry = inquiryRepository.findById(inquiryId).orElseThrow { UnauthorizedException(message = "\"User not found with id: $inquiryId\"") }
 
         if (inquiry.user.id != user.id) {
-            throw IllegalArgumentException("User does not have permission to delete this inquiry")
+            throw UnauthorizedException(message = "User does not have permission to delete this inquiry")
         }
 
         inquiryRepository.deleteById(inquiryId)
@@ -125,7 +127,7 @@ class InquiryService(
      */
     private fun inquiryToDto(inquiry: Inquiry): InquiryDto {
         return InquiryDto(
-                inquiryid = inquiry.inquiryid,
+                inquiryid = inquiry.id,
                 title = inquiry.title,
                 content = inquiry.content,
                 replyContent = inquiry.replyContent,
