@@ -11,4 +11,5 @@ import java.util.Optional
 interface CommentRepository : JpaRepository<Comment, Long>{
     fun findByUser(userId: Long): List<Comment>
     fun findByInquiryId(inquiryId: Long): List<Comment>
+    fun countByInquiryId(inquiryId: Long): Long
 }

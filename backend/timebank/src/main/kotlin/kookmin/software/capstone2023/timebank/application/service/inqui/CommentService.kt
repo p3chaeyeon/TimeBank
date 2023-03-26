@@ -26,6 +26,7 @@ class CommentService (
      */
     data class CommentDto(
             val commentid: Long,
+            val commentSeq: Long,
             var content: String,
             val commentDate: LocalDateTime,
             val replyStatus: InquiryStatus,
@@ -54,22 +55,33 @@ class CommentService (
     )
 
     /**
+     * 댓글 수정 Dto
+     */
+    data class CommentUpdateRequest(
+            val content: String?,
+            val commentDate: LocalDateTime? = LocalDateTime.now()
+    )
+
+    /**
      * 댓글 생성 service (user)
      */
     @Transactional
-    fun createComment(request: CommentCreateRequest): CommentDto {
+    fun createComment(inquiryId: Long, request: CommentCreateRequest): CommentDto {
         val user = userJpaRepository.findByIdOrNull(request.userId)
                 ?: throw UnauthorizedException(message = "\"User not found with id: ${request.userId}\"")
         val inquiry = inquiryRepository.findByIdOrNull(request.inquiryId)
                 ?: throw UnauthorizedException(message = "\"User not found with id: ${request.inquiryId}\"")
-        val comment = Comment(content = request.content, user = user, inquiry = inquiry, commentDate = request.commentDate)
+        val previousCommentCount = commentRepository.countByInquiryId(request.inquiryId)
+        val newCommentId = previousCommentCount + 1
+
+        val comment = Comment(content = request.content, user = user, inquiry = inquiry, commentDate = request.commentDate, commentSeq = newCommentId)
         val savedComment = commentRepository.save(comment)
         return commentToDto(savedComment)
     }
 
     /**
      * 댓글 생성 service (admin)
-     */
+
     @Transactional
     fun createReply(request: CommentReplyRequest): CommentDto {
         val user = userJpaRepository.findByIdOrNull(request.userId)
@@ -80,9 +92,10 @@ class CommentService (
         val savedComment = commentRepository.save(comment)
         return commentToDto(savedComment)
     }
+     */
 
     /**
-     * 전체 댓글 조회 service
+     * 전체 댓글 조회 service(필요한지?)
      */
     fun getComments(): List<CommentDto> {
         val comments = commentRepository.findAll()
@@ -98,13 +111,25 @@ class CommentService (
     }
 
     /**
+     * 댓글 수정 service
+     */
+    fun updateComment(id: Long, request: CommentUpdateRequest): CommentDto {
+        val comment = commentRepository.findById(id)
+                .orElseThrow { UnauthorizedException(message = "\"Comment not found with id: $id\"") }
+        comment.content = request.content ?: comment.content
+        comment.commentDate = request.commentDate ?: comment.commentDate
+        val updatedComment = commentRepository.save(comment)
+        return commentToDto(updatedComment)
+    }
+
+    /**
      * 댓글 삭제 service
      */
-    fun deleteCommentByCommentId(userId: Long, inquiryId: Long, commentId: Long) {
-        val user = userJpaRepository.findById(userId).orElseThrow { UnauthorizedException(message = "\"User not found with id: $userId\"") }
+    fun deleteCommentByCommentId(inquiryId: Long, commentId: Long) {
+        //val user = userJpaRepository.findById(userId).orElseThrow { UnauthorizedException(message = "\"User not found with id: $userId\"") }
         val inquiry = inquiryRepository.findById(inquiryId).orElseThrow { UnauthorizedException(message = "\"Inquiry not found with id: $inquiryId\"") }
         val comment = commentRepository.findById(commentId).orElseThrow { UnauthorizedException(message = "\"Comment not found with id: $commentId\"") }
-        if (comment.user.id != user.id) {
+        if (comment.inquiry.id != inquiry.id) {
             throw UnauthorizedException(message = "User does not have permission to delete this inquiry")
         }
 
@@ -119,7 +144,8 @@ class CommentService (
                 commentDate = comment.commentDate,
                 replyStatus = comment.replyStatus,
                 inquiryId = comment.inquiryId,
-                userId = comment.userId
+                userId = comment.userId,
+                commentSeq = comment.commentSeq
         )
     }
 

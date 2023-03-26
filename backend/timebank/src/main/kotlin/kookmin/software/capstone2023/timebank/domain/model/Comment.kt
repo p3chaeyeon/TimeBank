@@ -9,11 +9,14 @@ data class Comment(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long = 0,
 
+        @Column(nullable = false)
+        val commentSeq: Long,
+
         @Column(nullable = false, columnDefinition = "TEXT")
-        val content: String,
+        var content: String,
 
         @Column(nullable = false)
-        val commentDate: LocalDateTime = LocalDateTime.now(),
+        var commentDate: LocalDateTime = LocalDateTime.now(),
 
         @Enumerated(EnumType.STRING)
         @Column(nullable = false)
