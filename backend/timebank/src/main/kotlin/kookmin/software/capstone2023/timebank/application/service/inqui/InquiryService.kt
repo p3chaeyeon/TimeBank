@@ -112,7 +112,7 @@ class InquiryService(
      */
     fun deleteInquiryByUserId(userId: Long, inquiryId: Long) {
         val user = userJpaRepository.findById(userId).orElseThrow { UnauthorizedException(message = "\"User not found with id: $userId\"") }
-        val inquiry = inquiryRepository.findById(inquiryId).orElseThrow { UnauthorizedException(message = "\"User not found with id: $inquiryId\"") }
+        val inquiry = inquiryRepository.findById(inquiryId).orElseThrow { UnauthorizedException(message = "\"Inquiry not found with id: $inquiryId\"") }
 
         if (inquiry.user.id != user.id) {
             throw UnauthorizedException(message = "User does not have permission to delete this inquiry")

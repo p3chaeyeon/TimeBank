@@ -13,7 +13,7 @@ data class Comment(
         val content: String,
 
         @Column(nullable = false)
-        val createdAt: LocalDateTime = LocalDateTime.now(),
+        val commentDate: LocalDateTime = LocalDateTime.now(),
 
         @Enumerated(EnumType.STRING)
         @Column(nullable = false)
