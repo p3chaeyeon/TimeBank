@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import kookmin.software.capstone2023.timebank.domain.repository.InquiryRepository
 import kookmin.software.capstone2023.timebank.domain.model.Inquiry
+import java.security.Principal
 import java.util.*
 
 
@@ -28,9 +29,8 @@ class InquiryController(
      * 문의 전체 조회
      */
     @GetMapping
-    fun getInquiries(): ResponseEntity<List<InquiryService.InquiryDto>> {
-        val inquiries = inquiryService.getInquiries()
-        return ResponseEntity.ok(inquiries)
+    fun getInquiries(principal: Principal): List<InquiryService.InquiryDto> {
+        return inquiryService.getInquiries()
     }
 
     /**
