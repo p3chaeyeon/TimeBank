@@ -17,13 +17,8 @@ class Inquiry(
         @Column(nullable = false, columnDefinition = "TEXT")
         var content: String,
 
-        @Column(columnDefinition = "TEXT")
-        var replyContent: String? = null,
-
         @Column(nullable = false)
-        val inquiryDate: LocalDateTime = LocalDateTime.now(),
-
-        var replyDate: LocalDateTime? = null,
+        var inquiryDate: LocalDateTime = LocalDateTime.now(),
 
         @Enumerated(EnumType.STRING)
         @Column(nullable = false)

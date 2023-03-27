@@ -1,6 +1,7 @@
 package kookmin.software.capstone2023.timebank.application.service.inqui
 
 
+import kookmin.software.capstone2023.timebank.application.exception.NotFoundException
 import kookmin.software.capstone2023.timebank.application.exception.UnauthorizedException
 import kookmin.software.capstone2023.timebank.domain.model.Inquiry
 import kookmin.software.capstone2023.timebank.domain.model.InquiryStatus
@@ -26,9 +27,7 @@ class InquiryService(
             val inquiryid: Long,
             val title: String,
             val content: String,
-            val replyContent: String?,
             val inquiryDate: LocalDateTime,
-            val replyDate: LocalDateTime?,
             val replyStatus: InquiryStatus,
             val userId: Long
     )
@@ -44,12 +43,13 @@ class InquiryService(
     )
 
     /**
-     * 답변 Dto
+     * 수정 Dto
      */
     data class InquiryUpdateRequest(
-            val replyContent: String?,
-            val replyStatus: InquiryStatus?,
-            val replyDate: LocalDateTime? = LocalDateTime.now()
+            val updateTitle: String,
+            val updateContent: String?,
+            //val updateStatus: InquiryStatus = InquiryStatus.PENDING,
+            val updateDate: LocalDateTime? = LocalDateTime.now()
     )
 
     /**
@@ -62,7 +62,7 @@ class InquiryService(
     @Transactional
     fun createInquiry(request: InquiryCreateRequest): InquiryDto {
         val user = userJpaRepository.findByIdOrNull(request.userId)
-                ?: throw UnauthorizedException(message = "\"User not found with id: ${request.userId}\"")
+                ?: throw NotFoundException(message = "\"User not found with id: ${request.userId}\"")
         val inquiry = Inquiry(title = request.title, content = request.content, user = user, inquiryDate = request.inquiryDate)
         val savedInquiry = inquiryRepository.save(inquiry)
         return inquiryToDto(savedInquiry)
@@ -81,7 +81,7 @@ class InquiryService(
      */
     fun getInquiryById(id: Long): InquiryDto {
         val inquiry = inquiryRepository.findById(id)
-                .orElseThrow { UnauthorizedException(message = "\"Inquiry not found with id: $id\"") }
+                .orElseThrow { NotFoundException(message = "\"Inquiry not found with id: $id\"") }
         return inquiryToDto(inquiry)
     }
 
@@ -89,20 +89,20 @@ class InquiryService(
      * userId 검색 service
      */
     fun getInquiriesByUserId(userId: Long): List<InquiryDto> {
-        val user = userJpaRepository.findById(userId).orElseThrow { UnauthorizedException(message = "\"User not found with id: $userId\"") }
+        val user = userJpaRepository.findById(userId).orElseThrow { NotFoundException(message = "\"User not found with id: $userId\"") }
         val inquiries = inquiryRepository.findByUser(user)
         return inquiries.map { inquiry -> inquiryToDto(inquiry) }
     }
 
     /**
-     * 답변 service
+     * 문의 수정 service
      */
     fun updateInquiry(id: Long, request: InquiryUpdateRequest): InquiryDto {
         val inquiry = inquiryRepository.findById(id)
-                .orElseThrow { UnauthorizedException(message = "\"Inquiry not found with id: $id\"") }
-        inquiry.replyContent = request.replyContent ?: inquiry.replyContent
-        inquiry.replyStatus = request.replyStatus ?: inquiry.replyStatus
-        inquiry.replyDate = request.replyDate ?: inquiry.replyDate
+                .orElseThrow { NotFoundException(message = "\"Inquiry not found with id: $id\"") }
+        inquiry.content = request.updateContent ?: inquiry.content
+        //inquiry.replyStatus = request.updateStatus ?: inquiry.replyStatus
+        inquiry.inquiryDate = request.updateDate ?: inquiry.inquiryDate
         val updatedInquiry = inquiryRepository.save(inquiry)
         return inquiryToDto(updatedInquiry)
     }
@@ -111,8 +111,8 @@ class InquiryService(
      * 문의삭제 service
      */
     fun deleteInquiryByUserId(userId: Long, inquiryId: Long) {
-        val user = userJpaRepository.findById(userId).orElseThrow { UnauthorizedException(message = "\"User not found with id: $userId\"") }
-        val inquiry = inquiryRepository.findById(inquiryId).orElseThrow { UnauthorizedException(message = "\"Inquiry not found with id: $inquiryId\"") }
+        val user = userJpaRepository.findById(userId).orElseThrow { NotFoundException(message = "\"User not found with id: $userId\"") }
+        val inquiry = inquiryRepository.findById(inquiryId).orElseThrow { NotFoundException(message = "\"Inquiry not found with id: $inquiryId\"") }
 
         if (inquiry.user.id != user.id) {
             throw UnauthorizedException(message = "User does not have permission to delete this inquiry")
@@ -130,9 +130,7 @@ class InquiryService(
                 inquiryid = inquiry.id,
                 title = inquiry.title,
                 content = inquiry.content,
-                replyContent = inquiry.replyContent,
                 inquiryDate = inquiry.inquiryDate,
-                replyDate = inquiry.replyDate,
                 replyStatus = inquiry.replyStatus,
                 userId = inquiry.user.id
         )
