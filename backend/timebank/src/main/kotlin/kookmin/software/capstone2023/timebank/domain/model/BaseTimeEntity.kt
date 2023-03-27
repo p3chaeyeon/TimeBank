@@ -16,12 +16,12 @@ open class BaseTimeEntity(
      */
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    var createdAt: LocalDateTime = LocalDateTime.MIN,
+    var createdAt: LocalDateTime = LocalDateTime.now(),
 
     /**
      * 마지막 수정 시간 (UTC)
      */
     @LastModifiedDate
     @Column(nullable = false, updatable = true)
-    var updatedAt: LocalDateTime = LocalDateTime.MIN,
+    var updatedAt: LocalDateTime = LocalDateTime.now(),
 )
