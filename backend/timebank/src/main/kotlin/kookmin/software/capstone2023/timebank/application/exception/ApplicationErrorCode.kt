@@ -9,5 +9,6 @@ enum class ApplicationErrorCode(
     UNAUTHORIZED("UNAUTHORIZED", ""),
     FORBIDDEN("FORBIDDEN", "접근 권한이 없습니다."),
     NOT_FOUND("NOT_FOUND", "존재하지 않는 리소스입니다."),
+    CONFLICT("CONFLICT", "이미 존재하는 리소스입니다."),
     INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR", "서버 내부 오류입니다."),
 }

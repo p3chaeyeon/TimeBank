@@ -7,15 +7,20 @@ import org.springframework.stereotype.Service
 import java.time.Instant
 
 @Service
-class UserAccessTokenIssueService(
+class AccessTokenService(
     private val accessTokenProperties: AccessTokenProperties,
 ) {
-    fun issue(userId: Long, expiresAt: Instant): String {
-        val signAlgorithm = Algorithm.HMAC256(accessTokenProperties.secretKey)
+    fun issue(userId: Long, accountId: Long, expiresAt: Instant?): String {
+        val algorithm = Algorithm.HMAC256(accessTokenProperties.secretKey)
 
-        return JWT.create()
+        var tokenBuilder = JWT.create()
             .withClaim("userId", userId)
-            .withExpiresAt(expiresAt)
-            .sign(signAlgorithm)
+            .withClaim("accountId", accountId)
+
+        if (expiresAt != null) {
+            tokenBuilder = tokenBuilder.withExpiresAt(expiresAt)
+        }
+
+        return tokenBuilder.sign(algorithm)
     }
 }
