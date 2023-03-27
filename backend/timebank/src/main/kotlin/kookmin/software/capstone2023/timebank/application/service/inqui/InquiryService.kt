@@ -33,7 +33,7 @@ class InquiryService(
     )
 
     /**
-     * 질문생성Dto
+     * 문의 생성Dto
      */
     data class InquiryCreateRequest(
             val title: String,
@@ -48,7 +48,6 @@ class InquiryService(
     data class InquiryUpdateRequest(
             val updateTitle: String,
             val updateContent: String?,
-            //val updateStatus: InquiryStatus = InquiryStatus.PENDING,
             val updateDate: LocalDateTime? = LocalDateTime.now()
     )
 
@@ -101,7 +100,7 @@ class InquiryService(
         val inquiry = inquiryRepository.findById(id)
                 .orElseThrow { NotFoundException(message = "\"Inquiry not found with id: $id\"") }
         inquiry.content = request.updateContent ?: inquiry.content
-        //inquiry.replyStatus = request.updateStatus ?: inquiry.replyStatus
+        inquiry.title = request.updateTitle ?: inquiry.title
         inquiry.inquiryDate = request.updateDate ?: inquiry.inquiryDate
         val updatedInquiry = inquiryRepository.save(inquiry)
         return inquiryToDto(updatedInquiry)

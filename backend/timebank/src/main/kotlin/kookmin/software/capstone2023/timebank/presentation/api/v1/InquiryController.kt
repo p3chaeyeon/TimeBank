@@ -52,7 +52,7 @@ class InquiryController(
     }
 
     /**
-     * 문의   수정
+     * 문의 수정
      */
     @PutMapping("/{id}")
     fun updateInquiry(@PathVariable id: Long, @RequestBody request: InquiryService.InquiryUpdateRequest): InquiryService.InquiryDto {
