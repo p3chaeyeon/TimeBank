@@ -1,6 +1,7 @@
 package kookmin.software.capstone2023.timebank.domain.model
 
 import jakarta.persistence.*
+import kookmin.software.capstone2023.timebank.domain.model.auth.AuthenticationType
 import java.time.LocalDateTime
 
 @Entity
@@ -17,17 +18,23 @@ class User(
     val accountId: Long,
 
     /**
-     * 소셜 로그인 제공자
+     * 인증 타입
      */
-    @Column(nullable = true, updatable = false, length = 20)
+    @Column(nullable = false, updatable = true, length = 20)
     @Enumerated(EnumType.STRING)
-    val socialLoginProvider: SocialPlatformType?,
+    val authenticationType: AuthenticationType,
 
     /**
-     * 소셜 플랫폼 유저 ID
+     * 이름
      */
-    @Column(nullable = true, updatable = false, length = 20)
-    val socialUserId: String?,
+    @Column(nullable = false, updatable = true, length = 20)
+    val name: String,
+
+    /**
+     * 전화번호
+     */
+    @Column(nullable = false, updatable = true, length = 20)
+    val phoneNumber: String,
 
     /**
      * 마지막 로그인 시간 (UTC)

@@ -1,8 +1,9 @@
 package kookmin.software.capstone2023.timebank.domain.repository
 
-import kookmin.software.capstone2023.timebank.domain.model.User
+import kookmin.software.capstone2023.timebank.domain.model.Account
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface UserJpaRepository : JpaRepository<User, Long>
+interface AccountJpaRepository: JpaRepository<Account, Long> {
+}
