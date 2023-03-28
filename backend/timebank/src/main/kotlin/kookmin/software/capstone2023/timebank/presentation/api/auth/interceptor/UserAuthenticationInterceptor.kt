@@ -3,12 +3,9 @@ package kookmin.software.capstone2023.timebank.presentation.api.auth.interceptor
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import kookmin.software.capstone2023.timebank.application.exception.UnauthorizedException
-import kookmin.software.capstone2023.timebank.application.service.auth.token.AccessTokenService
-import kookmin.software.capstone2023.timebank.domain.repository.AccountJpaRepository
-import kookmin.software.capstone2023.timebank.domain.repository.UserJpaRepository
 import kookmin.software.capstone2023.timebank.presentation.api.RequestAttributes
+import kookmin.software.capstone2023.timebank.application.service.auth.UserAuthenticator
 import kookmin.software.capstone2023.timebank.presentation.api.auth.model.UserContext
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
@@ -18,9 +15,7 @@ import org.springframework.web.servlet.HandlerInterceptor
  */
 @Component
 class UserAuthenticationInterceptor(
-    private val accessTokenService: AccessTokenService,
-    private val userJpaRepository: UserJpaRepository,
-    private val accountJpaRepository: AccountJpaRepository,
+    private val userAuthenticator: UserAuthenticator,
 ) : HandlerInterceptor {
     /**
      * 사용자 인증을 처리합니다.
@@ -40,28 +35,18 @@ class UserAuthenticationInterceptor(
             return super.preHandle(request, response, handler)
         }
 
-        val token = getAuthorizationToken(request)
+        val authorizationToken = getAuthorizationToken(request)
             ?: return true
 
-        val tokenClaims = accessTokenService.verify(token)
+        val authenticationData = userAuthenticator.authenticate(authorizationToken)
 
-        val user = userJpaRepository.findByIdOrNull(tokenClaims.userId)
-            ?: throw UnauthorizedException(message = null)
-
-        val account = accountJpaRepository.findByIdOrNull(tokenClaims.accountId)
-            ?: throw UnauthorizedException(message = null)
-
-        if (user.accountId != account.id) {
-            throw UnauthorizedException(message = null)
-        }
-
-        val userContext = UserContext(
-            userId = user.id,
-            accountId = account.id,
-            accountType = account.type,
+        request.setAttribute(
+            RequestAttributes.USER_CONTEXT, UserContext(
+                userId = authenticationData.userId,
+                accountId = authenticationData.accountId,
+                accountType = authenticationData.accountType,
+            )
         )
-
-        request.setAttribute(RequestAttributes.USER_CONTEXT, userContext)
 
         return true
     }
