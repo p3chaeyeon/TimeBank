@@ -13,9 +13,12 @@ function App() {
       <ConfigProvider theme={customTheme}>
         <Routes>
           <Route element={<BaseLayout />}>
-            <Route path={PATH.HOME} element={<PageRoutes.HomePage />} />
+          <Route path={PATH.HOME} element={<PageRoutes.IntroPage />} />
+          <Route path={PATH.SIGN_UP} element={<PageRoutes.SignUp />} />
+
+            {/* <Route path={PATH.HOME} element={<PageRoutes.HomePage />} />
             <Route path={PATH.SEARCH} element={<PageRoutes.SearchPage />} />
-            <Route path={PATH.MY_PAGE} element={<PageRoutes.MyPage />} />
+            <Route path={PATH.MY_PAGE} element={<PageRoutes.MyPage />} /> */}
           </Route>
         </Routes>
       </ConfigProvider>

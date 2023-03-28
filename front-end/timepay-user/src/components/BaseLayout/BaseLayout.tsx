@@ -18,7 +18,7 @@ const BaseLayout = () => {
       >
         <Outlet />
       </Layout.Content>
-      <MainFooter />
+      {/* <MainFooter /> */}
     </Layout>
   );
 };
