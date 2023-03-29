@@ -5,7 +5,6 @@ import kookmin.software.capstone2023.timebank.application.service.auth.TestEnvir
 import kookmin.software.capstone2023.timebank.application.service.auth.UserAuthenticator
 import kookmin.software.capstone2023.timebank.application.service.auth.token.AccessTokenService
 import kookmin.software.capstone2023.timebank.core.logger
-import kookmin.software.capstone2023.timebank.domain.model.AccountType
 import kookmin.software.capstone2023.timebank.domain.repository.AccountJpaRepository
 import kookmin.software.capstone2023.timebank.domain.repository.UserJpaRepository
 import org.springframework.context.annotation.Bean
@@ -26,18 +25,17 @@ class UserAuthenticatorConfiguration(
         accountJpaRepository: AccountJpaRepository,
     ): UserAuthenticator {
         // 인증 테스트가 활성화되어 있으면 테스트 환경 사용자 인증기를 반환한다.
-        if (authenticationTestProperties.enabled) {
-            val accountType = AccountType.valueOf(authenticationTestProperties.accountType)
+        if (authenticationTestProperties.enabled == true) {
+            val user = authenticationTestProperties.user
+                ?: throw IllegalStateException("Test environment user is not configured.")
 
             logger.info("Test environment user authenticator is enabled.")
-            logger.info("userId: ${authenticationTestProperties.userId}")
-            logger.info("accountId: ${authenticationTestProperties.accountId}")
-            logger.info("accountType: $accountType")
+            logger.info("Test environment user: $user")
 
             return TestEnvironmentUserAuthenticator(
-                userId = authenticationTestProperties.userId,
-                accountId = authenticationTestProperties.accountId,
-                accountType = accountType,
+                userId = user.id,
+                accountId = user.accountId,
+                accountType = user.accountType,
             )
         }
 

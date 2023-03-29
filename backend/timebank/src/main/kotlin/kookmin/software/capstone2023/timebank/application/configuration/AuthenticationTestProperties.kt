@@ -5,8 +5,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 
 @ConfigurationProperties(prefix = "application.authentication.test")
 data class AuthenticationTestProperties(
-    val enabled: Boolean,
-    val userId: Long,
-    val accountId: Long,
-    val accountType: String,
+    val enabled: Boolean? = false,
+    val user: UserProperties? = null,
 )
