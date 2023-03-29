@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import kookmin.software.capstone2023.timebank.application.service.auth.model.AuthenticationRequest
 import kookmin.software.capstone2023.timebank.domain.model.auth.SocialPlatformType
+import org.hibernate.validator.constraints.Length
 
 sealed class UserRegisterRequestData {
     data class SocialUserRegisterRequestData(
@@ -14,7 +15,7 @@ sealed class UserRegisterRequestData {
         val accessToken: String,
 
         @field:NotBlank(message = "이름을 입력해주세요.")
-        @field:Max(value = 20, message = "이름은 20자 이하로 입력해주세요.")
+        @field:Length(max = 20, message = "이름은 20자 이하로 입력해주세요.")
         val name: String,
 
         @field:NotBlank(message = "전화번호를 입력해주세요.")
@@ -35,7 +36,7 @@ sealed class UserRegisterRequestData {
         val password: String,
 
         @field:NotBlank(message = "이름을 입력해주세요.")
-        @field:Max(value = 20, message = "이름은 20자 이하로 입력해주세요.")
+        @field:Length(max = 20, message = "이름은 20자 이하로 입력해주세요.")
         val name: String,
 
         @field:NotBlank(message = "전화번호를 입력해주세요.")
