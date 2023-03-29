@@ -29,7 +29,7 @@ class InquiryController(
      * 문의 전체 조회
      */
     @GetMapping
-    fun getInquiries(principal: Principal): List<InquiryService.InquiryDto> {
+    fun getInquiries(): List<InquiryService.InquiryDto> {
         return inquiryService.getInquiries()
     }
 
@@ -49,6 +49,14 @@ class InquiryController(
     @GetMapping("/users/{userId}")
     fun getInquiriesByUserId(@PathVariable userId: Long): List<InquiryService.InquiryDto> {
         return inquiryService.getInquiriesByUserId(userId)
+    }
+
+    /**
+     * 문의 제목 조회
+     */
+    @GetMapping("/search")
+    fun getInquiriesByTitle(@RequestParam("title") title: String): List<InquiryService.InquiryDto> {
+        return inquiryService.getInquiryByTitle(title)
     }
 
     /**

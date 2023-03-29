@@ -94,6 +94,15 @@ class InquiryService(
     }
 
     /**
+     * 문의 제목 검색 service
+     */
+    fun getInquiryByTitle(title: String): List<InquiryDto>{
+        val inquiries = inquiryRepository.findByTitle(title)
+        return inquiries.map { inquiryToDto(it) }
+    }
+
+
+    /**
      * 문의 수정 service
      */
     fun updateInquiry(id: Long, request: InquiryUpdateRequest): InquiryDto {
