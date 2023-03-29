@@ -12,5 +12,5 @@ interface InquiryRepository : JpaRepository<Inquiry, Long>{
     fun findByUser(user: User): List<Inquiry>
     fun findByUserId(userId: Long): List<Inquiry>
     fun findByTitle(title: String): List<Inquiry>
-    fun findByCreatedAtBetween(start: LocalDateTime, end: LocalDateTime): List<Inquiry>
+    fun findByInquiryDateBetween(start: LocalDateTime, end: LocalDateTime): List<Inquiry>
 }

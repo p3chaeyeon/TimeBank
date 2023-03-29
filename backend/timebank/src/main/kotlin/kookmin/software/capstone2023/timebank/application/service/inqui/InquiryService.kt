@@ -100,7 +100,7 @@ class InquiryService(
     fun getInquiriesByPeriod(period: Period): List<InquiryDto> {
         val end = LocalDateTime.now()
         val start = end.minusMonths(period.months)
-        val inquiries = inquiryRepository.findByCreatedAtBetween(start, end)
+        val inquiries = inquiryRepository.findByInquiryDateBetween(start, end)
         return inquiries.map { inquiryToDto(it) }
     }
 

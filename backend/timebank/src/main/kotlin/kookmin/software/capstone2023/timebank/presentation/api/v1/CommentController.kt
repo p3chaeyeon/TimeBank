@@ -58,7 +58,7 @@ class CommentController(
     }
 
     /**
-     * 댓글 삭제 (userAccess Token 필요)
+     * 댓글 삭제
      */
     @DeleteMapping("/{commentId}")
     fun deleteCommentById(@PathVariable commentId: Long, @PathVariable id: Long): ResponseEntity<Unit> {
