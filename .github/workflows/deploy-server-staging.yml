@@ -9,6 +9,9 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/timebank
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
@@ -17,17 +20,17 @@ jobs:
           java-version: 17
 
       - name: Grant execute permission for gradlew
-        run: chmod +x ./backend/timebank/gradlew
+        run: chmod +x ./gradlew
 
       - name: Build with Gradle
-        run: ./backend/timebank/gradlew build
+        run: ./gradlew build
 
       - name: Set version
         run: |
           echo "VERSION_LABEL=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
 
       - name: Create deploy.zip
-        run: zip -r deploy.zip ./backend/timebank/build/libs/*.jar
+        run: zip -r deploy.zip build/libs/*.jar
 
       - name: Deploy to Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
@@ -38,4 +41,4 @@ jobs:
           environment_name: ${{ env.AWS_EB_ENVIRONMENT_NAME }}
           version_label: ${{ env.VERSION_LABEL }}
           region: ${{ env.AWS_REGION }}
-          deployment_package: deploy.zip
+          deployment_package: backend/timebank/deploy.zip
