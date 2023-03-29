@@ -1,0 +1,1 @@
+run: java -Dfile.encoding=UTF-8 -jar /build/libs/timebank-0.0.1.jar

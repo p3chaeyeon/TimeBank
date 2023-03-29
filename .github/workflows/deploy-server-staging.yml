@@ -30,7 +30,7 @@ jobs:
           echo "VERSION_LABEL=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
 
       - name: Create deploy.zip
-        run: zip -r deploy.zip build/libs/*.jar
+        run: zip -r deploy.zip build/libs/*.jar Procfile
 
       - name: Deploy to Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
