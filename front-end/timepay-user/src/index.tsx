@@ -15,7 +15,15 @@ root.render(
   </BrowserRouter>,
 );
 
+// Kakao SDK 초기화
+window.Kakao.init("a66d3f28c1e74a0287ef3c99e077e122");
+Kakao.isInitialized();
+
+
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+
 reportWebVitals();
+
+
