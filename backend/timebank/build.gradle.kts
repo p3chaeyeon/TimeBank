@@ -16,7 +16,7 @@ plugins {
 }
 
 group = "kookmin.software.capstone2023"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.1"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -62,4 +62,9 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+// Plain Jar 파일이 생성되지 않도록 Jar Task 비활성화
+tasks.jar {
+    enabled = false
 }
