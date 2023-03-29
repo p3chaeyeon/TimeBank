@@ -31,7 +31,7 @@ jobs:
           echo "VERSION_LABEL=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
 
       - name: Create deploy.zip
-        run: zip -r deploy.zip build/libs/*.jar
+        run: zip -r ./deploy.zip build/libs/*.jar
 
       - name: Deploy to Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
@@ -42,4 +42,4 @@ jobs:
           environment_name: ${{ env.AWS_EB_ENVIRONMENT_NAME }}
           version_label: ${{ env.VERSION_LABEL }}
           region: ${{ env.AWS_REGION }}
-          deployment_package: deploy.zip
+          deployment_package: ./deploy.zip
