@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import kookmin.software.capstone2023.timebank.domain.repository.InquiryRepository
 import kookmin.software.capstone2023.timebank.domain.model.Inquiry
+import kookmin.software.capstone2023.timebank.domain.model.Period
 import java.security.Principal
 import java.util.*
 
@@ -34,7 +35,7 @@ class InquiryController(
     }
 
     /**
-     * 문의ID겁색 조회
+     * 문의ID겁색 조회 (댓글까지)
      *
      */
     @GetMapping("/{id}")
@@ -49,6 +50,13 @@ class InquiryController(
     @GetMapping("/users/{userId}")
     fun getInquiriesByUserId(@PathVariable userId: Long): List<InquiryService.InquiryDto> {
         return inquiryService.getInquiriesByUserId(userId)
+    }
+    /**
+     * 문의 기간 조회
+     */
+    @GetMapping("/period")
+    fun getInquiriesByPeriod(@RequestParam("period") period: Period): List<InquiryService.InquiryDto> {
+        return inquiryService.getInquiriesByPeriod(period)
     }
 
     /**

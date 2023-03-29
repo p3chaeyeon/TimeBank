@@ -12,6 +12,7 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
+import kookmin.software.capstone2023.timebank.domain.model.Period
 
 @Service
 class InquiryService(
@@ -91,6 +92,16 @@ class InquiryService(
         val user = userJpaRepository.findById(userId).orElseThrow { NotFoundException(message = "\"User not found with id: $userId\"") }
         val inquiries = inquiryRepository.findByUser(user)
         return inquiries.map { inquiry -> inquiryToDto(inquiry) }
+    }
+
+    /**
+     * 기간별 조회 service
+     */
+    fun getInquiriesByPeriod(period: Period): List<InquiryDto> {
+        val end = LocalDateTime.now()
+        val start = end.minusMonths(period.months)
+        val inquiries = inquiryRepository.findByCreatedAtBetween(start, end)
+        return inquiries.map { inquiryToDto(it) }
     }
 
     /**
