@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface AccountJpaRepository: JpaRepository<Account, Long> {
+    fun getAccountById(id: Long): Account?
 }

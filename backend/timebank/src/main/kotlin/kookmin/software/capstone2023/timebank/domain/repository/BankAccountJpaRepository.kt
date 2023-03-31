@@ -9,4 +9,5 @@ interface BankAccountJpaRepository : JpaRepository<BankAccount, Long> {
     fun findByAccountNumber(accountNumber: String): BankAccount?
 
     fun findByAccountId(accountId: Long): BankAccount?
+
 }
