@@ -1,4 +1,4 @@
-package kookmin.software.capstone2023.timebank.application.service.bank
+package kookmin.software.capstone2023.timebank.application.service.bank.account
 
 import kookmin.software.capstone2023.timebank.application.exception.NotFoundException
 import kookmin.software.capstone2023.timebank.domain.repository.AccountJpaRepository
@@ -19,7 +19,7 @@ class BankAccountReadService(
         userId: Long, // 유저 id
         accountId: Long, // 계정 id
         bankAccountId: Long // 은행 계좌 id
-    ):ReadedBankAccount{
+    ): ReadedBankAccount {
         /*
         유저가 가진 계정id와 요청에 있는 계정id가 일치하는지 확인.
          */

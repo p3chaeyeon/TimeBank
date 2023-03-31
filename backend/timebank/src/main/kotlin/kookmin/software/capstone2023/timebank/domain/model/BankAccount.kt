@@ -31,12 +31,6 @@ data class BankAccount(
     @Column(nullable = false)
     var balance: Int,
 
-    @Column(nullable = false)
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-
-    @Column(nullable = false)
-    var updatedAt: LocalDateTime = LocalDateTime.now(),
-
     @Column(nullable = true)
     val deletedAt: LocalDateTime? = null
-)
+):BaseTimeEntity()

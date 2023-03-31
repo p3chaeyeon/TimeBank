@@ -1,4 +1,4 @@
-package kookmin.software.capstone2023.timebank.application.service.bank
+package kookmin.software.capstone2023.timebank.application.service.bank.account
 import kookmin.software.capstone2023.timebank.application.exception.ConflictException
 import kookmin.software.capstone2023.timebank.application.exception.NotFoundException
 import kookmin.software.capstone2023.timebank.domain.model.*
