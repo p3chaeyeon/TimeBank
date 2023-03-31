@@ -3,6 +3,7 @@ import jakarta.persistence.*
 import kookmin.software.capstone2023.timebank.domain.model.BankBranch
 import kookmin.software.capstone2023.timebank.domain.model.OwnerType
 import kookmin.software.capstone2023.timebank.domain.model.User
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @Entity
@@ -16,8 +17,9 @@ data class BankAccount(
 
     var branchId: Long,
 
+    @Column(nullable = false, updatable = false, length = 20)
     @Enumerated(EnumType.STRING)
-    val ownerType: OwnerType? = null,
+    val ownerType: OwnerType,
 
     @Column(nullable = false)
     val accountNumber: String,
@@ -29,7 +31,7 @@ data class BankAccount(
     var iv: String,
 
     @Column(nullable = false)
-    var balance: Int,
+    var balance: BigDecimal,
 
     @Column(nullable = true)
     val deletedAt: LocalDateTime? = null
