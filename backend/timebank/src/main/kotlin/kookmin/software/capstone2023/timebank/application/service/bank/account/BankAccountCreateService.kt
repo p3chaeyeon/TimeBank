@@ -5,6 +5,7 @@ import kookmin.software.capstone2023.timebank.domain.model.*
 import kookmin.software.capstone2023.timebank.domain.repository.*
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.math.BigDecimal
 
 @Service
 class BankAccountCreateService (
@@ -14,7 +15,7 @@ class BankAccountCreateService (
     private val userRepository: UserJpaRepository
 ) {
     @Transactional
-    fun createBankAccount(encryptedPin: String, iv: String, accountId: Long, branchId: Long, userId: Long): CreatedBankAccount {
+    fun createBankAccount(encryptedPassword: String, iv: String, accountId: Long, branchId: Long, userId: Long): CreatedBankAccount {
 
         // 사용자 정보와 계정정보가 일치한지 검증
         val user = getUserById(userId)
@@ -30,16 +31,17 @@ class BankAccountCreateService (
         val branch = getBankBranchById(branchId)
 
         // 이미 은행 계좌가 있는지 검증
-        isAccountHasBankAccount(account.id)
+        checkAccountHasBankAccount(account.id)
 
         // PIN 번호와 함께 계정을 생성하여 저장합니다.
         val bankAccount = BankAccount(
             accountId = account.id,
             branchId = branch.id,
             accountNumber = generateAccountNumber(account, branch),
-            password = encryptedPin,
+            password = encryptedPassword,
+            ownerType = OwnerType.USER,
             iv = iv,
-            balance = 0
+            balance = BigDecimal(0)
         )
 
         // 계좌 생성
@@ -59,31 +61,20 @@ class BankAccountCreateService (
         id: Long
     ): User {
         return userRepository.findById(id)
-            .orElseThrow { NotFoundException(message = "User with ID $id not found") }
-    }
-
-    // 계좌 조회
-    fun getBankAccount(
-        bankAccountId: Long
-    ): BankAccount {
-        return bankAccountRepository.findById(bankAccountId)
-            .orElseThrow { NotFoundException(message = "Bank account with ID $bankAccountId not found") }
+            .orElseThrow { NotFoundException(message = "찾으시는 유저 정보가 존재하지 않습니다.") }
     }
 
     fun getAccountById(accountId: Long): Account {
         return accountRepository.findById(accountId)
-            .orElseThrow { NotFoundException(message = "Bank branch with ID $accountId not found") }
+            .orElseThrow { NotFoundException(message = "찾으시는 계정이 존재하지 않습니다.") }
     }
 
     fun getBankBranchById(branchId: Long): BankBranch {
         return bankBranchRepository.findById(branchId)
-            .orElseThrow { NotFoundException(message = "Bank branch with ID $branchId not found") }
+            .orElseThrow { NotFoundException(message = "찾으시는 은행 지점이 존재하지 않습니다.") }
     }
 
-    fun getBankAccountById(bankAccountId: Long): BankAccount {
-        return bankAccountRepository.findById(bankAccountId)
-            .orElseThrow { NotFoundException(message = "Bank account with ID $bankAccountId not found") }
-    }
+
 
     // 계좌번호 생성
     private fun generateAccountNumber(account: Account, branch: BankBranch): String {
@@ -93,10 +84,13 @@ class BankAccountCreateService (
 
         val accountNumber = "$accountCode$branchCode$randomCode"
 
-        if (isAccountNumberExists(accountNumber)) Exception(ConflictException(message = "Account number $accountNumber already exists"))
+        if (isAccountNumberExists(accountNumber)) {
+            throw ConflictException(message="이미 사용 중인 계좌번호입니다.")
+        }
 
         return accountNumber
     }
+
 
     // 중복된 계좌 생성을 방지하는 기능 추가
     fun isAccountNumberExists(accountNumber: String): Boolean {
@@ -104,15 +98,11 @@ class BankAccountCreateService (
     }
 
     // 이미 Account 가 BankAccount 를 가지고 있는지 여부 반환하는 기능 추가
-    fun isAccountHasBankAccount(accountId: Long): Boolean {
-
+    fun checkAccountHasBankAccount(accountId: Long){
         val bankAccount: BankAccount? = bankAccountRepository.findByAccountId(accountId)
-
-        if (bankAccount != null){
-            Exception(ConflictException(message = "Account with ID $accountId already has bank account"))
+        if (bankAccount != null) {
+            throw ConflictException(message = "이미 은행 계좌가 존재합니다.")
         }
-
-        return getBankAccountById(accountId) != null
     }
 
     data class CreatedBankAccount(
@@ -120,7 +110,7 @@ class BankAccountCreateService (
         val accountId: Long,
         val branchId: Long,
         val bankAccountId: Long,
-        val balance: Int,
+        val balance: BigDecimal,
         val accountNumber: String
     )
 }

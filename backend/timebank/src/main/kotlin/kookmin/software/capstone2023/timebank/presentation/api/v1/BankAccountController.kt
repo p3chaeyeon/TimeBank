@@ -28,7 +28,7 @@ class BankAccountController(
             userId = userContext.userId,
             accountId = userContext.accountId,
             branchId = data.branchId,
-            encryptedPin = data.password,
+            encryptedPassword = data.password,
             iv = data.iv,
         )
 
