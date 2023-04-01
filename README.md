@@ -20,12 +20,12 @@
 |박채연|Frontend|@|010|
 |옥상수|Frontend|@|010|
 
-|![Alt text](https://pbs.twimg.com/media/EA9UJBjU4AAdkCm?format=jpg&name=small)|
-|---|
-|Name|
-|StudentNum|
-|Role|
-|Email|
+|![Alt text](https://pbs.twimg.com/media/EA9UJBjU4AAdkCm?format=jpg&name=small)|![Alt text](https://pbs.twimg.com/media/EFHWmyXUEAASe0o.jpg)|
+|---|---|
+|Name|Name2|
+|StudentNum|StudentNum2|
+|Role|Role2|
+|Email|Email2|
 
 **사용법**
 ---------------------
