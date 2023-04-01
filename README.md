@@ -46,7 +46,7 @@
     <td colspan = "2"><img width="200px" src="https://pbs.twimg.com/media/EFHWmyXUEAASe0o.jpg"></img></td>
   </tr>
   <tr>
-    <td>이름</td><td>김정환</td>
+    <td>이름</td><td>박정환</td>
     <td>이름</td><td>박종복</td>
     <td>이름</td><td>임병준</td>
   </tr>
