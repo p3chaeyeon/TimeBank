@@ -15,14 +15,6 @@
 **팀 소개**
 ---------------------
 
-|이름|역할|이메일|전화번호|
-|---|---|---|---|
-|김정환|Backend|@|010|
-|박종복|Backend|@|010|
-|임병준|Backend|@|010|
-|박채연|Frontend|@|010|
-|옥상수|Frontend|@|010|
-
 <table>
   <tr>
     <td colspan = "2"><img width="200px" src="https://pbs.twimg.com/media/EA9UJBjU4AAdkCm?format=jpg&name=small"></img></td> 
@@ -47,12 +39,35 @@
   
 </table>
 
-|<img width="200px" src="https://pbs.twimg.com/media/EA9UJBjU4AAdkCm?format=jpg&name=small"></img>|<img width="200px" src="https://pbs.twimg.com/media/EA9UJBjU4AAdkCm?format=jpg&name=small"></img>|<img width="200px" src="https://pbs.twimg.com/media/EA9UJBjU4AAdkCm?format=jpg&name=small"></img>|
-|---|---|---|
-|김정환|박종복|임병준|
-|`****`1234|`****`1234|`****`1234|
-|Backend|Backend|Backend|
-|@kookmin.ac.kr|@kookmin.ac.kr|@kookmin.ac.kr|
+<table>
+  <tr>
+    <td colspan = "2"><img width="200px" src="https://pbs.twimg.com/media/EA9UJBjU4AAdkCm?format=jpg&name=small"></img></td> 
+    <td colspan = "2"><img width="200px" src="https://pbs.twimg.com/media/EFHWmyXUEAASe0o.jpg"></img></td>
+    <td colspan = "2"><img width="200px" src="https://pbs.twimg.com/media/EFHWmyXUEAASe0o.jpg"></img></td>
+  </tr>
+  <tr>
+    <td>이름</td><td>김정환</td>
+    <td>이름</td><td>박종복</td>
+    <td>이름</td><td>임병준</td>
+  </tr>
+  <tr>
+    <td>학번</td><td>****1234</td>
+    <td>학번</td><td>****1234</td>
+    <td>학번</td><td>****1234</td>
+  </tr>
+  <tr>
+    <td>역할</td><td>Backend</td>
+    <td>역할</td><td>Backend</td>
+    <td>역할</td><td>Backend</td>
+  </tr>
+  <tr>
+    <td>이메일</td><td>@kookmin.ac.kr</td>
+    <td>이메일</td><td>@kookmin.ac.kr</td>
+    <td>이메일</td><td>@kookmin.ac.kr</td>
+  </tr>
+  
+</table>
+
 
 **사용법**
 ---------------------
