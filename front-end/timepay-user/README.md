@@ -5,13 +5,13 @@
 ### 로컬 실행
 
 ```shell
- yarn test
+ npm install
 ```
-
-### 빌드
-
 ```shell
-yarn build
+ npm install @types/kakao-js-skd --force
+```
+```shell
+ npm start
 ```
 
 ## 프로젝트 구조
