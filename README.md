@@ -21,20 +21,20 @@
     <td colspan = "2"><img width="200px" src="https://pbs.twimg.com/media/EFHWmyXUEAASe0o.jpg"></img></td>
   </tr>
   <tr>
-    <td>이름</td><td>박채연</td>
     <td>이름</td><td>옥상수</td>
+    <td>이름</td><td>박채연</td>
   </tr>
   <tr>
-    <td>학번</td><td>****5299</td>
     <td>학번</td><td>****1643</td>
+    <td>학번</td><td>****5299</td>
   </tr>
   <tr>
     <td>역할</td><td>Frontend</td>
     <td>역할</td><td>Frontend</td>
   </tr>
   <tr>
-    <td>이메일</td><td>p3chaeyeon3@kookmin.ac.kr</td>
     <td>이메일</td><td>toy_369@kookmin.ac.kr</td>
+    <td>이메일</td><td>p3chaeyeon@kookmin.ac.kr</td>
   </tr>
   
 </table>
