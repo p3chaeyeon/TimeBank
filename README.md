@@ -3,11 +3,14 @@
 **프로젝트 소개**
 ---------------------
 
+
 **Abstract**
 ---------------------
 
+
 **소개 영상**
 ---------------------
+
 
 **팀 소개**
 ---------------------
@@ -22,13 +25,21 @@
 
 |<img width="200px" src="https://pbs.twimg.com/media/EA9UJBjU4AAdkCm?format=jpg&name=small"></img>|<img width="200px" src="https://pbs.twimg.com/media/EFHWmyXUEAASe0o.jpg"></img>|
 |---|---|
-|Name|Name2|
-|StudentNum|StudentNum2|
-|Role|Role2|
-|Email|Email2|
+|박채연|옥상수|
+|`****`1234|`****`1643|
+|Frontend|Frontend|
+|p3chaeyeon@gmail.com|toy_369@kookmin.ac.kr|
+
+|<img width="200px" src="https://pbs.twimg.com/media/EA9UJBjU4AAdkCm?format=jpg&name=small"></img>|<img width="200px" src="https://pbs.twimg.com/media/EA9UJBjU4AAdkCm?format=jpg&name=small"></img>|<img width="200px" src="https://pbs.twimg.com/media/EA9UJBjU4AAdkCm?format=jpg&name=small"></img>|
+|---|---|---|
+|김정환|박종복|임병준|
+|`****`1234|`****`1234|`****`1234|
+|Backend|Backend|Backend|
+|@kookmin.ac.kr|@kookmin.ac.kr|@kookmin.ac.kr|
 
 **사용법**
 ---------------------
+
 
 **기타**
 ---------------------
