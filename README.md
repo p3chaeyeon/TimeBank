@@ -20,7 +20,7 @@
 |박채연|Frontend|@|010|
 |옥상수|Frontend|@|010|
 
-|<img width="30%" src="https://pbs.twimg.com/media/EA9UJBjU4AAdkCm?format=jpg&name=small"></img>|<img width="30%" src="https://pbs.twimg.com/media/EFHWmyXUEAASe0o.jpg"></img>|
+|<img width="200px" src="https://pbs.twimg.com/media/EA9UJBjU4AAdkCm?format=jpg&name=small"></img>|<img width="200px" src="https://pbs.twimg.com/media/EFHWmyXUEAASe0o.jpg"></img>|
 |---|---|
 |Name|Name2|
 |StudentNum|StudentNum2|
