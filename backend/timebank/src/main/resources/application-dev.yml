@@ -20,6 +20,7 @@ application:
 
     test:
       enabled: ${AUTH_TEST_ENABLED}
-      user-id: ${AUTH_TEST_USER_ID}
-      account-id: ${AUTH_TEST_ACCOUNT_ID}
-      account-type: ${AUTH_TEST_ACCOUNT_TYPE}
+      user:
+        id: ${AUTH_TEST_USER_ID}
+        account-id: ${AUTH_TEST_ACCOUNT_ID}
+        account-type: ${AUTH_TEST_ACCOUNT_TYPE}
