@@ -24,11 +24,12 @@
 |옥상수|Frontend|@|010|
 
 |<img width="200px" src="https://pbs.twimg.com/media/EA9UJBjU4AAdkCm?format=jpg&name=small"></img>|<img width="200px" src="https://pbs.twimg.com/media/EFHWmyXUEAASe0o.jpg"></img>|
-|---|---|
-|박채연|옥상수|
-|`****`1234|`****`1643|
-|Frontend|Frontend|
-|p3chaeyeon@gmail.com|toy_369@kookmin.ac.kr|
+|------|------|
+|---|---|---|---|
+|이름|박채연|이름|옥상수|
+|학번|`****`1234|학번|`****`1643|
+|역할|Frontend|역할|Frontend|
+|이메일|p3chaeyeon@gmail.com||toy_369@kookmin.ac.kr|
 
 |<img width="200px" src="https://pbs.twimg.com/media/EA9UJBjU4AAdkCm?format=jpg&name=small"></img>|<img width="200px" src="https://pbs.twimg.com/media/EA9UJBjU4AAdkCm?format=jpg&name=small"></img>|<img width="200px" src="https://pbs.twimg.com/media/EA9UJBjU4AAdkCm?format=jpg&name=small"></img>|
 |---|---|---|
