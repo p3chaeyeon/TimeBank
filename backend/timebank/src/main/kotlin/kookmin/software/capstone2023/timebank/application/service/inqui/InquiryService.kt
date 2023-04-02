@@ -108,7 +108,7 @@ class InquiryService(
      * 문의 제목 검색 service
      */
     fun getInquiryByTitle(title: String): List<InquiryDto>{
-        val inquiries = inquiryRepository.findByTitle(title)
+        val inquiries = inquiryRepository.findByTitleContainingIgnoreCase(title)
         return inquiries.map { inquiryToDto(it) }
     }
 

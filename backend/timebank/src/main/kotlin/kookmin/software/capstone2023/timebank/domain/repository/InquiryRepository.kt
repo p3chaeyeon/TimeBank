@@ -11,6 +11,6 @@ import java.time.LocalDateTime
 interface InquiryRepository : JpaRepository<Inquiry, Long>{
     fun findByUser(user: User): List<Inquiry>
     fun findByUserId(userId: Long): List<Inquiry>
-    fun findByTitle(title: String): List<Inquiry>
+    fun findByTitleContainingIgnoreCase(title: String): List<Inquiry>
     fun findByInquiryDateBetween(start: LocalDateTime, end: LocalDateTime): List<Inquiry>
 }
