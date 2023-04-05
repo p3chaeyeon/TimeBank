@@ -1,83 +1,3 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-c66648af7eb3fe8bc4f294546bfd86ef473780cde1dea487d3c4ff354943c9ae.svg)](https://classroom.github.com/online_ide?assignment_repo_id=10282140&assignment_repo_type=AssignmentRepo)
-# Welcome to GitHub
-
-캡스톤 팀 생성을 축하합니다.
-
-## 팀소개 및 페이지를 꾸며주세요.
-
-- 프로젝트 소개
-  - 프로젝트 설치방법 및 데모, 사용방법, 프리뷰등을 readme.md에 작성.
-  - Api나 사용방법등 내용이 많을경우 wiki에 꾸미고 링크 추가.
-
-- 팀페이지 꾸미기
-  - 프로젝트 소개 및 팀원 소개
-  - index.md 예시보고 수정.
-
-- GitHub Pages 리파지토리 Settings > Options > GitHub Pages 
-  - Source를 marster branch
-  - Theme Chooser에서 태마선택
-  - 수정후 팀페이지 확인하여 점검.
-
-**팀페이지 주소** -> https://kookmin-sw.github.io/ '{{자신의 리파지토리 아이디}}'
-
-**예시)** 2023년 0조  https://kookmin-sw.github.io/capstone-2023-00/
-
-
-## 내용에 아래와 같은 내용들을 추가하세요.
-
-### 1. 프로잭트 소개
-
-프로젝트
-
-### 2. 소개 영상
-
-프로젝트 소개하는 영상을 추가하세요
-
-### 3. 팀 소개
-
-팀을 소개하세요.
-
-팀원정보 및 담당이나 사진 및 SNS를 이용하여 소개하세요.
-
-### 4. 사용법
-
-소스코드제출시 설치법이나 사용법을 작성하세요.
-
-### 5. 기타
-
-추가적인 내용은 자유롭게 작성하세요.
-
-
-## Markdown을 사용하여 내용꾸미기
-
-Markdown은 작문을 스타일링하기위한 가볍고 사용하기 쉬운 구문입니다. 여기에는 다음을위한 규칙이 포함됩니다.
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-자세한 내용은 [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Support or Contact
-
-readme 파일 생성에 추가적인 도움이 필요하면 [도움말](https://help.github.com/articles/about-readmes/) 이나 [contact support](https://github.com/contact) 을 이용하세요.
-=======
-# 시간은행
-
 **프로젝트 소개**
 ---------------------
 
@@ -153,3 +73,88 @@ readme 파일 생성에 추가적인 도움이 필요하면 [도움말](https://
 
 **기타**
 ---------------------
+=======
+## **프로젝트 소개**
+
+![서울시간은행 사업 개념도 ⓒ서울시](https://www.dailypop.kr/news/photo/202205/59846_115911_64.png)
+
+- 시간은행이란 자신이 필요한 도움을 받을 때는 저축해둔 시간을 화폐처럼 지불하고 도움을 받을 수 있을 수 있는 사회 운동 프로그램입니다. 시간은행에서는 **모든 참여자들의 도움이 동등**합니다. 어린 아이가 심부름을 하거나, 전문가가 기술을 제공해도 1시간의 봉사는 동등하게 시간으로 평가하고 1시간 화폐로 계산됩니다. 여기서 시간은행는 평등한 원칙으로 교환된 시간을 기록하고, 연결해주는 중개 은행의 역할을 합니다.
+- 운영 사례인 서울시간은행은 온라인 플랫폼의 부재로 네이버 카페나 전화, 방문을 창구로 사용하고 있었고 관리자는 시간화폐를 수기 관리하고 있었습니다. 
+- 시스템 구축으로 인해 실시간으로 보유하고 있는 시간화폐를 확인하고 거래를 할 수 있게하여 불편함을 해결하려고 합니다.
+
+
+
+## **주요 기능**
+
+![Features](https://raw.githubusercontent.com/kookmin-sw/capstone-2023-45/main/docs/assets/features.png)
+
+- 계좌 개설 및 조회
+- 참여자간 시간화폐 이체 기능
+- 계좌 및 시간화폐 관리
+
+
+
+## **역할**
+
+|        | 기술 분야  | 주요 작업                                                                                                                                      |
+| ------ | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| 옥상수 | 프론트엔드 | 유저 계좌이체, 문의/관리자 문의계 화면 작업                                                                                                    |
+| 박채연 | 프론트엔드 | 참여자 로그인/관리자 이체관리 화면 작업                                                                                                        |
+| 박종복 | 백엔드     | (1차 마일스톤) 전체 DB 설계, AWS 인프라 작업, 인증 서버 API 작업<br />(2차 마일스톤) QR코드 이체 API 작업<br />(3차 마일스톤) 피드백 개선 작업 |
+| 박정환 | 백엔드     | (1차 마일스톤) 전체 DB 설계, 계좌, 이체 뱅킹 서버 API 작업<br />(2주 마일스톤) QR코드 이체 API 작업<br />(3차 마일스톤) 피드백 개선 작업       |
+| 임병준 | 백엔드     | (1차 마일스톤) 전체 DB 설계, 문의하기 서버 API 작업<br />(2차 마일스톤) QR코드 이체 API 작업<br />(3차 마일스톤) 피드백 개선 작업              |
+
+
+
+## **기술 스택**
+
+| 구분       | 기술                            |
+| ---------- | ------------------------------- |
+| 프론트엔드 | TypeScript, React.js            |
+| 백엔드     | Kotlin, Spring Framework, MySQL |
+
+
+
+### 서버 구성
+
+![server_arch](https://raw.githubusercontent.com/kookmin-sw/capstone-2023-45/main/docs/assets/server-arch.png)
+
+
+
+## **팀 소개**
+
+```
+옥상수
+Student ID : ****1643
+E-mail : toy_369@kookmin.ac.kr
+Role : Frontend
+```
+
+```
+박채연
+Student ID : ****5299
+E-mail : p3chaeyeon@kookmin.ac.kr
+Role : Frontend
+```
+
+```
+박정환
+Student ID : ****5163
+E-mail : jpark0902@kookmin.ac.kr
+Role : Backend
+```
+
+```
+박종복
+Student ID : ****1618
+E-mail : okps123@kookmin.ac.kr
+Role : Backend
+```
+
+```
+임병준
+Student ID : ****1680
+E-mail : ddaa1541@kookmin.ac.kr
+Role : Backend
+```
+
