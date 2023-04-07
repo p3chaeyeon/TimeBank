@@ -1,13 +1,13 @@
-package kookmin.software.capstone2023.timebank.presentation.controller
-
+package kookmin.software.capstone2023.timebank.presentation.api.v1
 import kookmin.software.capstone2023.timebank.application.service.bank.account.BankAccountCreateService
 import kookmin.software.capstone2023.timebank.application.service.bank.account.BankAccountReadService
 import kookmin.software.capstone2023.timebank.presentation.api.RequestAttributes
 import kookmin.software.capstone2023.timebank.presentation.api.auth.model.UserAuthentication
 import kookmin.software.capstone2023.timebank.presentation.api.auth.model.UserContext
-import kookmin.software.capstone2023.timebank.presentation.api.v1.bank.model.BankAccountCreateRequestData
-import kookmin.software.capstone2023.timebank.presentation.api.v1.bank.model.BankAccountCreateResponseData
+import kookmin.software.capstone2023.timebank.presentation.api.v1.model.BankAccountCreateRequestData
+import kookmin.software.capstone2023.timebank.presentation.api.v1.model.BankAccountCreateResponseData
 import kookmin.software.capstone2023.timebank.presentation.api.v1.model.BankAccountReadRequestData
+import kookmin.software.capstone2023.timebank.presentation.api.v1.model.BankAccountReadResponseData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
@@ -22,7 +22,7 @@ class BankAccountController(
     fun createBankAccount(
         @RequestAttribute(RequestAttributes.USER_CONTEXT) userContext: UserContext,
         @Validated @RequestBody data: BankAccountCreateRequestData
-    ):BankAccountCreateResponseData {
+    ): BankAccountCreateResponseData {
 
         val createdBankAccount: BankAccountCreateService.CreatedBankAccount = bankAccountCreateService.createBankAccount(
             userId = userContext.userId,
@@ -44,13 +44,18 @@ class BankAccountController(
     fun readBankAccount(
         @RequestAttribute(RequestAttributes.USER_CONTEXT) userContext: UserContext,
         @Validated @RequestBody data: BankAccountReadRequestData
-    ): BankAccountReadService.ReadedBankAccount{
-        // 은행 계좌 조회 서비스를 이용해 은행 계좌 조회
-        return bankAccountReadService.readBankAccount(
+    ): BankAccountReadResponseData{
+
+        val readedBankAccount: BankAccountReadService.ReadedBankAccount = bankAccountReadService.readBankAccount(
             userId = userContext.userId,
             accountId = userContext.accountId,
             bankAccountId = data.bankAccountId
         )
-    }
 
+        return BankAccountReadResponseData(
+            balance = readedBankAccount.balance,
+            accountNumber = readedBankAccount.accountNumber,
+            bankAccountId = readedBankAccount.bankAccountId
+        )
+    }
 }

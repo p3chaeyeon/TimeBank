@@ -1,10 +1,5 @@
-package kookmin.software.capstone2023.timebank.presentation.api.v1.bank.model
-
-import jakarta.validation.constraints.Max
+package kookmin.software.capstone2023.timebank.presentation.api.v1.model
 import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.Pattern
-import kookmin.software.capstone2023.timebank.application.service.auth.model.AuthenticationRequest
-import kookmin.software.capstone2023.timebank.domain.model.auth.SocialPlatformType
 
 data class BankAccountCreateRequestData(
 

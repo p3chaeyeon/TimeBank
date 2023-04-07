@@ -9,7 +9,7 @@ import java.math.BigDecimal
 
 @Service
 class BankAccountCreateService (
-    private val accountRepository: AccountJpaRepository,
+    private val bankAcoountReadService: BankAccountReadService,
     private val bankAccountRepository: BankAccountJpaRepository,
     private val bankBranchRepository: BankBranchRepository,
     private val userRepository: UserJpaRepository
@@ -25,7 +25,7 @@ class BankAccountCreateService (
         }
 
         // 유효 계정인지 검증
-        val account = getAccountById(accountId)
+        val account = bankAcoountReadService.getAccountById(accountId)
 
         // 유효한 지점인지 검증
         val branch = getBankBranchById(branchId)
@@ -64,10 +64,7 @@ class BankAccountCreateService (
             .orElseThrow { NotFoundException(message = "찾으시는 유저 정보가 존재하지 않습니다.") }
     }
 
-    fun getAccountById(accountId: Long): Account {
-        return accountRepository.findById(accountId)
-            .orElseThrow { NotFoundException(message = "찾으시는 계정이 존재하지 않습니다.") }
-    }
+
 
     fun getBankBranchById(branchId: Long): BankBranch {
         return bankBranchRepository.findById(branchId)
@@ -84,17 +81,11 @@ class BankAccountCreateService (
 
         val accountNumber = "$accountCode$branchCode$randomCode"
 
-        if (isAccountNumberExists(accountNumber)) {
+        if (bankAcoountReadService.isAccountNumberExists(accountNumber)) {
             throw ConflictException(message="이미 사용 중인 계좌번호입니다.")
         }
 
         return accountNumber
-    }
-
-
-    // 중복된 계좌 생성을 방지하는 기능 추가
-    fun isAccountNumberExists(accountNumber: String): Boolean {
-        return bankAccountRepository.findByAccountNumber(accountNumber) != null
     }
 
     // 이미 Account 가 BankAccount 를 가지고 있는지 여부 반환하는 기능 추가
