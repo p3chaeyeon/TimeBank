@@ -15,6 +15,7 @@ function App() {
           <Route element={<BaseLayout />}>
           <Route path={PATH.HOME} element={<PageRoutes.IntroPage />} />
           <Route path={PATH.SIGN_UP} element={<PageRoutes.SignUp />} />
+          <Route path={PATH.MAIN} element={<PageRoutes.UserMainPage />} />
 
             {/* <Route path={PATH.HOME} element={<PageRoutes.HomePage />} />
             <Route path={PATH.SEARCH} element={<PageRoutes.SearchPage />} />

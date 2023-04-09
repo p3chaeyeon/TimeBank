@@ -1,5 +1,12 @@
 @import url('./styles/fonts/pretendard/pretendard.css');
 
+html {
+
+  -ms-content-zooming: none;
+  -ms-touch-action: pan-x pan-y;
+  
+}
+
 body {
   margin: 0;
   font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto,
@@ -8,6 +15,8 @@ body {
     sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: none;
+
 }
 
 button{
@@ -22,13 +31,43 @@ button{
   align-items: center;
 }
 
-.intro-page .logo{
-  top:25%;
+.intro-page .main-img{
+  top:28%;
   position: fixed;
+  width: 100%;
+}
+
+.intro-page .top{
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-size: 20px;
+  font-weight: 600;
+  position: fixed;
+  right: 5%;
+  color: #4B4B4B;
+}
+
+.intro-page .top img{
+  top: 13px;
+  position: relative;
+  margin-right: 5px;
+}
+
+.intro-page .main-title{
+  font-family: 'Lato';
+  font-style: normal;
+  font-size: 38px;
+  line-height: 42px;
+  font-weight: bold;
+  color: #4B4B4B;
+  text-align: left;
+  top :12%;
+  position: fixed;
+  left: 8%;
 }
 
 .intro-page .kakao-img{
-  bottom: 10%;
+  bottom: 5%;
   position: fixed;
 }
 
@@ -76,3 +115,110 @@ button{
   border-radius: 35px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
+
+.main-page{
+  /* display: flex; */
+}
+
+.main-page .main-header{
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #CDCDCD;
+  margin-bottom: 20%;
+}
+
+.main-page .main-header img{
+  top: 1px;
+  position: relative;
+  padding-right: 10px;
+}
+
+.main-page .main-header .menu{
+  font-family: 'Lato';
+  font-size: 15px;
+  font-weight: bold;
+  color: #000;
+  top: 5px;
+  position: relative;
+}
+
+.main-page .user-account{
+  margin: 0 auto;
+  border: 1px solid #CDCDCD;
+  border-radius: 10px;
+  width: 90%;
+}
+
+.main-page .user-account .user-info {
+  padding: 10px 15px;
+}
+
+.main-page .user-account .user-info .title{
+  color: #F1AF23;
+  font-family: 'Inter';
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 30px;
+}
+
+.main-page .user-account .user-info .account-num{
+  color: #787878;
+}
+
+.main-page .user-account .user-info .main-amount{
+  font-family: 'Inter';
+  font-size: 32px;
+  padding: 20px;
+  text-align: center;
+}
+
+.main-page .user-account .bottom-btn{
+  background-color: #F1AF23;
+  padding: 15px;
+  text-align: center;
+  color: #fff;
+  font-family: 'Inter';
+  font-weight: bold;
+  font-size: 20px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  box-shadow: 0 8px 20px -4px #F1AF23;
+}
+
+.main-page .recent-list {
+  margin: 0 auto;
+  border: 1px solid #CDCDCD;
+  border-radius: 8px;
+  width: 90%;
+  top: 50px;
+  position: relative;
+  padding: 10px;
+}
+
+.main-page .recent-list .list{
+  padding: 10px;
+  border: 1px solid #CDCDCD;
+  margin-bottom: 10px;
+  line-height: 25px;
+  color: #787878;
+  font-family: 'Lato';
+  border-radius: 10px;
+}
+
+.main-page .recent-list .list .date{
+  display: flex;
+  justify-content: flex-end;
+  color: #787878;
+  font-family: 'Lato';
+  font-size: 15px;
+  padding-top: 20px;
+}
+
+.main-page .recent-list .title{
+  font-family: 'Lato';
+  font-size: 16px;
+  font-weight: 400;
+  color: #787878;
+}
+

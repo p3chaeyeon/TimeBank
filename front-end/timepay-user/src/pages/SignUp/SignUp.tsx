@@ -34,7 +34,7 @@ const SignUp = () => {
             <label style={{marginTop:"10px"}}>핸드폰 번호</label>
             <input type="text" onChange={onChangeTest} />
         </div>
-        <div className='finish-btn' onClick = { ()=>handleOnClickLinkBtn(PATH.SIGN_UP) }>
+        <div className='finish-btn' onClick = { ()=>handleOnClickLinkBtn(PATH.MAIN) }>
             <button>가입하기</button>
         </div>
         {/* <div className='finish-btn' onClick = { ()=>handleOnClickLinkBtn(PATH.SIGN_UP) }>
