@@ -6,7 +6,7 @@ export const cssBaseLayoutStyle = css`
   font-family: unset !important;
   background: ${COMMON_COLOR.WHITE};
   overflow-x: hidden;
-  width: 100%;
+  width: 100wh;
   height: 100vh;
   main {
     font-family: unset !important;

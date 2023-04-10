@@ -16,7 +16,10 @@ function App() {
           <Route path={PATH.HOME} element={<PageRoutes.IntroPage />} />
           <Route path={PATH.SIGN_UP} element={<PageRoutes.SignUp />} />
           <Route path={PATH.MAIN} element={<PageRoutes.UserMainPage />} />
-
+          <Route path={PATH.TRANSFER} element={<PageRoutes.Transfer/>} />
+          <Route path={PATH.TRANSFERAMOUNT} element={<PageRoutes.TransferAmt/>} />
+          <Route path={PATH.TRANSFERPASSWORD} element={<PageRoutes.TransferPW/>} />
+          <Route path={PATH.TRANSFERLOG} element={<PageRoutes.TransferLog/>} />
             {/* <Route path={PATH.HOME} element={<PageRoutes.HomePage />} />
             <Route path={PATH.SEARCH} element={<PageRoutes.SearchPage />} />
             <Route path={PATH.MY_PAGE} element={<PageRoutes.MyPage />} /> */}

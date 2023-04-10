@@ -85,7 +85,7 @@ const UserMainPage = () => {
             </div>
           </div>
 
-          <div className='bottom-btn'>
+          <div className='bottom-btn' onClick = { ()=>handleOnClickLinkBtn(PATH.TRANSFER)}>
             이체
           </div>
         </div>

@@ -1,0 +1,107 @@
+.backGround {
+    background: #f12323;
+}
+
+.menuInfo {
+    display:inline-block;
+    position: absolute;
+    top: 15%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    font-size:20px;
+    line-height: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    color:#505050
+}
+
+.mainScreen {
+    /* shape */
+    box-sizing: border-box;
+
+    width: 100vw;
+    height: 100vh;
+    /*border-radius: 40px;*/
+
+    background: #ffffff;
+    border: 1px solid #000000;
+
+    /* position */
+    position: absolute;
+    top:0%;
+    left:0%;
+
+    overflow:hidden;
+}
+
+.header {
+    /* shape */
+    box-sizing: border-box;
+
+    width: 92%;
+    height: 8%;
+    border-top-right-radius: 40px;
+    border-top-left-radius: 40px;
+
+    background: #FFFFFF;
+    border : 2px solid #FFFFFF;
+    border-bottom-color: #C7C7C7;
+
+    /* position */
+    position: absolute;
+    left: 4%;
+
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    line-height: 100%;
+    text-align: left;
+    text-transform: uppercase;
+    color:#F1AF23;
+
+    display:grid;
+    grid-template-rows: 100%;
+    grid-template-columns: 30px 1fr 30px;
+    grid-template-areas: "button txt margin";
+    align-items: center;
+}
+
+.headerText{
+    grid-area: txt;
+    justify-self: center;
+    font-size: 18px;
+}
+
+.arrow {
+    grid-area: button;
+    justify-self: left;
+
+    border: 0px;
+    background:transparent;
+
+    font-size:30px;
+    color:#F1AF23;
+
+    cursor:pointer;
+}
+
+.errorMessage {
+    position:absolute;
+    top:28%;
+    left:0%;
+    width:100%;
+
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 15px;
+    line-height: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    color: #FF0000;
+}
