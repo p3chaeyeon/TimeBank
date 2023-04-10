@@ -3,5 +3,10 @@ export const PATH = {
   SEARCH: '/search',
   MY_PAGE: '/my',
   SIGN_UP: '/signup',
-  MAIN: '/main'
+  MAIN: '/main',
+  TRANSFER: '/transfer/account',
+  TRANSFERAMOUNT: '/transfer/amount',
+  TRANSFERPASSWORD: '/transfer/password',
+  TRANSFERLOG: '/transfer/log',
+  
 };
