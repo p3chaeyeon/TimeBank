@@ -8,6 +8,9 @@ import Transfer from './Transfer';
 import TransferAmt from './Transfer/TransferAmount';
 import TransferPW from './Transfer/TransferPassword';
 import TransferLog from './Transfer/TransferLog';
+import QnaRegister from './Qna/QnaRegister';
+import QnaLogMain from './Qna/QnaLogMain';
+import QnaLogDetail from './Qna/QnaLogDetail';
 
 const PageRoutes = {
   IntroPage,
@@ -20,6 +23,9 @@ const PageRoutes = {
   TransferAmt,
   TransferPW,
   TransferLog,
+  QnaRegister,
+  QnaLogMain,
+  QnaLogDetail,
 
 };
 

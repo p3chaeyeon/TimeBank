@@ -20,6 +20,9 @@ function App() {
           <Route path={PATH.TRANSFERAMOUNT} element={<PageRoutes.TransferAmt/>} />
           <Route path={PATH.TRANSFERPASSWORD} element={<PageRoutes.TransferPW/>} />
           <Route path={PATH.TRANSFERLOG} element={<PageRoutes.TransferLog/>} />
+          <Route path={PATH.QNAREGISTER} element={<PageRoutes.QnaRegister/>} />
+          <Route path={PATH.QNAMAIN} element={<PageRoutes.QnaLogMain/>} />
+          <Route path={PATH.QNADETAIL} element={<PageRoutes.QnaLogDetail/>} />
             {/* <Route path={PATH.HOME} element={<PageRoutes.HomePage />} />
             <Route path={PATH.SEARCH} element={<PageRoutes.SearchPage />} />
             <Route path={PATH.MY_PAGE} element={<PageRoutes.MyPage />} /> */}
