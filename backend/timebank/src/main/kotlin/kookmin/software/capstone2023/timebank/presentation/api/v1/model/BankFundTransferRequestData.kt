@@ -6,5 +6,5 @@ data class BankFundTransferRequestData(
     val senderBankAccountNumber: String,
     val receiverBankAccountNumber: String,
     val amount: BigDecimal,
-    val password: String
+    val password: String,
 )

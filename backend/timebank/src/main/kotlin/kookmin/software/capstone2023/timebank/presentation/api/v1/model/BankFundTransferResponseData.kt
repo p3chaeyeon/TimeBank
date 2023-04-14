@@ -4,7 +4,7 @@ import kookmin.software.capstone2023.timebank.domain.model.TransactionStatus
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
-data class BankFundTransferResponseData (
+data class BankFundTransferResponseData(
     val transactionId: Long,
     val transactionAt: LocalDateTime,
     val amount: BigDecimal?,

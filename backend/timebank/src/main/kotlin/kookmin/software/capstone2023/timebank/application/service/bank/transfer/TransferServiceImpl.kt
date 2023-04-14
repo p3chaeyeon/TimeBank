@@ -1,4 +1,4 @@
-package kookmin.software.capstone2023.timebank.application.service.bank.fund_transfer
+package kookmin.software.capstone2023.timebank.application.service.bank.transfer
 
 import kookmin.software.capstone2023.timebank.application.exception.BadRequestException
 import kookmin.software.capstone2023.timebank.application.exception.NotFoundException
@@ -14,20 +14,18 @@ import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
-
 @Service
-@Transactional(isolation= Isolation.READ_COMMITTED)
+@Transactional(isolation = Isolation.READ_COMMITTED)
 class TransferServiceImpl(
     private val bankAccountJpaRepository: BankAccountJpaRepository,
     private val bankAccountTransactionJpaRepository: BankAccountTransactionJpaRepository,
-):TransferService {
+) : TransferService {
 
     // 계좌 이체를 수행하는 메소드
     override fun transfer(request: TransferService.TransferRequest): BankAccountTransaction {
-
         // 송금 계좌 조회
         val sender = bankAccountJpaRepository.findByAccountNumber(request.senderAccountNumber)
-            ?: throw NotFoundException(message= "송금 계좌가 존재하지 않습니다")
+            ?: throw NotFoundException(message = "송금 계좌가 존재하지 않습니다")
 
         // 수신 계좌 조회
         val receiver = bankAccountJpaRepository.findByAccountNumber(request.receiverAccountNumber)
@@ -51,7 +49,7 @@ class TransferServiceImpl(
             status = TransactionStatus.REQUESTED,
             senderAccountNumber = sender.accountNumber,
             balanceSnapshot = sender.balance,
-            transactionAt = LocalDateTime.now()
+            transactionAt = LocalDateTime.now(),
         )
 
         // 수신 계좌에 입금할 트랜잭션 생성
@@ -62,7 +60,7 @@ class TransferServiceImpl(
             status = TransactionStatus.REQUESTED,
             receiverAccountNumber = receiver.accountNumber,
             balanceSnapshot = receiver.balance,
-            transactionAt = LocalDateTime.now()
+            transactionAt = LocalDateTime.now(),
         )
 
         // 동시성 제어를 위해 sender, receiver 순서로 락을 걸어줌
@@ -92,7 +90,7 @@ class TransferServiceImpl(
         sender: BankAccount,
         receiver: BankAccount,
         senderTransaction: BankAccountTransaction,
-        receiverTransaction: BankAccountTransaction
+        receiverTransaction: BankAccountTransaction,
     ) {
         try {
             // 송금 계좌에서 출금
@@ -118,7 +116,6 @@ class TransferServiceImpl(
             // 수신 계좌에 입금한 트랜잭션 상태를 성공으로 변경
             receiverTransaction.status = TransactionStatus.SUCCESS
             bankAccountTransactionJpaRepository.save(receiverTransaction)
-
         } catch (ex: Exception) {
             // 송금 계좌에서 출금한 트랜잭션 상태를 실패로 변경
             senderTransaction.status = TransactionStatus.FAILURE

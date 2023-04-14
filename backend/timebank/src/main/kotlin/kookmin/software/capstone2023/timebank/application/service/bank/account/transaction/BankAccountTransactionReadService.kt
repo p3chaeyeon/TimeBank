@@ -7,7 +7,6 @@ import kookmin.software.capstone2023.timebank.domain.repository.BankAccountTrans
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
-import java.math.BigDecimal
 
 @Service
 class BankAccountTransactionReadService(
@@ -15,7 +14,7 @@ class BankAccountTransactionReadService(
     private val bankAccountTransactionRepository: BankAccountTransactionJpaRepository,
 ) {
     // 계좌 이체 내역 조회
-    fun getBankAccountTransactionById(bankAccountTransactionId: Long) : BankAccountTransaction {
+    fun getBankAccountTransactionById(bankAccountTransactionId: Long): BankAccountTransaction {
         return bankAccountTransactionRepository.findById(bankAccountTransactionId)
             .orElseThrow { NotFoundException(message = "계좌 이체 내역을 찾을 수 없습니다.") }
     }
@@ -32,7 +31,7 @@ class BankAccountTransactionReadService(
     fun getBankAccountTransactionByAccountNumber(
         accountNumber: String,
         pageable: Pageable,
-    ):Page<BankAccountTransaction> {
+    ): Page<BankAccountTransaction> {
         val bankAccount: BankAccount = bankAccountReadService.getBankAccountByAccountNumber(accountNumber)
         return getBankAccountTransactionByAccountId(bankAccount.id, pageable)
     }

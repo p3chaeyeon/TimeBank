@@ -3,10 +3,10 @@ package kookmin.software.capstone2023.timebank.application.service.bank.account
 import kookmin.software.capstone2023.timebank.application.exception.NotFoundException
 import kookmin.software.capstone2023.timebank.application.exception.UnauthorizedException
 import kookmin.software.capstone2023.timebank.domain.model.Account
+import kookmin.software.capstone2023.timebank.domain.model.BankAccount
 import kookmin.software.capstone2023.timebank.domain.repository.AccountJpaRepository
 import kookmin.software.capstone2023.timebank.domain.repository.BankAccountJpaRepository
 import kookmin.software.capstone2023.timebank.domain.repository.UserJpaRepository
-import kookmin.software.capstone2023.timebank.domain.model.BankAccount
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
@@ -21,7 +21,7 @@ class BankAccountReadService(
     fun readBankAccount(
         userId: Long, // 유저 id
         accountId: Long, // 계정 id
-        bankAccountId: Long // 은행 계좌 id
+        bankAccountId: Long, // 은행 계좌 id
     ): ReadedBankAccount {
         /*
         유저가 가진 계정id와 요청에 있는 계정id가 일치하는지 확인.
@@ -44,15 +44,15 @@ class BankAccountReadService(
             branchId = bankAccount.branchId,
             bankAccountId = bankAccount.id,
             balance = bankAccount.balance,
-            accountNumber = bankAccount.accountNumber
+            accountNumber = bankAccount.accountNumber,
         )
     }
 
     fun readBankAccountByBankAccountNumber(
-        userId : Long,
-        accountId : Long,
-        bankAccountNumber : String
-    ):ReadedBankAccount{
+        userId: Long,
+        accountId: Long,
+        bankAccountNumber: String,
+    ): ReadedBankAccount {
         /*
         유저가 가진 계정id와 요청에 있는 계정id가 일치하는지 확인.
          */
@@ -66,36 +66,39 @@ class BankAccountReadService(
          */
         val bankAccount = getBankAccountByAccountNumber(bankAccountNumber)
 
-        return ReadedBankAccount (
+        return ReadedBankAccount(
             userId = userId,
             accountId = bankAccount.accountId,
             branchId = bankAccount.branchId,
             bankAccountId = bankAccount.id,
             balance = bankAccount.balance,
-            accountNumber = bankAccount.accountNumber
+            accountNumber = bankAccount.accountNumber,
         )
     }
 
     // 유저가 가진 계정 id와 요청에 있는 계정 id가 일치하는지 확인.
     private fun isUserHasAccount(
         userId: Long,
-        accountId: Long
+        accountId: Long,
     ): Boolean {
-
         val user = userRepository.getUserById(userId)
 
-        if(user == null){throw NotFoundException(message = "존재하지 않는 유저 정보입니다") }
+        if (user == null) {
+            throw NotFoundException(message = "존재하지 않는 유저 정보입니다")
+        }
 
         return user.accountId == accountId
     }
 
     // 유효한 계정 id인지 확인.
     private fun isAccountValid(
-        accountId: Long
+        accountId: Long,
     ): Boolean {
         val account = accountRepository.getAccountById(accountId)
 
-        if(account == null){throw NotFoundException(message =  "찾으시는 계좌가 존재하지 않습니다.") }
+        if (account == null) {
+            throw NotFoundException(message = "찾으시는 계좌가 존재하지 않습니다.")
+        }
 
         return account.id == accountId
     }
@@ -111,12 +114,11 @@ class BankAccountReadService(
     }
 
     fun getBankAccountByAccountNumber(accountNumber: String): BankAccount {
-        val account = bankAccountRepository.findByAccountNumber(accountNumber)
-        if(account == null){NotFoundException(message = "찾으시는 계좌가 존재하지 않습니다.") }
-        return account!!
+        return bankAccountRepository.findByAccountNumber(accountNumber)
+            ?: throw NotFoundException(message = "찾으시는 계좌가 존재하지 않습니다.")
     }
 
-    fun getBankAccountByAccountNumberAndAccountId(accountNumber: String, accountId:Long): BankAccount {
+    fun getBankAccountByAccountNumberAndAccountId(accountNumber: String, accountId: Long): BankAccount {
         val bankAccount = getBankAccountByAccountNumber(accountNumber)
         if (accountId != bankAccount.accountId) {
             throw UnauthorizedException(message = "계좌 소유주가 일치하지 않습니다.")
@@ -124,27 +126,23 @@ class BankAccountReadService(
         return bankAccount
     }
 
-
     // 중복된 계좌 생성을 방지하는 기능 추가
     fun isAccountNumberExists(accountNumber: String): Boolean {
         return bankAccountRepository.findByAccountNumber(accountNumber) != null
     }
 
-
-
     fun isBankAccountExists(bankAccountId: Long): Boolean {
         return bankAccountRepository.findById(bankAccountId).isPresent
     }
 
-    fun validateBankAccountPasswordCorrect(bankAccountId: Long, password: String){
+    fun validateBankAccountPasswordCorrect(bankAccountId: Long, password: String) {
         val bankAccount = bankAccountRepository.findById(bankAccountId)
             .orElseThrow { NotFoundException(message = "찾으시는 계좌가 존재하지 않습니다.") }
 
-        if(bankAccount.password != password) {
+        if (bankAccount.password != password) {
             throw UnauthorizedException(message = "비밀번호가 일치하지 않습니다.")
         }
     }
-
 
     // 계좌 잔액을 확인하는 메소드
     fun validateBankAccountBalanceEnough(
@@ -163,6 +161,6 @@ class BankAccountReadService(
         val branchId: Long,
         val bankAccountId: Long,
         val balance: BigDecimal,
-        val accountNumber: String
+        val accountNumber: String,
     )
 }
