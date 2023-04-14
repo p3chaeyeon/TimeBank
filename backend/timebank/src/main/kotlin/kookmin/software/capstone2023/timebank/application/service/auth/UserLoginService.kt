@@ -53,7 +53,7 @@ class UserLoginService(
         )
     }
 
-    fun authenticate(authenticationRequest : AuthenticationRequest): Long {
+    fun authenticate(authenticationRequest: AuthenticationRequest): Long {
         when (authenticationRequest) {
             is AuthenticationRequest.SocialAuthenticationRequest -> {
                 val socialUser = socialPlatformUserFindService.getUser(

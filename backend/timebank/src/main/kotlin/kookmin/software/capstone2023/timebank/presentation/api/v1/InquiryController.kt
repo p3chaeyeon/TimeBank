@@ -1,22 +1,23 @@
 package kookmin.software.capstone2023.timebank.presentation.api.v1
 
-
 import kookmin.software.capstone2023.timebank.application.service.inqui.InquiryService
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
-import kookmin.software.capstone2023.timebank.domain.repository.InquiryRepository
-import kookmin.software.capstone2023.timebank.domain.model.Inquiry
 import kookmin.software.capstone2023.timebank.domain.model.Period
-import java.security.Principal
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 import java.util.*
-
 
 @RestController
 @RequestMapping("/api/v1/inquiries")
 class InquiryController(
-        private val inquiryService: InquiryService
+    private val inquiryService: InquiryService,
 ) {
     /**
      * 문의 작성
@@ -40,9 +41,8 @@ class InquiryController(
      */
     @GetMapping("/{id}")
     fun getInquiryById(@PathVariable id: Long): InquiryService.InquiryDto {
-         return inquiryService.getInquiryById(id)
+        return inquiryService.getInquiryById(id)
     }
-
 
     /**
      * userId검색 조회
@@ -51,6 +51,7 @@ class InquiryController(
     fun getInquiriesByUserId(@PathVariable userId: Long): List<InquiryService.InquiryDto> {
         return inquiryService.getInquiriesByUserId(userId)
     }
+
     /**
      * 문의 기간 조회
      */
@@ -71,7 +72,10 @@ class InquiryController(
      * 문의 수정
      */
     @PutMapping("/{id}")
-    fun updateInquiry(@PathVariable id: Long, @RequestBody request: InquiryService.InquiryUpdateRequest): InquiryService.InquiryDto {
+    fun updateInquiry(
+        @PathVariable id: Long,
+        @RequestBody request: InquiryService.InquiryUpdateRequest,
+    ): InquiryService.InquiryDto {
         return inquiryService.updateInquiry(id, request)
     }
 
@@ -83,6 +87,4 @@ class InquiryController(
         inquiryService.deleteInquiryByUserId(userId, inquiryId)
         return ResponseEntity.noContent().build()
     }
-
-
 }

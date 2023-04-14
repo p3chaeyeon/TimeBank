@@ -6,5 +6,4 @@ data class UserContext(
     val userId: Long,
     val accountId: Long,
     val accountType: AccountType,
-) {
-}
+)

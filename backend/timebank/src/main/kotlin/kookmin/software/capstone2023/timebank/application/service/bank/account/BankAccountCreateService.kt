@@ -1,22 +1,34 @@
 package kookmin.software.capstone2023.timebank.application.service.bank.account
+
 import kookmin.software.capstone2023.timebank.application.exception.ConflictException
 import kookmin.software.capstone2023.timebank.application.exception.NotFoundException
-import kookmin.software.capstone2023.timebank.domain.model.*
-import kookmin.software.capstone2023.timebank.domain.repository.*
+import kookmin.software.capstone2023.timebank.domain.model.Account
+import kookmin.software.capstone2023.timebank.domain.model.BankAccount
+import kookmin.software.capstone2023.timebank.domain.model.BankBranch
+import kookmin.software.capstone2023.timebank.domain.model.OwnerType
+import kookmin.software.capstone2023.timebank.domain.model.User
+import kookmin.software.capstone2023.timebank.domain.repository.BankAccountJpaRepository
+import kookmin.software.capstone2023.timebank.domain.repository.BankBranchJpaRepository
+import kookmin.software.capstone2023.timebank.domain.repository.UserJpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 
 @Service
-class BankAccountCreateService (
+class BankAccountCreateService(
     private val bankAcoountReadService: BankAccountReadService,
     private val bankAccountRepository: BankAccountJpaRepository,
-    private val bankBranchRepository: BankBranchRepository,
-    private val userRepository: UserJpaRepository
+    private val bankBranchJpaRepository: BankBranchJpaRepository,
+    private val userRepository: UserJpaRepository,
 ) {
     @Transactional
-    fun createBankAccount(encryptedPassword: String, iv: String, accountId: Long, branchId: Long, userId: Long): CreatedBankAccount {
-
+    fun createBankAccount(
+        encryptedPassword: String,
+        iv: String,
+        accountId: Long,
+        branchId: Long,
+        userId: Long,
+    ): CreatedBankAccount {
         // 사용자 정보와 계정정보가 일치한지 검증
         val user = getUserById(userId)
 
@@ -41,7 +53,7 @@ class BankAccountCreateService (
             password = encryptedPassword,
             ownerType = OwnerType.USER,
             iv = iv,
-            balance = BigDecimal(0)
+            balance = BigDecimal(0),
         )
 
         // 계좌 생성
@@ -53,25 +65,21 @@ class BankAccountCreateService (
             branchId = createdBankAccount.branchId,
             bankAccountId = createdBankAccount.id,
             balance = createdBankAccount.balance,
-            accountNumber = createdBankAccount.accountNumber
+            accountNumber = createdBankAccount.accountNumber,
         )
     }
 
     fun getUserById(
-        id: Long
+        id: Long,
     ): User {
         return userRepository.findById(id)
             .orElseThrow { NotFoundException(message = "찾으시는 유저 정보가 존재하지 않습니다.") }
     }
 
-
-
     fun getBankBranchById(branchId: Long): BankBranch {
-        return bankBranchRepository.findById(branchId)
+        return bankBranchJpaRepository.findById(branchId)
             .orElseThrow { NotFoundException(message = "찾으시는 은행 지점이 존재하지 않습니다.") }
     }
-
-
 
     // 계좌번호 생성
     private fun generateAccountNumber(account: Account, branch: BankBranch): String {
@@ -82,14 +90,14 @@ class BankAccountCreateService (
         val accountNumber = "$accountCode$branchCode$randomCode"
 
         if (bankAcoountReadService.isAccountNumberExists(accountNumber)) {
-            throw ConflictException(message="이미 사용 중인 계좌번호입니다.")
+            throw ConflictException(message = "이미 사용 중인 계좌번호입니다.")
         }
 
         return accountNumber
     }
 
     // 이미 Account 가 BankAccount 를 가지고 있는지 여부 반환하는 기능 추가
-    fun checkAccountHasBankAccount(accountId: Long){
+    fun checkAccountHasBankAccount(accountId: Long) {
         val bankAccount: BankAccount? = bankAccountRepository.findByAccountId(accountId)
         if (bankAccount != null) {
             throw ConflictException(message = "이미 은행 계좌가 존재합니다.")
@@ -102,6 +110,6 @@ class BankAccountCreateService (
         val branchId: Long,
         val bankAccountId: Long,
         val balance: BigDecimal,
-        val accountNumber: String
+        val accountNumber: String,
     )
 }

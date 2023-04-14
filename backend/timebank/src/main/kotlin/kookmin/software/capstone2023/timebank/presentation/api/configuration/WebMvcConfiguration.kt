@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 class WebMvcConfiguration(
     private val userAuthenticationInterceptor: UserAuthenticationInterceptor,
-): WebMvcConfigurer {
+) : WebMvcConfigurer {
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(userAuthenticationInterceptor)
             .addPathPatterns("/api/**")

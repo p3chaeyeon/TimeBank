@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestHeader
 @FeignClient(
     name = "kakaoRestFeignClient",
     url = "https://kapi.kakao.com",
-    configuration = [FeignConfiguration::class]
+    configuration = [FeignConfiguration::class],
 )
 interface KakaoRestClient {
     @GetMapping("/v2/user/me")

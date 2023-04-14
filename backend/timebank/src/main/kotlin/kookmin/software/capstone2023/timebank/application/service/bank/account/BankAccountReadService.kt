@@ -2,10 +2,10 @@ package kookmin.software.capstone2023.timebank.application.service.bank.account
 
 import kookmin.software.capstone2023.timebank.application.exception.NotFoundException
 import kookmin.software.capstone2023.timebank.domain.model.Account
+import kookmin.software.capstone2023.timebank.domain.model.BankAccount
 import kookmin.software.capstone2023.timebank.domain.repository.AccountJpaRepository
 import kookmin.software.capstone2023.timebank.domain.repository.BankAccountJpaRepository
 import kookmin.software.capstone2023.timebank.domain.repository.UserJpaRepository
-import kookmin.software.capstone2023.timebank.domain.model.BankAccount
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
@@ -20,7 +20,7 @@ class BankAccountReadService(
     fun readBankAccount(
         userId: Long, // 유저 id
         accountId: Long, // 계정 id
-        bankAccountId: Long // 은행 계좌 id
+        bankAccountId: Long, // 은행 계좌 id
     ): ReadedBankAccount {
         /*
         유저가 가진 계정id와 요청에 있는 계정id가 일치하는지 확인.
@@ -43,30 +43,29 @@ class BankAccountReadService(
             branchId = bankAccount.branchId,
             bankAccountId = bankAccount.id,
             balance = bankAccount.balance,
-            accountNumber = bankAccount.accountNumber
+            accountNumber = bankAccount.accountNumber,
         )
     }
 
     // 유저가 가진 계정 id와 요청에 있는 계정 id가 일치하는지 확인.
     private fun isUserHasAccount(
         userId: Long,
-        accountId: Long
+        accountId: Long,
     ): Boolean {
-
         val user = userRepository.getUserById(userId)
 
-        if(user == null){throw NotFoundException(message = "User with ID $userId not found") }
+        if (user == null) { throw NotFoundException(message = "User with ID $userId not found") }
 
         return user.accountId == accountId
     }
 
     // 유효한 계정 id인지 확인.
     private fun isAccountValid(
-        accountId: Long
+        accountId: Long,
     ): Boolean {
         val account = accountRepository.getAccountById(accountId)
 
-        if(account == null){throw NotFoundException(message = "Account with ID $accountId not found") }
+        if (account == null) { throw NotFoundException(message = "Account with ID $accountId not found") }
 
         return account.id == accountId
     }
@@ -92,6 +91,6 @@ class BankAccountReadService(
         val branchId: Long,
         val bankAccountId: Long,
         val balance: BigDecimal,
-        val accountNumber: String
+        val accountNumber: String,
     )
 }

@@ -1,6 +1,9 @@
 package kookmin.software.capstone2023.timebank.domain.model.auth
 
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.Table
 import kookmin.software.capstone2023.timebank.domain.model.BaseTimeEntity
 
 @Entity

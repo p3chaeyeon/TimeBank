@@ -1,7 +1,13 @@
 package kookmin.software.capstone2023.timebank.presentation.api.exception
 
 import jakarta.validation.ConstraintViolationException
-import kookmin.software.capstone2023.timebank.application.exception.*
+import kookmin.software.capstone2023.timebank.application.exception.ApplicationErrorCode
+import kookmin.software.capstone2023.timebank.application.exception.ApplicationException
+import kookmin.software.capstone2023.timebank.application.exception.BadRequestException
+import kookmin.software.capstone2023.timebank.application.exception.ForbiddenException
+import kookmin.software.capstone2023.timebank.application.exception.InternalServerErrorException
+import kookmin.software.capstone2023.timebank.application.exception.NotFoundException
+import kookmin.software.capstone2023.timebank.application.exception.UnauthorizedException
 import kookmin.software.capstone2023.timebank.core.logger
 import kookmin.software.capstone2023.timebank.presentation.api.model.ErrorResponse
 import org.springframework.http.HttpStatus
@@ -29,8 +35,8 @@ class GlobalExceptionHandler {
             .body(
                 ErrorResponse(
                     code = ApplicationErrorCode.BAD_REQUEST.value,
-                    message = ApplicationErrorCode.BAD_REQUEST.message
-                )
+                    message = ApplicationErrorCode.BAD_REQUEST.message,
+                ),
             )
     }
 
@@ -40,8 +46,8 @@ class GlobalExceptionHandler {
             .body(
                 ErrorResponse(
                     code = ApplicationErrorCode.BAD_REQUEST.value,
-                    message = e.bindingResult.allErrors.firstOrNull()?.defaultMessage
-                )
+                    message = e.bindingResult.allErrors.firstOrNull()?.defaultMessage,
+                ),
             )
     }
 
@@ -51,11 +57,10 @@ class GlobalExceptionHandler {
             .body(
                 ErrorResponse(
                     code = ApplicationErrorCode.BAD_REQUEST.value,
-                    message = e.constraintViolations.firstOrNull()?.message
-                )
+                    message = e.constraintViolations.firstOrNull()?.message,
+                ),
             )
     }
-
 
     @ExceptionHandler(ApplicationException::class)
     fun handleApplicationException(e: ApplicationException): ResponseEntity<ErrorResponse> {

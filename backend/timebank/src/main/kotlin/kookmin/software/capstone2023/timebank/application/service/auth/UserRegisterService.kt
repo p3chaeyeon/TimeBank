@@ -34,7 +34,7 @@ class UserRegisterService(
         validateDuplicatedRegistration(authentication)
 
         val account = accountJpaRepository.save(
-            Account(type = accountType, profile = null)
+            Account(type = accountType, profile = null),
         )
 
         val user = userJpaRepository.save(
@@ -44,7 +44,7 @@ class UserRegisterService(
                 name = name,
                 phoneNumber = phoneNumber,
                 lastLoginAt = null,
-            )
+            ),
         )
 
         when (authentication) {
@@ -59,13 +59,13 @@ class UserRegisterService(
                         userId = user.id,
                         platformType = authentication.socialPlatformType,
                         platformUserId = socialUser.id,
-                    )
+                    ),
                 )
             }
 
             is AuthenticationRequest.PasswordAuthenticationRequest -> {
                 val encodedPassword = passwordEncoder.encode(
-                    authentication.password
+                    authentication.password,
                 )
 
                 passwordAuthenticationJpaRepository.save(
@@ -73,7 +73,7 @@ class UserRegisterService(
                         userId = user.id,
                         username = authentication.username,
                         password = encodedPassword,
-                    )
+                    ),
                 )
             }
         }

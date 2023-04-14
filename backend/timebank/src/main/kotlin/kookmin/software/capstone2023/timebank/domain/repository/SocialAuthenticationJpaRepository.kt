@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository
 interface SocialAuthenticationJpaRepository : JpaRepository<SocialAuthentication, Long> {
     fun findByPlatformTypeAndPlatformUserId(
         platformType: SocialPlatformType,
-        platformUserId: String
+        platformUserId: String,
     ): SocialAuthentication?
 }

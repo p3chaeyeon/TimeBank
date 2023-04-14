@@ -41,11 +41,12 @@ class UserAuthenticationInterceptor(
         val authenticationData = userAuthenticator.authenticate(authorizationToken)
 
         request.setAttribute(
-            RequestAttributes.USER_CONTEXT, UserContext(
+            RequestAttributes.USER_CONTEXT,
+            UserContext(
                 userId = authenticationData.userId,
                 accountId = authenticationData.accountId,
                 accountType = authenticationData.accountType,
-            )
+            ),
         )
 
         return true

@@ -17,7 +17,7 @@ class SocialPlatformUserFindService(
         when (type) {
             SocialPlatformType.KAKAO -> {
                 val kakaoUser = kakaoRestClient.getUserInfo(
-                    authorization = "Bearer $accessToken"
+                    authorization = "Bearer $accessToken",
                 )
 
                 return SocialUser(

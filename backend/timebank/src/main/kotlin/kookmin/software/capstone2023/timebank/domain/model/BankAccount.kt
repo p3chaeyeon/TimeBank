@@ -1,13 +1,18 @@
 package kookmin.software.capstone2023.timebank.domain.model
-import jakarta.persistence.*
-import kookmin.software.capstone2023.timebank.domain.model.BankBranch
-import kookmin.software.capstone2023.timebank.domain.model.OwnerType
-import kookmin.software.capstone2023.timebank.domain.model.User
+
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.Table
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "BankAccount")
+@Table(name = "bank_account")
 data class BankAccount(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,5 +39,5 @@ data class BankAccount(
     var balance: BigDecimal,
 
     @Column(nullable = true)
-    val deletedAt: LocalDateTime? = null
-):BaseTimeEntity()
+    val deletedAt: LocalDateTime? = null,
+) : BaseTimeEntity()
