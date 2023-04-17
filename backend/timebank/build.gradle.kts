@@ -49,6 +49,8 @@ dependencies {
 
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
+
     implementation("org.springframework.security:spring-security-core")
     implementation("com.auth0:java-jwt:4.3.0")
 

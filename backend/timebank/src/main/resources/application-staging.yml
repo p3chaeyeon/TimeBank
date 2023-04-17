@@ -10,6 +10,12 @@ spring:
     open-in-view: false
     show-sql: true
 
+springdoc:
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  paths-to-match: /api/**
+  cache.disabled: true
+
 application:
   authentication:
     access-token:
