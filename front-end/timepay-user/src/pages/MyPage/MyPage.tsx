@@ -8,6 +8,6 @@ const MyPage = () => {
     setHeaderTitle('내정보');
   });
   return <div>마이페이지</div>;
-};
+}; 
 
 export default MyPage;

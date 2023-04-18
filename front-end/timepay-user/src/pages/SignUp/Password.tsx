@@ -4,16 +4,16 @@ import { useSetRecoilState } from 'recoil';
 import { headerTitleState } from '../../states/uiState';
 import { PATH } from '../../utils/paths';
 
-const Password = () => {
+const Password = () => { 
   const navigate = useNavigate();
 
   const setHeaderTitle = useSetRecoilState(headerTitleState);
-  useEffect(() => {
+  useEffect(() => { 
     setHeaderTitle(null);
   });
   const handleOnClickLinkBtn = useCallback(
     (path: string) => {
-      navigate(path);
+      navigate(path); 
     },
     [navigate],
   );
