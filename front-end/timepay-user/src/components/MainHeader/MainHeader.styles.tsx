@@ -21,10 +21,16 @@ export const cssMainHeaderStyle = css`
   display: flex;
   flex-direction: row;
   gap: 10px;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
 
   .header-title {
+    
     margin-top: 1px;
+  }
+  .pad {
+    width : 22px;
+    height : 24px;
+    color : transparent;
   }
 `;

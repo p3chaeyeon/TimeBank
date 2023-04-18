@@ -1,7 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { headerTitleState } from '../../states/uiState';
+
 
 import Card from "antd/es/card/Card";
 
@@ -16,12 +17,13 @@ function TransferLog() {
     const name = location.state.name;
     const date = new Date();
     const datestr = date.getFullYear() + "." + (date.getMonth()+1) + "." + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-
-
+    const [message, setMessage] = useState("");
     const setHeaderTitle = useSetRecoilState(headerTitleState);
+
     useEffect(() => {
       setHeaderTitle('이체하기');
     });
+
 
     return(
             <div>
@@ -32,6 +34,7 @@ function TransferLog() {
                 <p>금액 : {amount}</p>
                 <p>이름 : {name}</p>
                 <p>거래일시 : {datestr}</p>
+                <p>{message}</p>
                 </Card>
                 
                 </div>

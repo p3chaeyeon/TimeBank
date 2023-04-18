@@ -66,7 +66,7 @@ const UserMainPage = () => {
       <div className = "main-page">
         <div className= 'main-header'>
           <div className='menu'>
-            <img src={MenuBar} alt=""/>
+            <img src={MenuBar} alt="" onClick={()=>handleOnClickLinkBtn(PATH.QNAMAIN)}/>
             메뉴
           </div>
           <div><img src={IconGear} alt=""/></div>

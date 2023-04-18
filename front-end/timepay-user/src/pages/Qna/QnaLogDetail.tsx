@@ -5,8 +5,20 @@ import { headerTitleState } from '../../states/uiState';
 
 import { Card } from 'antd';
 import Modal from "react-modal";
+import axios from "axios";
 
 import "./qna_logdetail.css";
+
+type QNADETAIL = {
+    "commentid": string,
+    "commentSeq": string,
+    "content": string,
+    "commentDate": string,
+    "replyStatus": string,
+    "userId": string,
+    "inquiryId": string
+
+}
 
 function QnaLogDetail() {
     const location = useLocation();
@@ -14,26 +26,51 @@ function QnaLogDetail() {
     const id = location.state.Qna;
     const content = location.state.Content;
 
+    const [qnaDetail, setQnaDetail] = useState<QNADETAIL[]>([]);
     const [openModal, setOpenModal] = useState(false);
-
-    const answers = [
-        {title : "reply 1", content : "reply1 Content", replyType: "byAdmin", replyID : "1"},
-        {title : "reply 2", content : "reply2 Content", replyType: "byUser", replyID : "2"},
-        {title : "reply 3", content : "reply3 Content", replyType: "byAdmin", replyID : "3"},
-    ];
+    const [comment, setComment] = useState("");
+    const userid = 1;
+    const accessToken = 1;
 
     const handleModal = () => {
         setOpenModal(true);
     };
 
-    const handleRegister = () => {
-        console.log("registered");
+    const handleRegister = async () => {
+        try{
+        await axios.post(`http://localhost:8080/api/v1/inquiries/${id}/comments`, {
+            headers:{'Authorization':`Bearer ${accessToken}`},
+            content: comment,
+            userId: userid,
+            inquiryId : id
+        }).then(function(response){
+            console.log(response);
+        }).catch(function(error){
+            console.log(error);
+        })
+        setOpenModal(false);
+        }
+        catch{
+        }
+    };
+
+    const getQnaDetail = () => {
+        axios.get<QNADETAIL[]>(`http://localhost:8080/api/v1/inquiries/${id}/comments`, {headers:{
+            'Authorization':`Bearer ${accessToken}`
+        }}).then(response => {
+            //console.log(response.data);
+            setQnaDetail(response.data);
+        }).catch(function(error){
+            console.log(error)
+        })
     };
 
     const setHeaderTitle = useSetRecoilState(headerTitleState);
     useEffect(() => {
       setHeaderTitle('문의 상세 내역');
-    });
+      getQnaDetail();
+      console.log("loaded");
+    }, [openModal]);
 
     return(
             <div>
@@ -41,8 +78,8 @@ function QnaLogDetail() {
                 <div>
                     <Card title={id} className="mainBox">
                         <Card>{content}</Card>
-                        {answers.map((answer) => (
-                            <Card title={"Reply Title : " + answer.title} extra={<span style={answer.replyType==="byAdmin" ? {color: 'red'} : {color: 'blue'}}>{answer.replyType}</span>} key={answer.replyID} className="detailBox">
+                        {qnaDetail.map((answer) => (
+                            <Card title={<span style={answer.userId===id ? {color: 'blue'} : {color: 'red'}}>{answer.userId===id ? "byUSER" : "byADMIN"}</span>} extra={answer.commentDate}  key={answer.commentid} className="detailBox">
                                 <p>{"content : " + answer.content}</p>
 
                             </Card>
@@ -51,15 +88,15 @@ function QnaLogDetail() {
                 </div>
 
                 <div>
-                    <Link to="/qna/log/main" ><button className="beforeButton">이전</button></Link>
+                    <Link to="/qna/main" ><button className="beforeButton">이전</button></Link>
                     <button onClick={handleModal} className="nextButton">추가 문의</button>
                     <Modal isOpen={openModal} onRequestClose={() => setOpenModal(false)} className="modalImage">
                         <div className="inputGrid">
                             {/*<input placeholder="문의 제목 입력" className="inputTitle"></input>*/}
-                            <textarea placeholder="문의 내용 입력" className="inputDetail"></textarea>
+                            <textarea onChange={e => setComment(e.target.value)} placeholder="문의 내용 입력" className="inputDetail"></textarea>
                         </div>
                         <button onClick={()=>setOpenModal(false)} className="modalClose">&#10005;</button>
-                        <button onClick={()=>{setOpenModal(false);handleRegister()}} className="registerModal">등록</button>
+                        <button onClick={()=>handleRegister()} className="registerModal">등록</button>
 
                     </Modal>
                 </div>

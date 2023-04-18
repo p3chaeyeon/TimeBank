@@ -16,6 +16,7 @@ const MainHeader = () => {
     <Layout.Header css={cssMainHeaderStyle}>
       <BackArrow onClick={handleClickBack} />
       <span className="header-title">{headerTitle}</span>
+      <span className="pad"/>
     </Layout.Header>
   );
 };

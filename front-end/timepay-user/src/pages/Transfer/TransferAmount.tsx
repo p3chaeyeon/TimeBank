@@ -8,7 +8,7 @@ import { headerTitleState } from '../../states/uiState';
 import "./bgImage.css";
 import "./transfer_amount.css";
 import "./transfer_account.css"; /* inputbox, nextbutton css 가져옴 */
-import Modal from "react-modal";
+import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
 

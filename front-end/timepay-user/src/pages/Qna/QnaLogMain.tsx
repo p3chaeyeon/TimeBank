@@ -3,30 +3,31 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { headerTitleState } from '../../states/uiState';
 import { Select, Card } from 'antd';
-
+import axios from "axios";
 import "./qna_logmain.css";
+
+type QNA = {
+    "inquiryid": string,
+    "title": string,
+    "content": string,
+    "inquiryDate": string,
+    "replyStatus": string,
+    "userId": string
+}
+
 
 function QnaLogMain() {
 
     const navigate = useNavigate();
 
+    const [qnaResponse, setQnaResponse] = useState<QNA[]>([]);
     const [selectedTerm, setSelectedTerm] = useState('지난 1개월간');
     const [searchVal, setSearchVal] = useState("");
     const [selectedQna, setSelectedQna] = useState("");
     const [selectedContent, setSelectedContent] = useState("");
     const prevValue = useRef({selectedQna, selectedContent});
-
-    const qnas = [
-        {status : "처리완료", title : "QNA 1", content: "content1 for QNA1" , qnaID : "1"},
-        {status : "처리중", title : "QNA 2", content: "content2 for QNA2" , qnaID : "2"},
-        {status : "미처리", title : "QNA 3", content: "content3 for QNA3" , qnaID : "3"},
-        {status : "처리완료", title : "QNA 4", content: "content4 for QNA4" , qnaID : "4"},
-        {status : "처리중", title : "QNA 5", content: "content5 for QNA5" , qnaID : "5"},
-        {status : "미처리", title : "QNA 6", content: "content6 for QNA6" , qnaID : "6"},
-        {status : "처리완료", title : "QNA 7", content: "content7 for QNA7" , qnaID : "7"},
-        {status : "처리중", title : "QNA 8", content: "content8 for QNA8" , qnaID : "8"},
-        {status : "미처리", title : "QNA 9", content: "content9 for QNA9" , qnaID : "9"},
-    ];
+    const accessToken = 1;
+    const userID = 1;
 
     const terms = [
         {id:'1', value: '지난 1개월간',}, {id:'2', value: '지난 3개월간',}, {id:'3', value: '지난 6개월간',}, 
@@ -41,6 +42,17 @@ function QnaLogMain() {
         //console.log(e);
     };
 
+    const getQnas = () => {axios.get<QNA[]>(`http://localhost:8080/api/v1/inquiries/users/${userID}`, {headers:{
+        'Authorization':`Bearer ${accessToken}`
+      }}).
+      then(response => {
+            //console.log(response.data);
+            setQnaResponse(response.data);
+            }).
+      catch(function(error){
+        console.log(error)})
+    };
+
     const handleCard = useCallback((selectedQna:string) =>{
         //console.log(selectedContent);
         navigate(`/qna/detail/${selectedQna}`, {state:{Qna : selectedQna, Content : selectedContent}});
@@ -50,13 +62,13 @@ function QnaLogMain() {
     const setHeaderTitle = useSetRecoilState(headerTitleState);
     useEffect(() => {
         setHeaderTitle("문의 내역");
-
+        getQnas();
         if(selectedQna!==""&&(prevValue.current.selectedQna!==selectedQna && prevValue.current.selectedContent!==selectedContent)){
             handleCard(selectedQna);
         }
       }, [handleCard, selectedQna, selectedContent]);
-      //useCallBack 적용 필요
       
+
     return(
             <div>
 
@@ -68,9 +80,10 @@ function QnaLogMain() {
                     </div>
 
                     <Card className="mainBox">
-                        {qnas.map((qna) => (
-                            <Card key={qna.qnaID} onClick={e=>{setSelectedQna(qna.qnaID);setSelectedContent(qna.content);}} className="clickableDetailBox">
-                                <span className="qnaStatus">{"Status : " + qna.status}</span><span className="qnaTitle">{"Title : " + qna.title}</span>
+                        {qnaResponse.map((qna) => (
+                            <Card key={qna.inquiryid} onClick={e=>{setSelectedQna(qna.inquiryid);setSelectedContent(qna.content);}} className="clickableDetailBox">
+                                <span className="qnaStatus" style={qna.replyStatus === 'PENDING' ?{color : '#C7C7C7'} : {color : '#F1AF23'}}>{qna.replyStatus === 'PENDING' ? "등록완료" : "답변완료"}</span>
+                                <span className="qnaTitle">Title : {qna.title}</span>
                             </Card>
                         ))}
                     </Card>
