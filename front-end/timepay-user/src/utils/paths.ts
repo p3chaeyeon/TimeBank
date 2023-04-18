@@ -3,6 +3,7 @@ export const PATH = {
   SEARCH: '/search',
   MY_PAGE: '/my',
   SIGN_UP: '/signup',
+  PASSWORD: '/password',
   MAIN: '/main',
   TRANSFER: '/transfer/account',
   TRANSFERAMOUNT: '/transfer/amount',

@@ -2,7 +2,7 @@ import HomePage from './HomePage';
 import MyPage from './MyPage';
 import SearchPage from './SearchPage';
 import IntroPage from './IntroPage';
-import SignUp from './SignUp';
+import {SignUp, Password} from './SignUp';
 import UserMainPage from './MainPage';
 import Transfer from './Transfer';
 import TransferAmt from './Transfer/TransferAmount';
@@ -18,6 +18,7 @@ const PageRoutes = {
   MyPage,
   SearchPage,
   SignUp,
+  Password,
   UserMainPage,
   Transfer,
   TransferAmt,

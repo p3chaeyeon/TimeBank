@@ -16,6 +16,7 @@ function App() {
           <Route path={PATH.HOME} element={<PageRoutes.IntroPage />} />
           <Route path={PATH.SIGN_UP} element={<PageRoutes.SignUp />} />
           <Route path={PATH.MAIN} element={<PageRoutes.UserMainPage />} />
+          <Route path={PATH.PASSWORD} element={<PageRoutes.Password />} />
           <Route path={PATH.TRANSFER} element={<PageRoutes.Transfer/>} />
           <Route path={PATH.TRANSFERAMOUNT} element={<PageRoutes.TransferAmt/>} />
           <Route path={PATH.TRANSFERPASSWORD} element={<PageRoutes.TransferPW/>} />
