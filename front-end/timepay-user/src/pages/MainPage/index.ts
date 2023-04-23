@@ -1,3 +1,3 @@
 import UserMainPage from "./UserMainPage";
 
-export default UserMainPage;
+export default UserMainPage; 
