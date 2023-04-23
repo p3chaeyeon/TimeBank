@@ -6,6 +6,7 @@ import IconGear from '../../assets/images/icon-gear.svg';
 import MenuBar from '../../assets/images/menu_bar.svg';
 import Fav from '../../assets/images/fav.svg';
 import { PATH } from '../../utils/paths';
+// import Menu from '../components/Menu/BaseMenu';
 
 const UserMainPage = () => {
   const navigate = useNavigate();
@@ -68,6 +69,8 @@ const UserMainPage = () => {
           <div className='menu'>
             <img src={MenuBar} alt="" onClick={()=>handleOnClickLinkBtn(PATH.QNAMAIN)}/>
             메뉴
+            {/* <img src={MenuBar} alt="" onClick={()=>handleOnClickLinkBtn(PATH.QNAMAIN)}/>
+            메뉴 */}
           </div>
           <div><img src={IconGear} alt=""/></div>
         </div>

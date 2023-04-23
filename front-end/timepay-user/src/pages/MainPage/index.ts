@@ -1,3 +1,4 @@
 import UserMainPage from "./UserMainPage";
+import Unregistal from "./Unregistal";
 
-export default UserMainPage; 
+export {UserMainPage, Unregistal};
