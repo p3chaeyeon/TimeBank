@@ -1,4 +1,5 @@
 import UserMainPage from "./UserMainPage";
+import ProfileEdit from "./ProfileEdit";
 import Unregistal from "./Unregistal";
 
-export {UserMainPage, Unregistal};
+export {UserMainPage, ProfileEdit, Unregistal};

@@ -20,6 +20,8 @@ const PageRoutes = {
   SignUp,
   Password,
   UserMainPage,
+  ProfileEdit,
+  Unregistal,
   Transfer,
   TransferAmt,
   TransferPW,

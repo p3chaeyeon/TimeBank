@@ -6,6 +6,7 @@ export const PATH = {
   PASSWORD: '/password',
   MAIN: '/main',
   UNREGIST: '/unregist',
+  PROFILE: '/profile'
   TRANSFER: '/transfer/account',
   TRANSFERAMOUNT: '/transfer/amount',
   TRANSFERPASSWORD: '/transfer/password',
