@@ -117,11 +117,11 @@ button{
 }
 
 .main-page .main-header{
-  padding: 20px;
+  padding: 10px;
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #CDCDCD;
-  margin-bottom: 20%;
+  margin-bottom: 10%;
 }
 
 .main-page .main-header img{

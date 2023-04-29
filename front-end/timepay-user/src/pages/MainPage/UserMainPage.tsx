@@ -6,7 +6,8 @@ import IconGear from '../../assets/images/icon-gear.svg';
 import MenuBar from '../../assets/images/menu_bar.svg';
 import Fav from '../../assets/images/fav.svg';
 import { PATH } from '../../utils/paths';
-// import Menu from '../components/Menu/BaseMenu';
+import BaseMenu from '../../components/Menu/BaseMenu';
+import { Tooltip } from 'antd';
 
 const UserMainPage = () => {
   const navigate = useNavigate();
@@ -64,17 +65,17 @@ const UserMainPage = () => {
 
   return (
     <>
-      <div className = "main-page">
-        <div className= 'main-header'>
-          <div className='menu'>
-            <img src={MenuBar} alt="" onClick={()=>handleOnClickLinkBtn(PATH.QNAMAIN)}/>
-            메뉴
-            {/* <img src={MenuBar} alt="" onClick={()=>handleOnClickLinkBtn(PATH.QNAMAIN)}/>
-            메뉴 */}
-          </div>
-          <div><img src={IconGear} alt=""/></div>
+    <div className="main-page">
+      <div className="main-header">
+        <div className="menu">
+        <Tooltip placement="bottom">
+            <BaseMenu />
+          </Tooltip>
         </div>
-
+            <img src={IconGear} alt="" onClick={() => handleOnClickLinkBtn(PATH.PROFILE)} />
+          
+        </div>
+        
         <div className='user-account'>
           <div className='user-info'>
             <div className='title'>
