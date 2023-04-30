@@ -91,7 +91,7 @@ class BankAccountReadService(
     }
 
     // 유효한 계정 id인지 확인.
-    private fun isAccountValid(
+    public fun isAccountValid(
         accountId: Long,
     ): Boolean {
         val account = accountRepository.getAccountById(accountId)

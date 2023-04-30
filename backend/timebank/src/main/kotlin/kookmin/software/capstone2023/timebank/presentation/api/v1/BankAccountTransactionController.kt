@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
-@RequestMapping("/api/v1/bank/transaction")
+@RequestMapping("/api/v1/bank/account/transaction")
 @RestController
 class BankAccountTransactionController(
     private val bankAccountTransactionReadService: BankAccountTransactionReadService,
     private val bankAccountReadService: BankAccountReadService,
 ) {
-    @GetMapping("/transactions")
+    @GetMapping()
     fun getBankAccountTransactionsByBankAccountNumber(
         @RequestAttribute(RequestAttributes.USER_CONTEXT) userContext: UserContext,
         @RequestParam(defaultValue = "0") page: Int,

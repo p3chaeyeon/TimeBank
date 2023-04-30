@@ -20,18 +20,18 @@ data class BankAccountTransaction(
     val bankAccountId: Long,
 
     @Enumerated(EnumType.STRING)
-    val code: TransactionCode? = null,
+    val code: TransactionCode,
 
-    val amount: BigDecimal? = null,
+    val amount: BigDecimal,
 
     @Enumerated(EnumType.STRING)
     var status: TransactionStatus = TransactionStatus.REQUESTED,
 
-    val receiverAccountNumber: String? = null,
+    val receiverAccountNumber: String,
 
-    val senderAccountNumber: String? = null,
+    val senderAccountNumber: String,
 
-    val balanceSnapshot: BigDecimal? = null,
+    val balanceSnapshot: BigDecimal,
 
     @Column(nullable = false)
     val transactionAt: LocalDateTime = LocalDateTime.now(),

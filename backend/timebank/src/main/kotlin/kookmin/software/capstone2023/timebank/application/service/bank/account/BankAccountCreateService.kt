@@ -23,8 +23,7 @@ class BankAccountCreateService(
 ) {
     @Transactional
     fun createBankAccount(
-        encryptedPassword: String,
-        iv: String,
+        password: String,
         accountId: Long,
         branchId: Long,
         userId: Long,
@@ -50,9 +49,8 @@ class BankAccountCreateService(
             accountId = account.id,
             branchId = branch.id,
             accountNumber = generateAccountNumber(account, branch),
-            password = encryptedPassword,
+            password = password,
             ownerType = OwnerType.USER,
-            iv = iv,
             balance = BigDecimal(0),
         )
 
@@ -87,7 +85,7 @@ class BankAccountCreateService(
         val branchCode = branch.id.toString().padStart(2, '0')
         val randomCode = (10..99).random().toString()
 
-        val accountNumber = "$accountCode$branchCode$randomCode"
+        val accountNumber = "$branchCode$accountCode$randomCode"
 
         if (bankAcoountReadService.isAccountNumberExists(accountNumber)) {
             throw ConflictException(message = "이미 사용 중인 계좌번호입니다.")
