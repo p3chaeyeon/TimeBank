@@ -32,9 +32,6 @@ data class BankAccount(
     @Column(nullable = true)
     var password: String,
 
-    @Column(nullable = true)
-    var iv: String,
-
     @Column(nullable = false)
     var balance: BigDecimal,
 

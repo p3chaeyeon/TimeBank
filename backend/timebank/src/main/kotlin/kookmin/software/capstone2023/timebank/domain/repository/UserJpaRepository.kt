@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface UserJpaRepository : JpaRepository<User, Long> {
-    fun getUserById(id: Long): User
+    fun getUserById(id: Long): User?
 }

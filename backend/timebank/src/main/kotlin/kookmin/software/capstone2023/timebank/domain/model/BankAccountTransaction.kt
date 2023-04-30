@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @Entity
@@ -19,18 +20,18 @@ data class BankAccountTransaction(
     val bankAccountId: Long,
 
     @Enumerated(EnumType.STRING)
-    val code: TransactionCode? = null,
+    val code: TransactionCode,
 
-    val amount: Int? = null,
+    val amount: BigDecimal,
 
     @Enumerated(EnumType.STRING)
     var status: TransactionStatus = TransactionStatus.REQUESTED,
 
-    val receiverAccountNumber: String? = null,
+    val receiverAccountNumber: String,
 
-    val senderAccountNumber: String? = null,
+    val senderAccountNumber: String,
 
-    val balanceSnapshot: Int? = null,
+    val balanceSnapshot: BigDecimal,
 
     @Column(nullable = false)
     val transactionAt: LocalDateTime = LocalDateTime.now(),
