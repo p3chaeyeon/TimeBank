@@ -7,6 +7,8 @@ export const PATH = {
   MAIN: '/main',
   UNREGIST: '/unregist',
   PROFILE: '/profile',
+  UNREGISTAL: '/unregistal',
+  PROFILEEDIT: '/ProfileEdit',
   TRANSFER: '/transfer/account',
   TRANSFERAMOUNT: '/transfer/amount',
   TRANSFERPASSWORD: '/transfer/password',
@@ -14,5 +16,5 @@ export const PATH = {
   QNAREGISTER: '/qna/register',
   QNAMAIN: '/qna/main',
   QNADETAIL: '/qna/detail/:no',
-  SERVER: 'http://localhost:8080/'
+  SERVER: 'http://localhost:8080/',
 };

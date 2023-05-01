@@ -72,8 +72,7 @@ const UserMainPage = () => {
             <BaseMenu />
           </Tooltip>
         </div>
-            <img src={IconGear} alt="" onClick={() => handleOnClickLinkBtn(PATH.PROFILE)} />
-          
+            <img src={IconGear} alt="" onClick={() => handleOnClickLinkBtn(PATH.PROFILEEDIT)} />
         </div>
         
         <div className='user-account'>

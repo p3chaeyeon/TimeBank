@@ -2,8 +2,8 @@ import HomePage from './HomePage';
 import MyPage from './MyPage';
 import SearchPage from './SearchPage';
 import IntroPage from './IntroPage';
-import {SignUp, Password} from './SignUp';
-import {UserMainPage, ProfileEdit, Unregistal} from './MainPage';
+import { SignUp, Password } from './SignUp';
+import { UserMainPage, ProfileEdit, Unregistal } from './MainPage';
 import Transfer from './Transfer';
 import TransferAmt from './Transfer/TransferAmount';
 import TransferPW from './Transfer/TransferPassword';
@@ -29,7 +29,6 @@ const PageRoutes = {
   QnaRegister,
   QnaLogMain,
   QnaLogDetail,
-
 };
 
 export default PageRoutes;

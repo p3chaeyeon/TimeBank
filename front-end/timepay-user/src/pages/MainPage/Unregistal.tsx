@@ -6,7 +6,7 @@ import IconGear from '../../assets/images/icon-gear.svg';
 import BackBtn from '../../assets/images/BackBtn.svg';
 import Fav from '../../assets/images/fav.svg';
 import { PATH } from '../../utils/paths';
-import { createPopper } from '@popperjs/core';
+// import { createPopper } from '@popperjs/core';
 
 const Unregistal = () => {
     const navigate = useNavigate();

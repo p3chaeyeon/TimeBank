@@ -4,8 +4,8 @@ export const baseMenu = css`
   padding: 20px;
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #cdcdcd;
-  margin-bottom: 20%;
+  border-bottom: none;
+  margin-bottom: 0%;
 
   .menu-layer {
     top: 1px;
@@ -21,9 +21,19 @@ export const baseMenu = css`
   .settings {
     float: right;
   }
+  .custom-menu-tooltip .ant-tooltip-inner {
+    background-color: white;
+    border: 1px solid #cdcdcd;
+  }
+  .custom-menu-tooltip .ant-tooltip-arrow {
+    border-bottom-color: #cdcdcd;
+  }
 `;
 
 export const menuList = css`
   display: flex;
   justify-content: space-between;
 `;
+
+
+
