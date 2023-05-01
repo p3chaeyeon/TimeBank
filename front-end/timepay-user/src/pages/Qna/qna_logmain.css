@@ -1,9 +1,20 @@
+.mainGrid {
+    display:grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 40px 1fr;
+    grid-template-areas: "filter" "cards";
+}
+
 .filterGrid {
+    grid-area: filter;
+    margin: 4%;
+
+    /*
     position:absolute;
     top: 10%;
     left: 4%;
     width: 92%;
-
+    */
     display:grid;
     grid-template-rows: 100%;
     grid-template-columns: 1fr 2fr 30px;
@@ -42,12 +53,15 @@
 }
 
 .mainBox {
+    /*
     position: absolute;
     top: 15%;
     left: 4%;
     width:92%;
     height:80%;
-
+    */
+    grid-area: cards;
+    margin-top: 6%;
     overflow: auto;
 }
 
@@ -63,5 +77,5 @@
 }
 
 .qnaTitle {
-
+    color: black;
 }

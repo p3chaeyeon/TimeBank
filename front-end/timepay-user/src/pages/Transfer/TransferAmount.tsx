@@ -4,12 +4,11 @@ import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { headerTitleState } from '../../states/uiState';
+import {PATH} from '../../utils/paths';
 
-import "./bgImage.css";
 import "./transfer_amount.css";
-import "./transfer_account.css"; /* inputbox, nextbutton css 가져옴 */
 import Modal from 'react-modal';
-
+import axios from "axios";
 Modal.setAppElement('#root');
 
 function TransferAmt() {
@@ -17,7 +16,7 @@ function TransferAmt() {
     const account = location.state.account;
     const name = "옥상수";
     const balance = 1000;
-
+    const accessToken = 1;
 
     const [amount, setAmount] = useState(0);
 
@@ -48,10 +47,11 @@ function TransferAmt() {
     const setHeaderTitle = useSetRecoilState(headerTitleState);
     useEffect(() => {
       setHeaderTitle('금액 입력');
+      
     });
 
     return(
-<div className="unscrollable">
+        <div>
                 
                 <div>
                     <div className="accountInfo">
@@ -65,9 +65,9 @@ function TransferAmt() {
                         <span className="fontTP">TP</span>
                         
                         <div className="incButton">
-                            <button onClick={()=>addValue(10)} value={10} className="incTen">+10</button>                      
-                            <button onClick={()=>addValue(30)} value={30} className="incThirty">+30</button>
-                            <button onClick={()=>addValue(60)} value={60} className="incSixty">+60</button>
+                            <button onClick={()=>addValue(10)} value={10}>+10</button>                      
+                            <button onClick={()=>addValue(30)} value={30}>+30</button>
+                            <button onClick={()=>addValue(60)} value={60}>+60</button>
                         </div>
                     </div>
 

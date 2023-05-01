@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { headerTitleState } from '../../states/uiState';
+import { PATH } from '../../utils/paths';
 
 import { Card } from 'antd';
 import Modal from "react-modal";
@@ -38,11 +39,14 @@ function QnaLogDetail() {
 
     const handleRegister = async () => {
         try{
-        await axios.post(`http://localhost:8080/api/v1/inquiries/${id}/comments`, {
-            headers:{'Authorization':`Bearer ${accessToken}`},
+        await axios.post(PATH.SERVER + `api/v1/inquiries/${id}/comments`, 
+        {
             content: comment,
             userId: userid,
             inquiryId : id
+        },
+        {
+            headers:{'Authorization':`Bearer ${accessToken}`},
         }).then(function(response){
             console.log(response);
         }).catch(function(error){
@@ -55,9 +59,11 @@ function QnaLogDetail() {
     };
 
     const getQnaDetail = () => {
-        axios.get<QNADETAIL[]>(`http://localhost:8080/api/v1/inquiries/${id}/comments`, {headers:{
+        axios.get<QNADETAIL[]>(PATH.SERVER + `api/v1/inquiries/${id}/comments`, {
+            headers:{
             'Authorization':`Bearer ${accessToken}`
-        }}).then(response => {
+            }
+        }).then(response => {
             //console.log(response.data);
             setQnaDetail(response.data);
         }).catch(function(error){
@@ -73,13 +79,13 @@ function QnaLogDetail() {
     }, [openModal]);
 
     return(
-            <div>
+            <div className = "main-page">
 
                 <div>
                     <Card title={id} className="mainBox">
                         <Card>{content}</Card>
                         {qnaDetail.map((answer) => (
-                            <Card title={<span style={answer.userId===id ? {color: 'blue'} : {color: 'red'}}>{answer.userId===id ? "byUSER" : "byADMIN"}</span>} extra={answer.commentDate}  key={answer.commentid} className="detailBox">
+                            <Card title={<span style={answer.userId===id ? {color: 'orange'} : {color: 'red'}}>{answer.userId===id ? "byUSER" : "관리자"}</span>} extra={answer.commentDate}  key={answer.commentid} className="detailBox">
                                 <p>{"content : " + answer.content}</p>
 
                             </Card>

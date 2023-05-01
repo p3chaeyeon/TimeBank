@@ -1,3 +1,22 @@
+
+.menuInfo {
+    /*display:inline-block;*/
+    position: absolute;
+    top: 15%;
+    left: 0%;
+    width: 100%;
+
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    font-size:20px;
+    line-height: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    color:#505050;
+    
+}
+
 .inputBox {
     /* shape */
     box-sizing: border-box;
@@ -20,6 +39,22 @@
     text-align: center;
     text-transform: uppercase;
     color: #CDCDCD;
+}
+
+.errorMessage {
+    position:absolute;
+    top:28%;
+    left:0%;
+    width:100%;
+
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 15px;
+    line-height: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    color: #FF0000;
 }
 
 .nextButton {
