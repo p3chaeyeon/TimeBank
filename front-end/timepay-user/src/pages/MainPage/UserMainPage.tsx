@@ -9,6 +9,12 @@ import { PATH } from '../../utils/paths';
 import BaseMenu from '../../components/Menu/BaseMenu';
 import { Tooltip } from 'antd';
 
+import { Dropdown } from 'antd';
+import type { MenuProps } from 'antd';
+
+
+// import Menu from '../components/Menu/BaseMenu';
+
 const UserMainPage = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState<String>("정릉지점");
@@ -52,16 +58,41 @@ const UserMainPage = () => {
     "status": "Success"
 }
 
+
+
   const setHeaderTitle = useSetRecoilState(headerTitleState);
   useEffect(() => {
     setHeaderTitle(null);
   });
+  
   const handleOnClickLinkBtn = useCallback(
     (path: string) => {
       navigate(path);
     },
     [navigate],
   );
+
+  const items: MenuProps['items'] = [
+    {
+      label: <a onClick={() => handleOnClickLinkBtn(PATH.QNAREGISTER)}>문의하기</a>,
+      key: '1',
+    },
+    {
+      label: <a onClick={() => handleOnClickLinkBtn(PATH.QNAMAIN)}>문의내역</a>,
+      key: '2',
+    },
+  ];
+
+  const items: MenuProps['items'] = [
+    {
+      label: <a onClick={() => handleOnClickLinkBtn(PATH.QNAREGISTER)}>문의하기</a>,
+      key: '1',
+    },
+    {
+      label: <a onClick={() => handleOnClickLinkBtn(PATH.QNAMAIN)}>문의내역</a>,
+      key: '2',
+    },
+  ];
 
   return (
     <>
