@@ -4,6 +4,7 @@ import kookmin.software.capstone2023.timebank.application.service.bank.account.B
 import kookmin.software.capstone2023.timebank.application.service.bank.account.transaction.BankAccountTransactionReadService
 import kookmin.software.capstone2023.timebank.domain.model.BankAccountTransaction
 import kookmin.software.capstone2023.timebank.presentation.api.RequestAttributes
+import kookmin.software.capstone2023.timebank.presentation.api.auth.model.UserAuthentication
 import kookmin.software.capstone2023.timebank.presentation.api.auth.model.UserContext
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
+@UserAuthentication
 @RequestMapping("/api/v1/bank/account/transaction")
 @RestController
 class BankAccountTransactionController(
