@@ -7,11 +7,11 @@ import { Link } from 'react-router-dom';
 
 const items = [
   {
-    label: <Link to="/inquiry">문의하기</Link>,
+    label: <Link to="/qna/register">문의하기</Link>,
     key: 'inquiry',
   },
   {
-    label: <Link to="/inquiry-details">문의내역</Link>,
+    label: <Link to="/qna/main">문의내역</Link>,
     key: 'inquiry-details',
   },
   {

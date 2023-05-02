@@ -8,7 +8,7 @@ import Fav from '../../assets/images/fav.svg';
 import { PATH } from '../../utils/paths';
 import BaseMenu from '../../components/Menu/BaseMenu';
 import { Tooltip } from 'antd';
-
+import axios from 'axios';
 import { Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 
@@ -18,8 +18,11 @@ import type { MenuProps } from 'antd';
 const UserMainPage = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState<String>("정릉지점");
-  const [accountNum, setAccountNum] = useState<String>("계좌번호 000-000-000000");
-  const [amount, setAmount] = useState<String>("000,000");
+  const [accountNum, setAccountNum] = useState<String>("123456");
+  const [amount, setAmount] = useState<String>("520");
+  const accessToken = 1;
+
+
 
   const sampleData = {
     "items": [
@@ -58,12 +61,12 @@ const UserMainPage = () => {
     "status": "Success"
 }
 
-
-
   const setHeaderTitle = useSetRecoilState(headerTitleState);
   useEffect(() => {
+
     setHeaderTitle(null);
-  });
+  }
+  );
   
   const handleOnClickLinkBtn = useCallback(
     (path: string) => {
@@ -90,7 +93,7 @@ const UserMainPage = () => {
               {title}
             </div>
             <div className='account-num'>
-              {accountNum}
+              계좌번호 {accountNum}
             </div>
             <div className='main-amount'>
               {amount}<span style={{color:"#F1AF23", paddingLeft:"5px"}}>TP</span>

@@ -30,7 +30,7 @@ function QnaLogDetail() {
     const [qnaDetail, setQnaDetail] = useState<QNADETAIL[]>([]);
     const [openModal, setOpenModal] = useState(false);
     const [comment, setComment] = useState("");
-    const userid = 1;
+    const userid = "1";
     const accessToken = 1;
 
     const handleModal = () => {
@@ -64,7 +64,7 @@ function QnaLogDetail() {
             'Authorization':`Bearer ${accessToken}`
             }
         }).then(response => {
-            //console.log(response.data);
+            //console.log(typeof response.data[userid]);
             setQnaDetail(response.data);
         }).catch(function(error){
             console.log(error)
@@ -85,7 +85,7 @@ function QnaLogDetail() {
                     <Card title={id} className="mainBox">
                         <Card>{content}</Card>
                         {qnaDetail.map((answer) => (
-                            <Card title={<span style={answer.userId===id ? {color: 'orange'} : {color: 'red'}}>{answer.userId===id ? "byUSER" : "관리자"}</span>} extra={answer.commentDate}  key={answer.commentid} className="detailBox">
+                            <Card title={<span style={answer.userId===userid ? {color: 'orange'} : {color: 'red'}}>{answer.userId===userid ? "byUSER" : "관리자"}</span>} extra={answer.commentDate}  key={answer.commentid} className="detailBox">
                                 <p>{"content : " + answer.content}</p>
 
                             </Card>

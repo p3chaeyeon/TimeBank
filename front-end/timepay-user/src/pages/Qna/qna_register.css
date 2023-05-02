@@ -6,6 +6,10 @@
 
     width:92%;
 
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight : 600;
+
 }
 
 .inputContent{
@@ -14,6 +18,10 @@
     margin:4%;
     width:92%;
     min-height:300px;
+    
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight : 600;
 }
 
 .registerButton {

@@ -61,7 +61,8 @@ function TransferAmt() {
                     </div>
 
                     <div>
-                        <input type="number" onChange={(e:React.ChangeEvent<HTMLInputElement>) => setAmount(+e.target.value)} placeholder="금액 입력" value={amount===0 ? "" : amount} className="inputBox"></input>
+                        <input type="number" onChange={(e:React.ChangeEvent<HTMLInputElement>) => setAmount(+e.target.value)} placeholder="금액 입력"
+                         style={amount===0 ? {color:"black"} : {color:"C7C7C7"}} value={amount===0 ? "" : amount} className="inputBox"></input>
                         <span className="fontTP">TP</span>
                         
                         <div className="incButton">

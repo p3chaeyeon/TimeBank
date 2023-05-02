@@ -32,7 +32,7 @@ const Unregistal = () => {
         <>
             <div className="unregist-page">
                 <div className='main-header'>
-                    <img src={BackBtn} alt="" style={{ float: "left" }} />
+                    <img src={BackBtn} alt="" style={{ float: "left" }} onClick={() => handleOnClickLinkBtn(PATH.MAIN)} />
                     탈퇴하기
                 </div>
                 <div className='regist-body'>

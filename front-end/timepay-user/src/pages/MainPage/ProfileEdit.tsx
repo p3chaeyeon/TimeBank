@@ -2,6 +2,7 @@ import { useEffect, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { headerTitleState } from '../../states/uiState';
+import { PATH } from '../../utils/paths';
 import Profile from '../../assets/images/profile.svg';
 import BackBtn from '../../assets/images/BackBtn.svg';
 import { BottomSheet } from 'react-spring-bottom-sheet'
@@ -31,7 +32,7 @@ const ProfileEdit = () => {
         <>
             <div className="unregist-page">
                 <div className='main-header'>
-                    <img src={BackBtn} alt="" style={{ float: "left" }} />
+                    <img src={BackBtn} alt="" style={{ float: "left" }} onClick={() => handleOnClickLinkBtn(PATH.MAIN)} />
                     내정보 수정
                 </div>
                 <div className='edit-body'>
@@ -63,7 +64,7 @@ const ProfileEdit = () => {
                     </div>
                 </div>
                 <div className='finish-btn' style={{textAlign:"center"}}>
-                    <button style={{marginTop:"50%"}}>수정완료</button>
+                    <button style={{marginTop:"50%"}} onClick={() => handleOnClickLinkBtn(PATH.MAIN)}>수정완료</button>
                 </div>
             </div>
             <BottomSheet open={open}>
