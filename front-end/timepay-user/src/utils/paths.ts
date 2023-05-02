@@ -7,8 +7,6 @@ export const PATH = {
   MAIN: '/main',
   UNREGIST: '/unregist',
   PROFILE: '/profile',
-  UNREGISTAL: '/unregistal',
-  PROFILEEDIT: '/ProfileEdit',
   TRANSFER: '/transfer/account',
   TRANSFERAMOUNT: '/transfer/amount',
   TRANSFERPASSWORD: '/transfer/password',

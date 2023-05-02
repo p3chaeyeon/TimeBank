@@ -72,28 +72,6 @@ const UserMainPage = () => {
     [navigate],
   );
 
-  const items: MenuProps['items'] = [
-    {
-      label: <a onClick={() => handleOnClickLinkBtn(PATH.QNAREGISTER)}>문의하기</a>,
-      key: '1',
-    },
-    {
-      label: <a onClick={() => handleOnClickLinkBtn(PATH.QNAMAIN)}>문의내역</a>,
-      key: '2',
-    },
-  ];
-
-  const items: MenuProps['items'] = [
-    {
-      label: <a onClick={() => handleOnClickLinkBtn(PATH.QNAREGISTER)}>문의하기</a>,
-      key: '1',
-    },
-    {
-      label: <a onClick={() => handleOnClickLinkBtn(PATH.QNAMAIN)}>문의내역</a>,
-      key: '2',
-    },
-  ];
-
   return (
     <>
     <div className="main-page">

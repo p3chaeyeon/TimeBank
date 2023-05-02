@@ -4,7 +4,7 @@ import { useSetRecoilState } from 'recoil';
 import { headerTitleState } from '../../states/uiState';
 import Profile from '../../assets/images/profile.svg';
 import BackBtn from '../../assets/images/BackBtn.svg';
-// import { BottomSheet } from 'react-spring-bottom-sheet'
+import { BottomSheet } from 'react-spring-bottom-sheet'
 
 const ProfileEdit = () => {
     const navigate = useNavigate();
