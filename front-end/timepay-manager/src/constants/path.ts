@@ -4,4 +4,5 @@ export const PATH = {
   USER_PAGE: '/users',
   TRANSFER_PAGE: '/transfers',
   INQUIRY_PAGE: '/inquiries',
+  SERVER: 'http://localhost:8080/',
 };

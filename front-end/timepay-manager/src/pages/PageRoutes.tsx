@@ -5,6 +5,7 @@ import { UserPage } from './UserPage';
 import { HomePage } from './HomePage';
 import { PATH } from '../constants/path';
 import { TransferPage } from './TransferPage';
+import { InquiryPage } from './InquiryPage';
 
 export function PageRoutes() {
   return (
@@ -13,7 +14,7 @@ export function PageRoutes() {
         <Route index element={<HomePage />} />
         <Route path={PATH.USER_PAGE} element={<UserPage />} />
         <Route path={PATH.TRANSFER_PAGE} element={<TransferPage />} />
-        <Route path={PATH.INQUIRY_PAGE} element={<div></div>} />
+        <Route path={PATH.INQUIRY_PAGE} element={<InquiryPage />} />
       </Route>
     </Routes>
   );
