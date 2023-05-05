@@ -70,7 +70,6 @@ class CommentService(
             ?: throw UnauthorizedException(message = "\"User not found with id: ${request.inquiryId}\"")
         val previousCommentCount = commentRepository.countByInquiryId(request.inquiryId)
         val newCommentId = previousCommentCount + 1
-
         val comment = Comment(
             content = request.content,
             user = user,
@@ -81,21 +80,6 @@ class CommentService(
         val savedComment = commentRepository.save(comment)
         return commentToDto(savedComment)
     }
-
-    /**
-     * 댓글 생성 service (admin)
-
-     @Transactional
-     fun createReply(request: CommentReplyRequest): CommentDto {
-     val user = userJpaRepository.findByIdOrNull(request.userId)
-     ?: throw UnauthorizedException(message = "\"User not found with id: ${request.userId}\"")
-     val inquiry = inquiryRepository.findByIdOrNull(request.inquiryId)
-     ?: throw UnauthorizedException(message = "\"User not found with id: ${request.inquiryId}\"")
-     val comment = Comment(content = request.content, user = user, inquiry = inquiry, commentDate = request.commentDate, replyStatus = request.replyStatus)
-     val savedComment = commentRepository.save(comment)
-     return commentToDto(savedComment)
-     }
-     */
 
     /**
      * 전체 댓글 조회 service(필요한지?)

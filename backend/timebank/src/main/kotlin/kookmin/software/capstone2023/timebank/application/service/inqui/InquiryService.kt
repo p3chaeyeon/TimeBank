@@ -29,6 +29,7 @@ class InquiryService(
         val inquiryDate: LocalDateTime,
         val replyStatus: InquiryStatus,
         val userId: Long,
+        val username: String,
     )
 
     /**
@@ -48,6 +49,13 @@ class InquiryService(
         val updateTitle: String,
         val updateContent: String?,
         val updateDate: LocalDateTime? = LocalDateTime.now(),
+    )
+
+    /**
+     * 문의 상태 Dto
+     */
+    data class InquiryStatusUpdateRequest(
+        val status: InquiryStatus,
     )
 
     /**
@@ -102,7 +110,7 @@ class InquiryService(
     }
 
     /**
-     * 기간별 조회 service
+     * 기간별 조회 for branch
      */
     fun getInquiriesByPeriod(period: Period): List<InquiryDto> {
         val end = LocalDateTime.now()
@@ -112,10 +120,28 @@ class InquiryService(
     }
 
     /**
-     * 문의 제목 검색 service
+     * 기간별 조회 for user
+     */
+    fun getUserInquiriesByPeriod(period: Period, userId: Long): List<InquiryDto> {
+        val end = LocalDateTime.now()
+        val start = end.minusMonths(period.months)
+        val inquiries = inquiryRepository.findByInquiryDateBetweenAndUserId(start, end, userId)
+        return inquiries.map { inquiryToDto(it) }
+    }
+
+    /**
+     * 문의 제목 검색 for branch
      */
     fun getInquiryByTitle(title: String): List<InquiryDto> {
         val inquiries = inquiryRepository.findByTitleContainingIgnoreCase(title)
+        return inquiries.map { inquiryToDto(it) }
+    }
+
+    /**
+     * 문의 제목 검색 for user
+     */
+    fun getUserInquiryByTitle(title: String, userId: Long): List<InquiryDto> {
+        val inquiries = inquiryRepository.findByTitleContainingIgnoreCaseAndUserId(title, userId)
         return inquiries.map { inquiryToDto(it) }
     }
 
@@ -146,12 +172,32 @@ class InquiryService(
                 message = "\"Inquiry not found with id: $inquiryId\"",
             )
         }
-
-        if (inquiry.user.id != user.id) {
-            throw UnauthorizedException(message = "User does not have permission to delete this inquiry")
+        if (user.id != inquiry.user.id) {
+            throw UnauthorizedException(message = "삭제 권한이 없습니다.")
         }
-
         inquiryRepository.deleteById(inquiryId)
+    }
+
+    /**
+     * 문의 상태 변경 for branch
+     */
+    fun updateInquiryStatus(id: Long, status: InquiryStatus): InquiryDto {
+        val inquiry = inquiryRepository.findById(id).orElseThrow {
+            NotFoundException(message = "해당 문의를 찾을 수 없습니다.")
+        }
+        inquiry.replyStatus = status
+        val updatedInquiry = inquiryRepository.save(inquiry)
+        return inquiryToDto(updatedInquiry)
+    }
+
+    /**
+     * 문의 search (동시 조건 검색)
+     */
+    fun searchInquiries(title: String?, period: Period?, userId: Long?): List<InquiryDto> {
+        val end = LocalDateTime.now()
+        val start = period?.let { end.minusMonths(it.months) }
+        val inquiries = inquiryRepository.findAllByTitleAndPeriodAndUserId(title, start, end, userId)
+        return inquiries.map { inquiryToDto(it) }
     }
 
     /**
@@ -165,6 +211,7 @@ class InquiryService(
             inquiryDate = inquiry.inquiryDate,
             replyStatus = inquiry.replyStatus,
             userId = inquiry.user.id,
+            username = inquiry.user.name,
         )
     }
 }
