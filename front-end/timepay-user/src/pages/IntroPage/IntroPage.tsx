@@ -1,5 +1,4 @@
 import { useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { headerTitleState } from '../../states/uiState';
 import MainImg from '../../assets/images/intro_page.svg';
@@ -32,18 +31,10 @@ const kakaoLogin = () => {
 };
 
 const IntroPage = () => {
-  const navigate = useNavigate();
-
   const setHeaderTitle = useSetRecoilState(headerTitleState);
   useEffect(() => {
     setHeaderTitle(null);
   });
-  const handleOnClickLinkBtn = useCallback(
-    (path: string) => {
-      navigate(path);
-    },
-    [navigate],
-  );
 
   return (
     <>

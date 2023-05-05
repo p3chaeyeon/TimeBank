@@ -1,28 +1,28 @@
-import { useEffect, useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { headerTitleState } from "../../states/uiState";
-import axios from "axios";
-import { PATH } from "../../utils/paths";
+import { useEffect, useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { headerTitleState } from '../../states/uiState';
+import axios from 'axios';
+import { PATH } from '../../utils/paths';
 
 async function signByUserData(name: String, phoneNumber: String) {
-  try { 
-    const access_token = window.localStorage.getItem("access_token");
-    await axios.post(
-      PATH.SERVER + "/api/v1/users/register",
-      {
-        provider: "KAKAO",
-        accessToken: access_token,
-        name: name,
-        phoneNumber: phoneNumber,
-      }
-    ).then((res) => {
-      const { data: { accessToken: timepayAccessToken} } = res;
-      window.localStorage.setItem(
-        "timepay_accesstoken",
-        timepayAccessToken
-      );
-    });
+  try {
+    const access_token = window.localStorage.getItem('access_token')
+      ? window.localStorage.getItem('access_token')
+      : '';
+    if (access_token !== '') {
+      await axios
+        .post(PATH.SERVER + '/api/v1/users/register', {
+          authenticationType: 'social',
+          provider: 'KAKAO',
+          accessToken: access_token,
+          name: name,
+          phoneNumber: phoneNumber,
+        })
+        .then((res) => {
+          console.log('status code : ' + res.status);
+        });
+    }
   } catch (e) {
     console.error(e);
   }
@@ -30,8 +30,8 @@ async function signByUserData(name: String, phoneNumber: String) {
 
 const SignUp = () => {
   const navigate = useNavigate();
-  let [name, setName] = useState("");
-  let [phoneNumber, setPhoneNumber] = useState("");
+  let [name, setName] = useState('');
+  let [phoneNumber, setPhoneNumber] = useState('');
 
   const setHeaderTitle = useSetRecoilState(headerTitleState);
   useEffect(() => {
@@ -40,17 +40,15 @@ const SignUp = () => {
 
   const handleOnClickLinkBtn = useCallback(
     (path: string, name: string, phoneNumber: string) => {
-      console.log("name :" + name + ", phonNumber: " + phoneNumber);
       signByUserData(name, phoneNumber);
       navigate(path);
     },
-    [navigate]
+    [navigate],
   );
 
   const onNumberChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const onlyNumber = value.replace(/[^0-9]/g, "");
-    console.log(onlyNumber);
+    const onlyNumber = value.replace(/[^0-9]/g, '');
     setPhoneNumber(onlyNumber);
   };
 
@@ -66,7 +64,7 @@ const SignUp = () => {
               setName(e.target.value);
             }}
           />
-          <label style={{ marginTop: "10px" }}>핸드폰 번호</label>
+          <label style={{ marginTop: '10px' }}>핸드폰 번호</label>
           <input
             type="text"
             value={phoneNumber}
@@ -82,9 +80,6 @@ const SignUp = () => {
         >
           <button>가입하기</button>
         </div>
-        {/* <div className='finish-btn' onClick = { ()=>handleOnClickLinkBtn(PATH.SIGN_UP) }>
-            <img src={finishBtn} alt=""/>
-        </div> */}
       </div>
     </>
   );

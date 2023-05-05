@@ -6,7 +6,7 @@ export const PATH = {
   PASSWORD: '/password',
   MAIN: '/main',
   UNREGISTAL: '/unregistal',
-  PROFILEEDIT: '/profile',
+  PROFILEEDIT: '/ProfileEdit',
   TRANSFER: '/transfer/account',
   TRANSFERAMOUNT: '/transfer/amount',
   TRANSFERPASSWORD: '/transfer/password',
@@ -14,5 +14,5 @@ export const PATH = {
   QNAREGISTER: '/qna/register',
   QNAMAIN: '/qna/main',
   QNADETAIL: '/qna/detail/:no',
-  SERVER: 'http://localhost:8080/',
+  SERVER: 'http://kookmin-timebank-staging.ap-northeast-2.elasticbeanstalk.com',
 };

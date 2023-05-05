@@ -1,49 +1,67 @@
-import { MenuProps } from 'antd';
-import { Dropdown, Menu, Tooltip } from 'antd';
-import IconGear from '../../assets/images/icon-gear.svg';
-import MenuBar from '../../assets/images/menu_bar.svg';
-import { baseMenu } from './BaseMenu.styles';
-import { Link } from 'react-router-dom';
+import type { MenuProps } from "antd";
+import { Dropdown } from "antd";
+import MenuBar from "../../assets/images/menu_bar.svg";
+import { baseMenu } from "./BaseMenu.styles";
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { PATH } from "../../utils/paths";
 
-const items = [
-  {
-    label: <Link to="/qna/register">문의하기</Link>,
-    key: 'inquiry',
-  },
-  {
-    label: <Link to="/qna/main">문의내역</Link>,
-    key: 'inquiry-details',
-  },
-  {
-    label: <Link to="/unregistal">탈퇴하기</Link>,
-    key: 'unregistal',
-  },
-];
+export const MainMenu = () => {
+  const navigate = useNavigate();
+  const items: MenuProps["items"] = [
+    {
+      label: (
+        <label onClick={() => handleOnClickLinkBtn(PATH.QNAREGISTER)}>
+          문의하기
+        </label>
+      ),
+      key: "inquiry",
+    },
+    {
+      label: (
+        <label onClick={() => handleOnClickLinkBtn(PATH.QNAMAIN)}>
+          문의내역
+        </label>
+      ),
+      key: "inquiry",
+    },
+    {
+      label: (
+        <label onClick={() => handleOnClickLinkBtn(PATH.UNREGISTAL)}>
+          탈퇴하기
+        </label>
+      ),
+      key: "withdrawal",
+    },
+  ];
 
-export const BaseMenu = () => {
+  const handleOnClickLinkBtn = useCallback(
+    (path: string) => {
+      navigate(path);
+    },
+    [navigate]
+  );
+
   return (
     <div css={baseMenu}>
-      <Dropdown
-        trigger={['hover']}
-        overlay={
-          <Menu>
-            {items.map(item => (
-              <Menu.Item key={item.key}>{item.label}</Menu.Item>
-            ))}
-          </Menu>
-        }
-      >
+      <div className="menu-layer">
         <div className="menu-icon">
-          <Tooltip>
-            <div>
+          <Dropdown
+            menu={{
+              items,
+            }}
+            trigger={["click"]}
+          >
+            <div onClick={(e) => e.preventDefault()}>
               <img src={MenuBar} alt="" />
               메뉴
             </div>
-          </Tooltip>
+          </Dropdown>
         </div>
-      </Dropdown>
+        <div className="settings"></div>
+      </div>
     </div>
   );
 };
 
-export default BaseMenu;
+export default MainMenu;

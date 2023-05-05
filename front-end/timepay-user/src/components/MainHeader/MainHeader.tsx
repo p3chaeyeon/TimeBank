@@ -16,8 +16,8 @@ const MainHeader = () => {
   }, [navigate]);
   return (
     <Layout.Header css={cssMainHeaderStyle}>
-      <BackArrow style={{cursor: 'pointer'}} onClick={handleClickBack} />
-      <span style={{cursor: 'default'}} className="header-title">{headerTitle}</span>
+      <BackArrow onClick={handleClickBack} />
+      <span className="header-title">{headerTitle}</span>
       <span className="pad"/>
     </Layout.Header>
   );

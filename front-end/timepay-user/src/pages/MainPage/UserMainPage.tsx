@@ -1,130 +1,129 @@
-import { useEffect, useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { headerTitleState } from '../../states/uiState';
-import IconGear from '../../assets/images/icon-gear.svg';
-import MenuBar from '../../assets/images/menu_bar.svg';
-import Fav from '../../assets/images/fav.svg';
-import { PATH } from '../../utils/paths';
-import BaseMenu from '../../components/Menu/BaseMenu';
-import { Tooltip } from 'antd';
-import axios from 'axios';
-import { Dropdown } from 'antd';
-import type { MenuProps } from 'antd';
-
-
-// import Menu from '../components/Menu/BaseMenu';
+import { useEffect, useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { headerTitleState } from "../../states/uiState";
+import IconGear from "../../assets/images/icon-gear.svg";
+import Fav from "../../assets/images/fav.svg";
+import { PATH } from "../../utils/paths";
+import BaseMenu from "../../components/Menu/BaseMenu";
+import { Tooltip } from "antd";
 
 const UserMainPage = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState<String>("정릉지점");
-  const [accountNum, setAccountNum] = useState<String>("123456");
-  const [amount, setAmount] = useState<String>("520");
-  const accessToken = 1;
-
-
+  const [accountNum, setAccountNum] = useState<String>(
+    "계좌번호 000-000-000000"
+  );
+  const [amount, setAmount] = useState<String>("000,000");
 
   const sampleData = {
-    "items": [
-        {
-            "id": "김미영",
-            "accountNum": "000-000-000000",
-            "date": "2023-04-05"
-        },
-        {
-            "id": "박채연",
-            "accountNum": "000-000-000000",
-            "date": "2023-04-05"
-        },
-        {
-            "id": "박보검",
-            "accountNum": "000-000-000000",
-            "date": "2023-04-05"
-        },
-        {
-            "id": "ㅁㄴㅇ",
-            "accountNum": "000-000-000000",
-            "date": "2023-04-05"
-        },
-        {
-            "id": "ㄹㅇ",
-            "accountNum": "000-000-000000",
-            "date": "2023-04-05"
-        }
+    items: [
+      {
+        id: "김미영",
+        accountNum: "000-000-000000",
+        date: "2023-04-05",
+      },
+      {
+        id: "박채연",
+        accountNum: "000-000-000000",
+        date: "2023-04-05",
+      },
+      {
+        id: "박보검",
+        accountNum: "000-000-000000",
+        date: "2023-04-05",
+      },
+      {
+        id: "ㅁㄴㅇ",
+        accountNum: "000-000-000000",
+        date: "2023-04-05",
+      },
+      {
+        id: "ㄹㅇ",
+        accountNum: "000-000-000000",
+        date: "2023-04-05",
+      },
     ],
-    "title": "New",
-    "longTitle": "New",
-    "titleId": 3,
-    "pagingInfo": {
-        "totalItems": 278
+    title: "New",
+    longTitle: "New",
+    titleId: 3,
+    pagingInfo: {
+      totalItems: 278,
     },
-    "status": "Success"
-}
+    status: "Success",
+  };
 
   const setHeaderTitle = useSetRecoilState(headerTitleState);
   useEffect(() => {
-
     setHeaderTitle(null);
-  }
-  );
-  
+  });
   const handleOnClickLinkBtn = useCallback(
     (path: string) => {
       navigate(path);
     },
-    [navigate],
+    [navigate]
   );
 
   return (
     <>
-    <div className="main-page">
-      <div className="main-header">
-        <div className="menu">
-        <Tooltip placement="bottom">
-            <BaseMenu />
-          </Tooltip>
+      <div className="main-page">
+        <div className="main-header">
+          <div className="menu">
+            <Tooltip placement="bottom">
+              <BaseMenu />
+            </Tooltip>
+          </div>
+          <img
+            src={IconGear}
+            alt=""
+            onClick={() => handleOnClickLinkBtn(PATH.PROFILEEDIT)}
+          />
         </div>
-            <img src={IconGear} alt="" onClick={() => handleOnClickLinkBtn(PATH.PROFILEEDIT)} />
-        </div>
-        
-        <div className='user-account'>
-          <div className='user-info'>
-            <div className='title'>
-              {title}
-            </div>
-            <div className='account-num'>
-              계좌번호 {accountNum}
-            </div>
-            <div className='main-amount'>
-              {amount}<span style={{color:"#F1AF23", paddingLeft:"5px"}}>TP</span>
+
+        <div className="user-account">
+          <div className="user-info">
+            <div className="title">{title}</div>
+            <div className="account-num">{accountNum}</div>
+            <div className="main-amount">
+              {amount}
+              <span style={{ color: "#F1AF23", paddingLeft: "5px" }}>TP</span>
             </div>
           </div>
 
-          <div className='bottom-btn' onClick = { ()=>handleOnClickLinkBtn(PATH.TRANSFER)}>
+          <div
+            className="bottom-btn"
+            onClick={() => handleOnClickLinkBtn(PATH.TRANSFER)}
+          >
             이체
           </div>
         </div>
 
-        <div className='recent-list'>
-          <span className='title'>최근 송금한 계좌</span>
-            <div style={{paddingTop:"20px"}}>
-              {sampleData.items.map(x=>{
-                return(
-                  <>
-                  <div className='list'>
-                    <div style={{fontSize:"16px"}}>
-                      <div style={{display:"flex"}}>
-                        <span style={{fontWeight:"bold"}}>{x.id}</span> 님 <br/>
-                        <img src={Fav} alt="" style={{position:"absolute", right:"20px"}}/>
+        <div className="recent-list">
+          <span className="title">최근 송금한 계좌</span>
+          <div style={{ paddingTop: "20px" }}>
+            {sampleData.items.map((x) => {
+              return (
+                <>
+                  <div className="list">
+                    <div style={{ fontSize: "16px" }}>
+                      <div style={{ display: "flex" }}>
+                        <span style={{ fontWeight: "bold" }}>{x.id}</span> 님{" "}
+                        <br />
+                        <img
+                          src={Fav}
+                          alt=""
+                          style={{ position: "absolute", right: "20px" }}
+                        />
                       </div>
-                      <span style={{fontWeight:"bold"}}>계좌번호</span> <span style={{color:"#F1AF23"}}>{x.accountNum}</span>
+                      <span style={{ fontWeight: "bold" }}>계좌번호</span>{" "}
+                      <span style={{ color: "#F1AF23" }}>{x.accountNum}</span>
                     </div>
-                    <div className='date'>{x.date}</div>
+                    <div className="date">{x.date}</div>
                   </div>
-                  </>
-                )
-              })}
-            </div>
+                </>
+              );
+            })}
+          </div>
         </div>
       </div>
     </>

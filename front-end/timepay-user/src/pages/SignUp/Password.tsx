@@ -11,11 +11,11 @@ async function setUserPassWord(password: string) {
       "timepay_access_token"
     );
     await axios
-      .post(PATH.SERVER + "/api/v1/account", { // post 보내기
+      .post(PATH.SERVER + "/api/v1/account", {
         accessToken: timepayAccessToken,
         password: password,
       })
-      .then((res) => { // response
+      .then((res) => {
         const {
           data: { id: accountId, number: accountNumber, balance: balance },
         } = res;
@@ -40,7 +40,7 @@ const Password = () => {
   });
   const handleOnClickLinkBtn = useCallback(
     (path: string, password: string, passwordCert: string) => {
-      if (password == passwordCert) {
+      if (password === passwordCert) {
         setUserPassWord(password);
         navigate(path);
       } else {
@@ -60,6 +60,7 @@ const Password = () => {
           <input
             type="password"
             value={password}
+            maxLength={4}
             onChange={(e) => {
               setPassWord(e.target.value);
             }}
@@ -67,6 +68,7 @@ const Password = () => {
           <label style={{ marginTop: "10px" }}>초기 비밀번호 확인</label>
           <input
             type="password"
+            maxLength={4}
             value={passwordCert}
             onChange={(e) => {
               setPassWordCert(e.target.value);
@@ -74,13 +76,14 @@ const Password = () => {
           />
         </div>
         {isSamePassword && <label>비밀번호 오류. 다시 입력해주세요.</label>}
-        <div
-          className="finish-btn"
-          onClick={() =>
-            handleOnClickLinkBtn(PATH.MAIN, password, passwordCert)
-          }
-        >
-          <button>가입하기</button>
+        <div className="finish-btn">
+          <button
+            onClick={() =>
+              handleOnClickLinkBtn(PATH.MAIN, password, passwordCert)
+            }
+          >
+            가입하기
+          </button>
         </div>
       </div>
     </>
