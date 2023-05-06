@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { headerTitleState } from "../../states/uiState";
@@ -6,6 +6,7 @@ import Profile from "../../assets/images/profile.svg";
 import Sheet from "react-modal-sheet";
 import axios from "axios";
 import { PATH } from "../../utils/paths";
+import { Avatar } from 'antd'
 
 async function setUserPassWord(password: string) {
   try {
@@ -37,6 +38,23 @@ const ProfileEdit = () => {
   const [currentPassWord, setCurrentPassWord] = useState("");
   const [password, setPassWord] = useState("");
   const [passwordCert, setPassWordCert] = useState("");
+  const [dotStyle, setDotStyle] = useState(false);
+  
+  const [imageSrc, setImageSrc]: any = useState(null);
+
+  const onUpload = (e: any) => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      return new Promise<void>((resolve) => { 
+          reader.onload = () => {	
+              setImageSrc(reader.result || null); // 파일의 컨텐츠
+              resolve();
+          };
+      });
+  }
+
   let [isSamePassword, setIsSamePassword] = useState(false);
 
   const setHeaderTitle = useSetRecoilState(headerTitleState);
@@ -71,10 +89,13 @@ const ProfileEdit = () => {
           <div className="user-title">
             <div className="circle-profile">
               <img
+                // src={imageSrc} 
                 src={Profile}
                 alt=""
-                style={{ top: "3px", position: "relative" }}
+                style={{ top: "3px", position: "relative", width:"30px" }}
               />
+              {/* <label htmlFor="file" className="input-file-button"></label> 
+              <input type="file" id="file" accept="image/*" onChange={e => onUpload(e)} style={{display:"none"}}></input> */}
             </div>
             <div className="name-title">
               홍길동
@@ -119,7 +140,8 @@ const ProfileEdit = () => {
               </span>
               <span
                 style={{ float: "right", fontSize: "13px", color: "#F1AF23" }}
-                onClick={() => setOpen(true)}
+                onClick={() => {setOpen(true); 
+                  setDotStyle(false);}}
               >
                 비밀번호 변경
               </span>
@@ -134,8 +156,8 @@ const ProfileEdit = () => {
                   <Sheet.Content>
                     {checkPassWordModal ? (
                       <div id="check_password_modal_sheet">
-                        <div>
-                          <span>현재 비밀번호</span>
+                        <div style={{padding:"20px 30px"}}>
+                          <span style={{fontFamily:"Lato", fontSize:"22px", fontWeight:"500"}}>현재 비밀번호</span>
                         </div>
                         <input
                           onChange={(e) => setCurrentPassWord(e.target.value)}
@@ -143,51 +165,65 @@ const ProfileEdit = () => {
                           type="password"
                           maxLength={4}
                           value={currentPassWord || ""}
-                          className="inputBox"
+                          className={dotStyle? "inputPass":"inputBox"}
+                          onFocus={(e) => {e.target.placeholder = ""; setDotStyle(true)}}
                         />
-                        <button
-                          style={{ marginTop: "50%" }}
-                          onClick={() => setCheckPassWordModal(false)}
-                        >
-                          다음
-                        </button>
+                        <div className="finish-btn" style={{ textAlign: "center" }}>
+                          <button
+                            style={{ marginTop: "60%", backgroundColor:"#f1af23", color:"#fff", padding: "13px 35px", borderRadius:"35px", fontFamily:"Lato", fontSize:"20px", boxShadow:"0px 4px 4px rgba(0, 0, 0, 0.25)", fontWeight:"700"}}
+                            onClick={() => {setCheckPassWordModal(false);
+                            }}
+                          >
+                            다음
+                          </button>
+                        </div>
                       </div>
                     ) : (
-                      <div id="change_password_modal_sheet">
-                        <div>
-                          <text>변경할 비밀번호</text>
-                        </div>
-                        <input
-                          type="password"
-                          value={password}
-                          maxLength={4}
-                          onChange={(e) => {
-                            setPassWord(e.target.value);
-                          }}
-                        />
-                        <div>
-                          <label style={{ marginTop: "10px" }}>
-                            변경할 비밀번호 확인
+                      <div id="change_password_modal_sheet" style={{display:"flex", flexDirection:"column"}}>
+                        <div style={{padding:"20px 30px"}}>
+                          <label style={{fontFamily:"Lato", fontSize:"22px", fontWeight:"500", lineHeight:"2em"}}>
+                            변경할 비밀번호
+                            <input
+                              type="password"
+                              value={password}
+                              maxLength={4}
+                              onChange={(e) => {
+                                setPassWord(e.target.value);
+                              }}
+                              className={dotStyle? "inputPass":"inputBox"}
+                              onFocus={(e) => {e.target.placeholder = ""; setDotStyle(true)}}
+                              style={{position:"relative"}}
+                            />
                           </label>
                         </div>
-                        <input
-                          type="password"
-                          maxLength={4}
-                          value={passwordCert}
-                          onChange={(e) => {
-                            setPassWordCert(e.target.value);
-                          }}
-                        />
+
+                        <div style={{padding:"20px 30px"}}>
+                          <label style={{fontFamily:"Lato", fontSize:"22px", fontWeight:"500", lineHeight:"2em"}}>
+                                변경할 비밀번호 확인
+                            <input
+                              type="password"
+                              maxLength={4}
+                              value={passwordCert}
+                              onChange={(e) => {
+                                setPassWordCert(e.target.value);
+                              }}
+                              className={dotStyle? "inputPass":"inputBox"}
+                              onFocus={(e) => {e.target.placeholder = ""; setDotStyle(true)}}
+                              style={{position:"relative"}}
+                            />
+                          </label>
+                        </div>
                         {isSamePassword && (
-                          <label>비밀번호 오류. 다시 입력해주세요.</label>
+                          <div style={{textAlign:"center", color:"#FF2E00", fontFamily:"Lato", fontSize:"18px"}}>비밀번호 오류. 다시 입력해주세요.</div>
                         )}
                         <button
-                          style={{ marginTop: "50%" }}
-                          onClick={() => {
+                            style={{ width:"fit-content", margin:"0 auto", position:"relative", top:"45px", backgroundColor:"#f1af23", color:"#fff", padding: "13px 35px", borderRadius:"35px", fontFamily:"Lato", fontSize:"20px", boxShadow:"0px 4px 4px rgba(0, 0, 0, 0.25)", fontWeight:"700"}}
+                            onClick={() => {
                             handleOnClickChangePasswordBtn(
                               password,
                               passwordCert
                             );
+                            // setDotStyle(false);
                           }}
                         >
                           확인
