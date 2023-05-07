@@ -13,8 +13,8 @@ async function signByUserData(name: String, phoneNumber: String) {
     if (access_token !== '') {
       await axios
         .post(PATH.SERVER + '/api/v1/users/register', {
-          authenticationType: 'social',
-          provider: 'KAKAO',
+          authenticationType: "social",
+          socialPlatformType: "KAKAO",
           accessToken: access_token,
           name: name,
           phoneNumber: phoneNumber,
