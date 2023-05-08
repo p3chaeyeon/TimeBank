@@ -343,3 +343,7 @@ button {
   font-size: 18px;
   line-height: 30px;
 }
+.ant-dropdown .ant-dropdown-menu .ant-dropdown-menu-item {
+  font-size: 25px;
+}
+
