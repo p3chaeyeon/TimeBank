@@ -119,6 +119,12 @@ button {
   justify-content: space-between;
   border-bottom: 1px solid #cdcdcd;
   margin-bottom: 10%;
+  top:0; 
+  top:constant(safe-area-inset-top); 
+  top:env(safe-area-inset-top);
+  right:0; 
+  right:constant(safe-area-inset-right); 
+  right:env(safe-area-inset-right);
 }
 
 .main-page .main-header img {
