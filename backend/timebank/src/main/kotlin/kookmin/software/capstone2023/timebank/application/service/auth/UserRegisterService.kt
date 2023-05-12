@@ -34,7 +34,7 @@ class UserRegisterService(
         validateDuplicatedRegistration(authentication)
 
         val account = accountJpaRepository.save(
-            Account(type = accountType, profile = null),
+            Account(type = accountType, profile = null, name = name),
         )
 
         val user = userJpaRepository.save(

@@ -21,6 +21,9 @@ class Account(
     @Enumerated(EnumType.STRING)
     val type: AccountType,
 
+    @Column(nullable = false, updatable = true, length = 20)
+    var name: String,
+
     @Embedded
     var profile: AccountProfile? = null,
 ) : BaseTimeEntity()
