@@ -51,8 +51,7 @@ class BankAccountCreateService(
             bankAccountNumber = createdBankAccount.accountNumber,
         )
     }
-    
-    /* 계좌번호 생성 */
+
     private fun generateAccountNumber(accountId: Long, branchId: Long): String {
         val accountCode = accountId.toString().padStart(2, '0')
         val branchCode = branchId.toString().padStart(2, '0')

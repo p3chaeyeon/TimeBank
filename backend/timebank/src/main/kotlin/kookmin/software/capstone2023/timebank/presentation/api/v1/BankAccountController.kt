@@ -59,7 +59,6 @@ class BankAccountController(
     fun readBankAccounts(
         @RequestAttribute(RequestAttributes.USER_CONTEXT) userContext: UserContext,
     ): List<BankAccountReadResponseData> {
-
         val bankAccountReadResponseDataList: List<BankAccountReadService.ReadedBankAccount> =
             bankAccountReadService.readBankAccountsByAccountId(
                 accountId = userContext.accountId,
@@ -88,13 +87,11 @@ class BankAccountController(
         @RequestAttribute(RequestAttributes.USER_CONTEXT) userContext: UserContext,
         @PathVariable bankAccountNumber: String,
     ): BankAccountReadResponseData {
-
         val bankAccountReadResponseData: BankAccountReadService.ReadedBankAccount =
             bankAccountReadService.readBankAccountByAccountNumber(
                 accountId = userContext.accountId,
                 bankAccountNumber = bankAccountNumber,
             )
-        
         return BankAccountReadResponseData(
             bankAccountId = bankAccountReadResponseData.bankAccountId,
             branchId = bankAccountReadResponseData.branchId,

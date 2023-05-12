@@ -46,7 +46,6 @@ class BankAccountReadService(
     fun readBankAccountsByAccountId(
         accountId: Long,
     ): List<ReadedBankAccount> {
-
         // 계정이 존재하는지 확인
         validateAccountExists(accountId)
 
@@ -88,7 +87,6 @@ class BankAccountReadService(
     }
 
     fun validateAccountIsBankAccountOwner(accountId: Long, bankAccountNumber: String) {
-
         // 계정이 존재하는지 확인
         val bankAccount: BankAccount = getBankAccountByBankAccountNumber(bankAccountNumber)
 

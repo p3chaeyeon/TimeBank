@@ -30,7 +30,6 @@ class BankAccountTransactionController(
         @RequestParam(defaultValue = "10") size: Int,
         @PathVariable bankAccountNumber: String,
     ): List<BankAccountTransaction> {
-
         bankAccountReadService.validateAccountIsBankAccountOwner(
             userContext.accountId,
             bankAccountNumber,
