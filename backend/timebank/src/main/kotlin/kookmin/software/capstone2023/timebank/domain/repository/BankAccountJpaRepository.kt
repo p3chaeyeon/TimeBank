@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 @Repository
 interface BankAccountJpaRepository : JpaRepository<BankAccount, Long> {
-    fun findByAccountId(accountId: Long): BankAccount?
-
     fun findByAccountNumber(accountNumber: String): BankAccount?
+
+    fun findAllByAccountId(accountId: Long): List<BankAccount>
 }

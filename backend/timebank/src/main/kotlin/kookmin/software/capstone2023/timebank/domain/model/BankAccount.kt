@@ -18,13 +18,18 @@ data class BankAccount(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
+    @Column(nullable = false)
     val accountId: Long,
 
+    @Column(nullable = false)
     var branchId: Long,
 
     @Column(nullable = false, updatable = false, length = 20)
     @Enumerated(EnumType.STRING)
     val ownerType: OwnerType,
+
+    @Column(nullable = false, updatable = true)
+    val ownerName: String,
 
     @Column(nullable = false)
     val accountNumber: String,

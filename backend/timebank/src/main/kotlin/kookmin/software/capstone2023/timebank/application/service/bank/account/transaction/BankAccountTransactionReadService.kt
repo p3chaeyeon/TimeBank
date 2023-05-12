@@ -32,7 +32,7 @@ class BankAccountTransactionReadService(
         accountNumber: String,
         pageable: Pageable,
     ): Page<BankAccountTransaction> {
-        val bankAccount: BankAccount = bankAccountReadService.getBankAccountByAccountNumber(accountNumber)
+        val bankAccount: BankAccount = bankAccountReadService.getBankAccountByBankAccountNumber(accountNumber)
         return getBankAccountTransactionByAccountId(bankAccount.id, pageable)
     }
 }
