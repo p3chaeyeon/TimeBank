@@ -3,6 +3,7 @@ package kookmin.software.capstone2023.timebank.application.service.auth
 import kookmin.software.capstone2023.timebank.application.exception.UnauthorizedException
 import kookmin.software.capstone2023.timebank.application.service.auth.model.AuthenticationRequest
 import kookmin.software.capstone2023.timebank.application.service.auth.token.AccessTokenService
+import kookmin.software.capstone2023.timebank.domain.repository.AccountJpaRepository
 import kookmin.software.capstone2023.timebank.domain.repository.PasswordAuthenticationJpaRepository
 import kookmin.software.capstone2023.timebank.domain.repository.SocialAuthenticationJpaRepository
 import kookmin.software.capstone2023.timebank.domain.repository.UserJpaRepository
@@ -15,11 +16,12 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 @Service
-class UserLoginService(
+class AccountLoginService(
     private val socialPlatformUserFindService: SocialPlatformUserFindService,
     private val accessTokenService: AccessTokenService,
     private val passwordEncoder: PasswordEncoder,
     private val userJpaRepository: UserJpaRepository,
+    private val accountJpaRepository: AccountJpaRepository,
     private val socialAuthenticationJpaRepository: SocialAuthenticationJpaRepository,
     private val passwordAuthenticationJpaRepository: PasswordAuthenticationJpaRepository,
 ) {
@@ -34,6 +36,15 @@ class UserLoginService(
 
         val user = userJpaRepository.findByIdOrNull(userId)
             ?: throw UnauthorizedException(message = "등록되지 않은 사용자입니다.")
+
+        val account = accountJpaRepository.findByIdOrNull(user.accountId)
+            ?: throw UnauthorizedException(message = "등록되지 않은 사용자입니다.")
+
+        authenticationRequest.accountType?.let {
+            if (account.type != it) {
+                throw UnauthorizedException(message = "권한이 없습니다.")
+            }
+        }
 
         val expiresAt = Instant.now().plus(7, ChronoUnit.DAYS)
 

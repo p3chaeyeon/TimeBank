@@ -44,6 +44,7 @@ sealed class UserRegisterRequestData(
         override fun toAuthenticationRequest() = AuthenticationRequest.SocialAuthenticationRequest(
             socialPlatformType = socialPlatformType,
             accessToken = accessToken,
+            accountType = null,
         )
     }
 
@@ -66,6 +67,7 @@ sealed class UserRegisterRequestData(
         override fun toAuthenticationRequest() = AuthenticationRequest.PasswordAuthenticationRequest(
             username = username,
             password = password,
+            accountType = null,
         )
     }
 }

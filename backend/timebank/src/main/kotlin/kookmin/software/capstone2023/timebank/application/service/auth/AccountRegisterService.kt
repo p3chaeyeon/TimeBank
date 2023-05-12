@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class UserRegisterService(
+class AccountRegisterService(
     private val socialPlatformUserFindService: SocialPlatformUserFindService,
     private val passwordEncoder: PasswordEncoder,
     private val userJpaRepository: UserJpaRepository,

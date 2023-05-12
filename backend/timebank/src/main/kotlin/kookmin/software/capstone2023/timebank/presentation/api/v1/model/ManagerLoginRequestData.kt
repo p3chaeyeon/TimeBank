@@ -13,7 +13,7 @@ import kookmin.software.capstone2023.timebank.domain.model.auth.SocialPlatformTy
     include = JsonTypeInfo.As.EXISTING_PROPERTY,
     property = "authenticationType",
 )
-sealed class UserLoginRequestData(
+sealed class ManagerLoginRequestData(
     val authenticationType: AuthenticationType,
 ) {
     open fun toAuthenticationRequest(): AuthenticationRequest {
@@ -29,11 +29,11 @@ sealed class UserLoginRequestData(
 
         @field:NotBlank(message = "액세스 토큰은 필수입니다.")
         val accessToken: String,
-    ) : UserLoginRequestData(AuthenticationType.SOCIAL) {
+    ) : ManagerLoginRequestData(AuthenticationType.SOCIAL) {
         override fun toAuthenticationRequest() = AuthenticationRequest.SocialAuthenticationRequest(
             socialPlatformType = socialPlatformType,
             accessToken = accessToken,
-            accountType = AccountType.INDIVIDUAL,
+            accountType = AccountType.BRANCH,
         )
     }
 
@@ -44,11 +44,11 @@ sealed class UserLoginRequestData(
 
         @field:NotBlank(message = "비밀번호는 필수입니다.")
         val password: String,
-    ) : UserLoginRequestData(AuthenticationType.PASSWORD) {
+    ) : ManagerLoginRequestData(AuthenticationType.PASSWORD) {
         override fun toAuthenticationRequest() = AuthenticationRequest.PasswordAuthenticationRequest(
             username = username,
             password = password,
-            accountType = AccountType.INDIVIDUAL,
+            accountType = AccountType.BRANCH,
         )
     }
 }

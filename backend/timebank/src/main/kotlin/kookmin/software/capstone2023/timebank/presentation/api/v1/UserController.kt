@@ -1,7 +1,7 @@
 package kookmin.software.capstone2023.timebank.presentation.api.v1
 
-import kookmin.software.capstone2023.timebank.application.service.auth.UserLoginService
-import kookmin.software.capstone2023.timebank.application.service.auth.UserRegisterService
+import kookmin.software.capstone2023.timebank.application.service.auth.AccountLoginService
+import kookmin.software.capstone2023.timebank.application.service.auth.AccountRegisterService
 import kookmin.software.capstone2023.timebank.domain.model.AccountType
 import kookmin.software.capstone2023.timebank.presentation.api.v1.model.UserLoginRequestData
 import kookmin.software.capstone2023.timebank.presentation.api.v1.model.UserLoginResponseData
@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("api/v1/users")
 class UserController(
-    private val userLoginService: UserLoginService,
-    private val userRegisterService: UserRegisterService,
+    private val accountLoginService: AccountLoginService,
+    private val accountRegisterService: AccountRegisterService,
 ) {
     @PostMapping("login")
     fun loginUser(
         @Validated @RequestBody
         data: UserLoginRequestData,
     ): UserLoginResponseData {
-        val loginData = userLoginService.login(data.toAuthenticationRequest())
+        val loginData = accountLoginService.login(data.toAuthenticationRequest())
 
         return UserLoginResponseData(
             accessToken = loginData.accessToken,
@@ -38,7 +38,7 @@ class UserController(
         @Validated @RequestBody
         data: UserRegisterRequestData,
     ) {
-        userRegisterService.register(
+        accountRegisterService.register(
             authentication = data.toAuthenticationRequest(),
             name = data.name,
             phoneNumber = data.phoneNumber,
