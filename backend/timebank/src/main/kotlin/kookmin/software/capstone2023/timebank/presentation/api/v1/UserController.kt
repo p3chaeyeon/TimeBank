@@ -15,6 +15,7 @@ import kookmin.software.capstone2023.timebank.presentation.api.v1.model.*
 import org.springframework.http.HttpStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestAttribute
@@ -60,7 +61,7 @@ class UserController(
     }
 
     @UserAuthentication
-    @PostMapping("me")
+    @GetMapping("me")
     fun getCurrentUser(
         @RequestAttribute(RequestAttributes.USER_CONTEXT)
         userContext: UserContext,
@@ -75,11 +76,7 @@ class UserController(
             id = user.id,
             name = user.name,
             phoneNumber = user.phoneNumber,
-            account = CurrentUserResponseData.AccountResponseData(
-                id = account.id,
-                type = account.type,
-                name = account.name,
-            ),
+            account = AccountResponseData.fromDomain(account),
         )
     }
 
