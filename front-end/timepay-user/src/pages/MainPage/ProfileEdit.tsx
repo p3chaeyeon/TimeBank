@@ -133,10 +133,10 @@ const ProfileEdit = () => {
                 style={{
                   fontSize: "16px",
                   color: "#787878",
-                  marginLeft: "10px",
+                  marginLeft: "25px",
                 }}
               >
-                000-000-0000
+                00-00-00
               </span>
               <span
                 style={{ float: "right", fontSize: "13px", color: "#F1AF23" }}

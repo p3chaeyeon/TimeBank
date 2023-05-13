@@ -12,7 +12,7 @@ const UserMainPage = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState<String>("정릉지점");
   const [accountNum, setAccountNum] = useState<String>(
-    "계좌번호 000-000-000000"
+    "계좌번호 00-00-00"
   );
   const [amount, setAmount] = useState<String>("000,000");
 
@@ -20,27 +20,27 @@ const UserMainPage = () => {
     items: [
       {
         id: "김미영",
-        accountNum: "000-000-000000",
+        accountNum: "00-00-00",
         date: "2023-04-05",
       },
       {
         id: "박채연",
-        accountNum: "000-000-000000",
+        accountNum: "00-00-00",
         date: "2023-04-05",
       },
       {
         id: "박보검",
-        accountNum: "000-000-000000",
+        accountNum: "00-00-00",
         date: "2023-04-05",
       },
       {
         id: "ㅁㄴㅇ",
-        accountNum: "000-000-000000",
+        accountNum: "00-00-00",
         date: "2023-04-05",
       },
       {
         id: "ㄹㅇ",
-        accountNum: "000-000-000000",
+        accountNum: "00-00-00",
         date: "2023-04-05",
       },
     ],
