@@ -6,6 +6,8 @@ import kookmin.software.capstone2023.timebank.domain.model.BankAccount
 import kookmin.software.capstone2023.timebank.domain.model.OwnerType
 import kookmin.software.capstone2023.timebank.domain.repository.AccountJpaRepository
 import kookmin.software.capstone2023.timebank.domain.repository.BankAccountJpaRepository
+import kookmin.software.capstone2023.timebank.infrastructure.security.FailedAttemptsCounter
+import kookmin.software.capstone2023.timebank.presentation.api.v1.model.bank.account.PasswordVerificationRequestData
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.time.LocalDateTime
@@ -14,6 +16,7 @@ import java.time.LocalDateTime
 class BankAccountReadService(
     private val bankAccountRepository: BankAccountJpaRepository,
     private val accountRepository: AccountJpaRepository,
+    private val failedAttemptsCounter: FailedAttemptsCounter,
 ) {
     // 은행 계좌 조회
     fun readBankAccountByAccountNumber(
@@ -96,6 +99,25 @@ class BankAccountReadService(
         }
     }
 
+    fun isPasswordMatched(bankAccount: BankAccount, password: String): Boolean {
+        return bankAccount.password == password
+    }
+
+    // 은행 계좌 비밀번호 일치여부 반환
+    fun verifyPassword(request: PasswordVerificationRequestData, ipAddress: String): VerificationResult {
+        val bankAccount = getBankAccountByBankAccountNumber(request.bankAccountNumber)
+
+        // 계좌 비밀번호 검증 로직
+        return if (isPasswordMatched(bankAccount, request.password)) {
+            failedAttemptsCounter.resetFailedAttempts(ipAddress)
+            VerificationResult(1, 0)
+        } else {
+            failedAttemptsCounter.incrementFailedAttempts(ipAddress)
+            val failedAttempts = failedAttemptsCounter.getFailedAttempts(ipAddress)
+            VerificationResult(0, failedAttempts)
+        }
+    }
+
     // 은행 계좌 잔액, 생성 일자, ownerType, branchId, 계좌 번호(필수), 계좌 소유주명(필수) 반환
     data class ReadedBankAccount(
         var bankAccountId: Long? = null, // 은행 계좌 id
@@ -105,6 +127,11 @@ class BankAccountReadService(
         val ownerName: String, // 소유주명
         val ownerType: OwnerType, // 소유주 타입
         val bankAccountNumber: String, // 계좌 번호
+    )
+
+    data class VerificationResult(
+        val isPasswordCorrect: Int,
+        val failedAttempts: Int,
     )
 }
 // End of BankAccountReadService.kt

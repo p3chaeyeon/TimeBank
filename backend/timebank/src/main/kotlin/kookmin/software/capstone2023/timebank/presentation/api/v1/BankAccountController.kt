@@ -1,5 +1,6 @@
 package kookmin.software.capstone2023.timebank.presentation.api.v1
 
+import jakarta.servlet.http.HttpServletRequest
 import kookmin.software.capstone2023.timebank.application.service.bank.account.BankAccountCreateService
 import kookmin.software.capstone2023.timebank.application.service.bank.account.BankAccountReadService
 import kookmin.software.capstone2023.timebank.presentation.api.RequestAttributes
@@ -8,6 +9,8 @@ import kookmin.software.capstone2023.timebank.presentation.api.auth.model.UserCo
 import kookmin.software.capstone2023.timebank.presentation.api.v1.model.bank.account.BankAccountCreateRequestData
 import kookmin.software.capstone2023.timebank.presentation.api.v1.model.bank.account.BankAccountCreateResponseData
 import kookmin.software.capstone2023.timebank.presentation.api.v1.model.bank.account.BankAccountReadResponseData
+import kookmin.software.capstone2023.timebank.presentation.api.v1.model.bank.account.PasswordVerificationRequestData
+import kookmin.software.capstone2023.timebank.presentation.api.v1.model.bank.account.PasswordVerificationResponseData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -101,5 +104,33 @@ class BankAccountController(
             ownerName = bankAccountReadResponseData.ownerName,
             ownerType = bankAccountReadResponseData.ownerType,
         )
+    }
+
+    /***
+     * @Endpoint: POST /api/v1/bank/account-password-verification
+     * @Description: 은행 계좌 비밀 번호 검증 API
+     */
+    @PostMapping("/account-password-verification")
+    fun verifyAccountPassword(
+        @RequestAttribute(RequestAttributes.USER_CONTEXT) userContext: UserContext,
+        @Validated @RequestBody
+        data: PasswordVerificationRequestData,
+        httpRequest: HttpServletRequest,
+    ): PasswordVerificationResponseData {
+        val ipAddress = getClientIpAddress(httpRequest)
+        val res = bankAccountReadService.verifyPassword(data, ipAddress)
+        return PasswordVerificationResponseData(
+            resResultDesc = res.failedAttempts.toString(),
+            resResultCode = res.isPasswordCorrect.toString(),
+        )
+    }
+
+    private fun getClientIpAddress(request: HttpServletRequest): String {
+        val ipAddress = request.getHeader("X-FORWARDED-FOR")
+        return if (ipAddress.isNullOrEmpty()) {
+            request.remoteAddr
+        } else {
+            ipAddress
+        }
     }
 }
