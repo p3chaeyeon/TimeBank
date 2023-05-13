@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface PasswordAuthenticationJpaRepository : JpaRepository<PasswordAuthentication, Long> {
+    fun findByUserId(userId: Long): PasswordAuthentication?
     fun findByUsername(username: String): PasswordAuthentication?
     fun existsByUsername(username: String): Boolean
 }

@@ -95,4 +95,19 @@ class UserController(
             phoneNumber = data.phoneNumber,
         )
     }
+
+    @UserAuthentication
+    @PutMapping("{userId}/password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun updateUserPassword(
+        @RequestAttribute(RequestAttributes.USER_CONTEXT)
+        userContext: UserContext,
+        @RequestBody
+        data: UserUpdatePasswordRequestData,
+    ) {
+        userUpdateService.updatePassword(
+            userId = userContext.userId,
+            password = data.password,
+        )
+    }
 }

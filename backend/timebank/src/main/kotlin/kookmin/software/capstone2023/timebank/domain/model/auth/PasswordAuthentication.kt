@@ -17,5 +17,9 @@ class PasswordAuthentication(
     val username: String,
 
     @Column(nullable = false, updatable = true)
-    val password: String,
-) : BaseTimeEntity()
+    var password: String,
+) : BaseTimeEntity() {
+    fun updatePassword(password: String) {
+        this.password = password
+    }
+}
