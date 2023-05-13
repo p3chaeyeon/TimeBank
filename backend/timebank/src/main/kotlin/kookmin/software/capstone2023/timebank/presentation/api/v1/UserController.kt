@@ -6,6 +6,7 @@ import kookmin.software.capstone2023.timebank.application.service.auth.AccountLo
 import kookmin.software.capstone2023.timebank.application.service.auth.AccountRegisterService
 import kookmin.software.capstone2023.timebank.application.service.user.UserFinder
 import kookmin.software.capstone2023.timebank.application.service.user.UserUpdateService
+import kookmin.software.capstone2023.timebank.application.service.user.UserWithdrawalService
 import kookmin.software.capstone2023.timebank.domain.model.AccountType
 import kookmin.software.capstone2023.timebank.presentation.api.RequestAttributes
 import kookmin.software.capstone2023.timebank.presentation.api.auth.model.UserAuthentication
@@ -13,6 +14,7 @@ import kookmin.software.capstone2023.timebank.presentation.api.auth.model.UserCo
 import kookmin.software.capstone2023.timebank.presentation.api.v1.model.*
 import org.springframework.http.HttpStatus
 import org.springframework.validation.annotation.Validated
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestAttribute
@@ -24,11 +26,12 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("api/v1/users")
 class UserController(
-    private val userFinder: UserFinder,
-    private val userUpdateService: UserUpdateService,
     private val accountFinder: AccountFinder,
     private val accountLoginService: AccountLoginService,
     private val accountRegisterService: AccountRegisterService,
+    private val userFinder: UserFinder,
+    private val userUpdateService: UserUpdateService,
+    private val userWithdrawalService: UserWithdrawalService,
 ) {
     @PostMapping("login")
     fun loginUser(
@@ -109,5 +112,15 @@ class UserController(
             userId = userContext.userId,
             password = data.password,
         )
+    }
+
+    @UserAuthentication
+    @DeleteMapping("{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun withdrawalUser(
+        @RequestAttribute(RequestAttributes.USER_CONTEXT)
+        userContext: UserContext,
+    ) {
+        userWithdrawalService.withdrawal(userContext.userId)
     }
 }

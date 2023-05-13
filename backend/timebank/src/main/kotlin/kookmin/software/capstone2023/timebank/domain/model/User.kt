@@ -9,10 +9,12 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import kookmin.software.capstone2023.timebank.domain.model.auth.AuthenticationType
+import org.hibernate.annotations.SQLDelete
 import java.time.LocalDateTime
 
 @Entity
 @Table(name = "user")
+@SQLDelete(sql = "UPDATE user SET deleted_at = now() WHERE id = ?")
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +50,10 @@ class User(
      */
     @Column(nullable = true, updatable = true)
     var lastLoginAt: LocalDateTime?,
+
+    @Column(nullable = true, updatable = true)
+    var deletedAt: LocalDateTime? = null,
+
 ) : BaseTimeEntity() {
     fun updateUserInfo(
         name: String,

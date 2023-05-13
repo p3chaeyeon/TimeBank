@@ -9,9 +9,12 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import org.hibernate.annotations.SQLDelete
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "account")
+@SQLDelete(sql = "UPDATE account SET deleted_at = now() WHERE id = ?")
 class Account(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +29,9 @@ class Account(
 
     @Embedded
     var profile: AccountProfile? = null,
+
+    @Column(nullable = true, updatable = true)
+    var deletedAt: LocalDateTime? = null,
 ) : BaseTimeEntity() {
     fun updateName(name: String) {
         this.name = name
