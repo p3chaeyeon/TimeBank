@@ -35,13 +35,13 @@ class User(
      * 이름
      */
     @Column(nullable = false, updatable = true, length = 20)
-    val name: String,
+    var name: String,
 
     /**
      * 전화번호
      */
     @Column(nullable = false, updatable = true, length = 20)
-    val phoneNumber: String,
+    var phoneNumber: String,
 
     /**
      * 마지막 로그인 시간 (UTC)
@@ -49,6 +49,14 @@ class User(
     @Column(nullable = true, updatable = true)
     var lastLoginAt: LocalDateTime?,
 ) : BaseTimeEntity() {
+    fun updateUserInfo(
+        name: String,
+        phoneNumber: String,
+    ) {
+        this.name = name
+        this.phoneNumber = phoneNumber
+    }
+
     fun updateLastLoginAt(loginAt: LocalDateTime) {
         this.lastLoginAt = loginAt
     }

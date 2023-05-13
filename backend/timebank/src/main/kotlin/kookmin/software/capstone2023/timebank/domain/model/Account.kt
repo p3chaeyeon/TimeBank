@@ -26,4 +26,8 @@ class Account(
 
     @Embedded
     var profile: AccountProfile? = null,
-) : BaseTimeEntity()
+) : BaseTimeEntity() {
+    fun updateName(name: String) {
+        this.name = name
+    }
+}
