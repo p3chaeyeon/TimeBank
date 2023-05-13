@@ -36,7 +36,7 @@ class UserAuthenticationInterceptor(
         }
 
         val authorizationToken = getAuthorizationToken(request)
-            ?: return true
+            ?: throw UnauthorizedException()
 
         val authenticationData = userAuthenticator.authenticate(authorizationToken)
 
