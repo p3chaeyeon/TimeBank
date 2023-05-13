@@ -3,6 +3,7 @@ package kookmin.software.capstone2023.timebank.application.service.bank.account
 import kookmin.software.capstone2023.timebank.application.exception.ConflictException
 import kookmin.software.capstone2023.timebank.application.exception.NotFoundException
 import kookmin.software.capstone2023.timebank.domain.model.Account
+import kookmin.software.capstone2023.timebank.domain.model.AccountType
 import kookmin.software.capstone2023.timebank.domain.model.BankAccount
 import kookmin.software.capstone2023.timebank.domain.model.OwnerType
 import kookmin.software.capstone2023.timebank.domain.repository.AccountJpaRepository
@@ -26,17 +27,31 @@ class BankAccountCreateService(
     ): CreatedBankAccount {
         // 계정이 존재하는지 확인
         val account: Account = getAccountByAccountId(accountId)
+        var bankAccount: BankAccount
 
-        // PIN 번호와 함께 계정을 생성하여 저장합니다.
-        val bankAccount = BankAccount(
-            accountId = account.id,
-            branchId = branchId,
-            balance = BigDecimal.ZERO,
-            ownerName = "",
-            ownerType = OwnerType.USER,
-            accountNumber = generateAccountNumber(accountId, branchId),
-            password = password,
-        )
+        if (account.type == AccountType.INDIVIDUAL) {
+            // PIN 번호와 함께 계정을 생성하여 저장합니다.
+            bankAccount = BankAccount(
+                accountId = account.id,
+                branchId = branchId,
+                balance = BigDecimal(300.0),
+                ownerName = account.name,
+                ownerType = OwnerType.USER,
+                accountNumber = generateAccountNumber(accountId, branchId),
+                password = password,
+            )
+        } else {
+            // PIN 번호와 함께 계정을 생성하여 저장합니다.
+            bankAccount = BankAccount(
+                accountId = account.id,
+                branchId = branchId,
+                balance = BigDecimal.ZERO,
+                ownerName = account.name,
+                ownerType = OwnerType.BRANCH,
+                accountNumber = generateAccountNumber(accountId, branchId),
+                password = password,
+            )
+        }
 
         // 계좌 생성
         val createdBankAccount = bankAccountRepository.save(bankAccount)
