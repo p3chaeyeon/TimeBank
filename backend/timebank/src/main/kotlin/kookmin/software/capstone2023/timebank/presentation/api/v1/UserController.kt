@@ -14,15 +14,7 @@ import kookmin.software.capstone2023.timebank.presentation.api.auth.model.UserCo
 import kookmin.software.capstone2023.timebank.presentation.api.v1.model.*
 import org.springframework.http.HttpStatus
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestAttribute
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("api/v1/users")
@@ -81,7 +73,7 @@ class UserController(
     }
 
     @UserAuthentication
-    @PutMapping("{userId}")
+    @PutMapping("me")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun updateUserInfo(
         @RequestAttribute(RequestAttributes.USER_CONTEXT)
@@ -97,7 +89,7 @@ class UserController(
     }
 
     @UserAuthentication
-    @PutMapping("{userId}/password")
+    @PutMapping("me/password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun updateUserPassword(
         @RequestAttribute(RequestAttributes.USER_CONTEXT)
@@ -112,7 +104,7 @@ class UserController(
     }
 
     @UserAuthentication
-    @DeleteMapping("{userId}")
+    @DeleteMapping("me")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun withdrawalUser(
         @RequestAttribute(RequestAttributes.USER_CONTEXT)
