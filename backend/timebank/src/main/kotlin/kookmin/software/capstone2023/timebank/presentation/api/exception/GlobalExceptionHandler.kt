@@ -36,7 +36,7 @@ class GlobalExceptionHandler {
                 ErrorResponse(
                     code = ApplicationErrorCode.BAD_REQUEST.value,
                     message = ApplicationErrorCode.BAD_REQUEST.message,
-                    debug = e.message
+                    debug = e.message,
                 ),
             )
     }

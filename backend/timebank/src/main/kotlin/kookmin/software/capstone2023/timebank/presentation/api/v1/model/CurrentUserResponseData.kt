@@ -5,5 +5,4 @@ data class CurrentUserResponseData(
     val name: String,
     val phoneNumber: String,
     val account: AccountResponseData,
-) {
-}
+)
