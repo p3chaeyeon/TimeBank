@@ -116,14 +116,7 @@ const ProfileEdit = () => {
             <div className="age">
               나이 <input type="text" placeholder="나이" />
             </div>
-            <div className="region">
-              지역정보{" "}
-              <input
-                type="text"
-                placeholder="지역정보"
-                style={{ marginLeft: "18px" }}
-              />
-            </div>
+            
           </div>
 
           <div className="user-account">

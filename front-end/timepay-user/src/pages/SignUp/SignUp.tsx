@@ -39,11 +39,15 @@ const SignUp = () => {
   });
 
   const handleOnClickLinkBtn = useCallback(
-    (path: string, name: string, phoneNumber: string) => {
-      signByUserData(name, phoneNumber);
+    async (path: string, name: string, phoneNumber: string) => {
+      await signByUserData(name, phoneNumber);
       navigate(path);
+  
+      setTimeout(() => {
+        navigate('/password');
+      }, 3000);
     },
-    [navigate],
+    [navigate]
   );
 
   const onNumberChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +80,7 @@ const SignUp = () => {
         </div>
         <div
           className="finish-btn"
-          onClick={() => handleOnClickLinkBtn(PATH.PASSWORD, name, phoneNumber)}
+          onClick={() => handleOnClickLinkBtn(PATH.MAIN, name, phoneNumber)}
         >
           <button>가입하기</button>
         </div>
