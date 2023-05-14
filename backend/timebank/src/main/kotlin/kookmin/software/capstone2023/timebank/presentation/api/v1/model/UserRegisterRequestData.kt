@@ -5,9 +5,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import kookmin.software.capstone2023.timebank.application.service.auth.model.AuthenticationRequest
+import kookmin.software.capstone2023.timebank.domain.model.Gender
 import kookmin.software.capstone2023.timebank.domain.model.auth.AuthenticationType
 import kookmin.software.capstone2023.timebank.domain.model.auth.SocialPlatformType
 import org.hibernate.validator.constraints.Length
+import java.time.LocalDate
 
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -18,6 +20,8 @@ sealed class UserRegisterRequestData(
     open val authenticationType: AuthenticationType,
     open val name: String,
     open val phoneNumber: String,
+    open val gender: Gender,
+    open val birthday: LocalDate,
 ) {
     open fun toAuthenticationRequest(): AuthenticationRequest {
         return when (this) {
@@ -40,7 +44,11 @@ sealed class UserRegisterRequestData(
         @field:NotBlank(message = "전화번호를 입력해주세요.")
         @field:Pattern(regexp = "^[0-9]{11}$", message = "전화번호는 11자리 숫자만 입력 가능합니다.")
         override val phoneNumber: String,
-    ) : UserRegisterRequestData(AuthenticationType.SOCIAL, name, phoneNumber) {
+
+        override val gender: Gender,
+
+        override val birthday: LocalDate,
+    ) : UserRegisterRequestData(AuthenticationType.SOCIAL, name, phoneNumber, gender, birthday) {
         override fun toAuthenticationRequest() = AuthenticationRequest.SocialAuthenticationRequest(
             socialPlatformType = socialPlatformType,
             accessToken = accessToken,
@@ -63,7 +71,11 @@ sealed class UserRegisterRequestData(
         @field:NotBlank(message = "전화번호를 입력해주세요.")
         @field:Pattern(regexp = "^[0-9]{11}$", message = "전화번호는 11자리 숫자만 입력 가능합니다.")
         override val phoneNumber: String,
-    ) : UserRegisterRequestData(AuthenticationType.PASSWORD, name, phoneNumber) {
+
+        override val gender: Gender,
+
+        override val birthday: LocalDate,
+    ) : UserRegisterRequestData(AuthenticationType.PASSWORD, name, phoneNumber, gender, birthday) {
         override fun toAuthenticationRequest() = AuthenticationRequest.PasswordAuthenticationRequest(
             username = username,
             password = password,

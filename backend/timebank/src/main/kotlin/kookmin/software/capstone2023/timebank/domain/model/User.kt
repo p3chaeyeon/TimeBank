@@ -10,6 +10,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import kookmin.software.capstone2023.timebank.domain.model.auth.AuthenticationType
 import org.hibernate.annotations.SQLDelete
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Entity
@@ -46,6 +47,19 @@ class User(
     var phoneNumber: String,
 
     /**
+     * 성별
+     */
+    @Column(nullable = false, updatable = true, length = 10)
+    @Enumerated(EnumType.STRING)
+    var gender: Gender,
+
+    /**
+     * 생년월일
+     */
+    @Column(nullable = false, updatable = true)
+    var birthday: LocalDate,
+
+    /**
      * 마지막 로그인 시간 (UTC)
      */
     @Column(nullable = true, updatable = true)
@@ -58,9 +72,13 @@ class User(
     fun updateUserInfo(
         name: String,
         phoneNumber: String,
+        gender: Gender,
+        birthday: LocalDate,
     ) {
         this.name = name
         this.phoneNumber = phoneNumber
+        this.gender = gender
+        this.birthday = birthday
     }
 
     fun updateLastLoginAt(loginAt: LocalDateTime) {

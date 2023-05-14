@@ -3,6 +3,7 @@ package kookmin.software.capstone2023.timebank.application.service.user
 import kookmin.software.capstone2023.timebank.application.exception.NotFoundException
 import kookmin.software.capstone2023.timebank.domain.model.Account
 import kookmin.software.capstone2023.timebank.domain.model.AccountType
+import kookmin.software.capstone2023.timebank.domain.model.Gender
 import kookmin.software.capstone2023.timebank.domain.model.User
 import kookmin.software.capstone2023.timebank.domain.model.auth.PasswordAuthentication
 import kookmin.software.capstone2023.timebank.domain.repository.AccountJpaRepository
@@ -12,6 +13,7 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 
 @Service
 class UserUpdateService(
@@ -25,6 +27,8 @@ class UserUpdateService(
         userId: Long,
         name: String,
         phoneNumber: String,
+        gender: Gender,
+        birthday: LocalDate,
     ) {
         val user: User = userJpaRepository.findByIdOrNull(userId)
             ?: throw NotFoundException(message = "사용자를 찾을 수 없습니다.")
@@ -35,6 +39,8 @@ class UserUpdateService(
         user.updateUserInfo(
             name = name,
             phoneNumber = phoneNumber,
+            gender = gender,
+            birthday = birthday,
         )
 
         // 개인 계정의 경우 계정 이름 변경

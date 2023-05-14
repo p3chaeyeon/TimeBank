@@ -62,6 +62,8 @@ class UserController(
             authentication = data.toAuthenticationRequest(),
             name = data.name,
             phoneNumber = data.phoneNumber,
+            gender = data.gender,
+            birthday = data.birthday,
             accountType = AccountType.INDIVIDUAL,
         )
     }
@@ -82,6 +84,8 @@ class UserController(
             id = user.id,
             name = user.name,
             phoneNumber = user.phoneNumber,
+            gender = user.gender,
+            birthday = user.birthday,
             account = AccountResponseData.fromDomain(account),
         )
     }
@@ -99,6 +103,8 @@ class UserController(
             userId = userContext.userId,
             name = data.name,
             phoneNumber = data.phoneNumber,
+            gender = data.gender,
+            birthday = data.birthday,
         )
     }
 

@@ -4,6 +4,7 @@ import kookmin.software.capstone2023.timebank.application.exception.ConflictExce
 import kookmin.software.capstone2023.timebank.application.service.auth.model.AuthenticationRequest
 import kookmin.software.capstone2023.timebank.domain.model.Account
 import kookmin.software.capstone2023.timebank.domain.model.AccountType
+import kookmin.software.capstone2023.timebank.domain.model.Gender
 import kookmin.software.capstone2023.timebank.domain.model.User
 import kookmin.software.capstone2023.timebank.domain.model.auth.PasswordAuthentication
 import kookmin.software.capstone2023.timebank.domain.model.auth.SocialAuthentication
@@ -14,6 +15,7 @@ import kookmin.software.capstone2023.timebank.domain.repository.UserJpaRepositor
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 
 @Service
 class AccountRegisterService(
@@ -29,6 +31,8 @@ class AccountRegisterService(
         authentication: AuthenticationRequest,
         name: String,
         phoneNumber: String,
+        gender: Gender,
+        birthday: LocalDate,
         accountType: AccountType,
     ) {
         validateDuplicatedRegistration(authentication)
@@ -43,6 +47,8 @@ class AccountRegisterService(
                 accountId = account.id,
                 name = name,
                 phoneNumber = phoneNumber,
+                gender = gender,
+                birthday = birthday,
                 lastLoginAt = null,
             ),
         )

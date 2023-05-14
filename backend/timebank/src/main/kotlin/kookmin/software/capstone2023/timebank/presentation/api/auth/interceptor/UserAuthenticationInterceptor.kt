@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse
 import kookmin.software.capstone2023.timebank.application.exception.UnauthorizedException
 import kookmin.software.capstone2023.timebank.application.service.auth.UserAuthenticator
 import kookmin.software.capstone2023.timebank.presentation.api.RequestAttributes
+import kookmin.software.capstone2023.timebank.presentation.api.auth.model.UserAuthentication
 import kookmin.software.capstone2023.timebank.presentation.api.auth.model.UserContext
 import org.springframework.stereotype.Component
 import org.springframework.web.method.HandlerMethod
@@ -30,6 +31,10 @@ class UserAuthenticationInterceptor(
         if (handler !is HandlerMethod) {
             return super.preHandle(request, response, handler)
         }
+
+        val annotation = handler.getMethodAnnotation(UserAuthentication::class.java)
+            ?: handler.beanType.getAnnotation(UserAuthentication::class.java)
+            ?: return super.preHandle(request, response, handler)
 
         if (request.getAttribute(RequestAttributes.USER_CONTEXT) != null) {
             return super.preHandle(request, response, handler)
