@@ -18,25 +18,24 @@ class BankAccountUpdateService(
         beforePassword: String,
         afterPassword: String,
     ): UpdatedBankAccount {
-        
         // 계정에 권한이 있는지 검증
         bankAccountReadService.validateAccountIsBankAccountOwner(accountId, accountNumber)
-        
+
         // 비밀번호 검증
         bankAccountReadService.validateBankAccountPassword(accountNumber, beforePassword)
-        
+
         val bankAccount: BankAccount = bankAccountReadService.getBankAccountByBankAccountNumber(accountNumber)
-        
+
         bankAccount.password = afterPassword
-        
+
         bankAccountRepository.save(bankAccount)
-        
+
         return UpdatedBankAccount(
             bankAccountNumber = bankAccount.accountNumber,
             updatedAt = bankAccount.updatedAt,
         )
     }
-    
+
     data class UpdatedBankAccount(
         val bankAccountNumber: String,
         val updatedAt: LocalDateTime,

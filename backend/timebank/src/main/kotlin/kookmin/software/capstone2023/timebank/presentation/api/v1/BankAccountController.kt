@@ -140,7 +140,6 @@ class BankAccountController(
         @Validated @RequestBody
         data: PasswordUpdateRequestData,
     ): PasswordUpdateResponseData {
-
         val updatedBankAccount = bankAccountUpdateService.updateBankAccountPassword(
             accountId = userContext.accountId,
             accountNumber = data.bankAccountNumber,
