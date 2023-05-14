@@ -23,7 +23,7 @@ export const MainMenu = () => {
           문의내역
         </label>
       ),
-      key: "inquiry",
+      key: "inquiry_main",
     },
     {
       label: (

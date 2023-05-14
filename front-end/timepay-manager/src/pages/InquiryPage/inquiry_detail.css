@@ -1,0 +1,91 @@
+.background {
+    background-color: #FFFFFF;
+
+    position:relative;
+
+    width:100%;
+    height:100%;
+
+}
+
+.mainBox{
+    position:absolute;
+    top: 5%;
+    left: 5%;
+
+    width:90%;
+    height:70%;
+
+    overflow : auto;
+}
+.mainBox .detail{
+    margin-bottom: 3%;
+}
+.mainBox .comment{
+    margin-bottom: 3%;
+}
+
+.registerBox{
+    position:absolute;
+    top: 78%;
+    left: 5%;
+
+    width:90%;
+    height:17%;
+
+}
+.registerBox textarea{
+    width: 80%;
+    height: 100%;
+
+    border-radius: 10px;
+}
+.registerBox .status{
+    position:absolute;
+    top: 0%;
+    left: 83%;
+
+    width: 15%;
+
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    color: #000000;
+}
+.registerBox button{
+    position: absolute;
+    top: 30%;
+    left: 83%;
+
+    width: 15%;
+    height: 70%;
+
+    border: 0px;
+    border-radius: 20px;
+    background-color: #F1AF23;
+
+    font-family: 'Lato';
+    font-style: normal;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #FFFFFF;
+}
+
+.fontOrange {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #F1AF23;
+}
+
+.fontBlack {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #000000;
+}

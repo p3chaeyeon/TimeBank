@@ -7,6 +7,7 @@ import { PATH } from '../../utils/paths';
 import { Card } from 'antd';
 import Modal from "react-modal";
 import axios from "axios";
+import moment from 'moment';
 
 import "./qna_logdetail.css";
 
@@ -26,6 +27,7 @@ function QnaLogDetail() {
 
     const id = location.state.Qna;
     const content = location.state.Content;
+    const title = location.state.Title;
 
     const [qnaDetail, setQnaDetail] = useState<QNADETAIL[]>([]);
     const [openModal, setOpenModal] = useState(false);
@@ -82,10 +84,11 @@ function QnaLogDetail() {
             <div className = "main-page">
 
                 <div>
-                    <Card title={id} className="mainBox">
+                    <Card title={title} className="mainBox">
                         <Card>{content}</Card>
                         {qnaDetail.map((answer) => (
-                            <Card title={<span style={answer.userId===userid ? {color: 'orange'} : {color: 'red'}}>{answer.userId===userid ? "byUSER" : "관리자"}</span>} extra={answer.commentDate}  key={answer.commentid} className="detailBox">
+                            
+                            <Card title={<span style={answer.userId==userid ? {color: 'orange'} : {color: 'red'}}>{answer.userId==userid ? "문의내용" : "답변"}</span>} extra={moment(answer.commentDate).format('YYYY-MM-DD HH:mm')}  key={answer.commentid} className="detailBox">
                                 <p>{"content : " + answer.content}</p>
 
                             </Card>

@@ -9,6 +9,7 @@ import "./transfer_account.css";
 
 function TransferAcc() {
     const [account, setAccount] = useState("");
+    const [owner, setOwner] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const accessToken = 1;
@@ -22,9 +23,10 @@ function TransferAcc() {
             }
         }).
         then(response => {
+            console.log(response.data);
             if(response.status === 200) {
                 setAccountExist(true);
-                navigate("/transfer/amount", {state : {account: account}});
+                navigate("/transfer/amount", {state : {account: account, owner: response.data['ownerName']}});
             }
         }).
         catch(function(error){

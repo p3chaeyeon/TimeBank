@@ -14,5 +14,5 @@ export const PATH = {
   QNAREGISTER: '/qna/register',
   QNAMAIN: '/qna/main',
   QNADETAIL: '/qna/detail/:no',
-  SERVER: 'http://kookmin-timebank-staging.ap-northeast-2.elasticbeanstalk.com',
+  SERVER: 'http://localhost:8080/',
 };

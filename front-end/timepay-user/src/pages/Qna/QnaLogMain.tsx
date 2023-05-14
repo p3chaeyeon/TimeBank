@@ -17,29 +17,39 @@ type QNA = {
 }
 
 
+
 function QnaLogMain() {
+
+    const terms = [
+        {id:0, value: '전체',}, {id:1, value: '지난 1개월간',}, {id:2, value: '지난 3개월간',}, {id:3, value: '지난 6개월간',}, 
+    ];
 
     const navigate = useNavigate();
 
     const [qnaResponse, setQnaResponse] = useState<QNA[]>([]);
-    const [selectedTerm, setSelectedTerm] = useState('전체');
+    const [filteredQnaResponse, setFilteredQnaResponse] = useState<QNA[]>([]);
+
+    const [selectedTerm, setSelectedTerm] = useState("전체");
     const [searchVal, setSearchVal] = useState("");
+
     const [selectedQna, setSelectedQna] = useState("");
     const [selectedContent, setSelectedContent] = useState("");
+    const [selectedTitle, setSelectedTitle] = useState("");
     const prevValue = useRef({selectedQna, selectedContent});
     const accessToken = 1;
     const userID = 1;
 
-    const terms = [
-        {id:'*', value: '전체',}, {id:'1', value: '지난 1개월간',}, {id:'2', value: '지난 3개월간',}, {id:'3', value: '지난 6개월간',}, 
-    ];
 
-    const handleSearch = (e:React.MouseEvent<HTMLButtonElement>) =>{
-        console.log(selectedTerm+ " " +searchVal)
+    function getCurrentDate(): string {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     };
 
-    const handleSelect = (value:string) =>{
-        setSelectedTerm(value);
+    const handleSelect = (term:string) =>{
+        setSelectedTerm(term);
         //console.log(value);
     };
 
@@ -51,6 +61,7 @@ function QnaLogMain() {
       then(response => {
             //console.log(response.data);
             setQnaResponse(response.data);
+            setFilteredQnaResponse(response.data);
             }).
       catch(function(error){
         console.log(error)})
@@ -58,7 +69,7 @@ function QnaLogMain() {
 
     const handleCard = useCallback((selectedQna:string) =>{
         //console.log(selectedContent);
-        navigate(`/qna/detail/${selectedQna}`, {state:{Qna : selectedQna, Content : selectedContent}});
+        navigate(`/qna/detail/${selectedQna}`, {state:{Qna : selectedQna, Content : selectedContent, Title : selectedTitle}});
     },[navigate, selectedQna, selectedContent]
     );
 
@@ -70,21 +81,58 @@ function QnaLogMain() {
             handleCard(selectedQna);
         }
       }, [handleCard, selectedQna, selectedContent]);
-      
+
+    const filterQnas = (searchTerm: string, searchText: string) => {
+
+        
+        let filteredData = qnaResponse;
+        let period = 0;
+
+        if(searchTerm === "지난 1개월간") period = 1;
+        else if (searchTerm === "지난 3개월간") period = 3;
+        else if (searchTerm === "지난 6개월간") period = 6;
+        
+        // 검색어가 입력된 경우
+        if (searchText !== '') {
+            filteredData = filteredData.filter(qna =>
+                qna.title.toLowerCase().includes(searchText.toLowerCase()) ||
+                qna.content.toLowerCase().includes(searchText.toLowerCase())
+                
+            );
+        }
+
+        if (period > 0) {
+            const currentDate = getCurrentDate();
+            const startDate = new Date();
+            startDate.setMonth(startDate.getMonth() - period);
+            const formattedStartDate = startDate.toISOString().slice(0, 10);
+            filteredData = filteredData.filter(qna =>
+              qna.inquiryDate >= formattedStartDate && qna.inquiryDate <= currentDate
+            );
+        }
+
+        setFilteredQnaResponse(filteredData);
+ 
+    }
+
+    const handleSearch = (e:React.MouseEvent<HTMLButtonElement>) =>{
+        filterQnas(selectedTerm, searchVal);
+        //console.log(selectedTerm+ " " +searchVal)
+    };  
 
     return(
             <div>
 
                 <div>
                     <div className="filterGrid">
-                        <Select options = {terms} size = 'small' dropdownStyle={{textAlign : 'center' }} onChange={handleSelect} defaultValue="전체" className="selectTerm"></Select>
+                        <Select options = {terms} size = 'small' dropdownStyle={{textAlign : 'center' }} onChange={e => setSelectedTerm(e)} defaultValue={"전체"} className="selectTerm"></Select>
                         <input onChange={e => setSearchVal(e.target.value)} placeholder="문의 제목 입력" value={searchVal} className="searchBox"></input>
                         <button onClick={handleSearch} className="searchButton">&#128270;</button>
                     </div>
                     
                     <Card className="mainBox">
-                        {qnaResponse.map((qna) => (
-                            <Card key={qna.inquiryid} onClick={e=>{setSelectedQna(qna.inquiryid);setSelectedContent(qna.content);}} className="clickableDetailBox">
+                        {filteredQnaResponse.map((qna) => (
+                            <Card key={qna.inquiryid} onClick={e=>{setSelectedTitle(qna.title);setSelectedQna(qna.inquiryid);setSelectedContent(qna.content);}} className="clickableDetailBox">
                                 <span className="qnaStatus" style={qna.replyStatus === 'PENDING' ?{color : '#C7C7C7'} : {color : '#F1AF23'}}>{qna.replyStatus === 'PENDING' ? "등록완료" : "답변완료"}</span>
                                 <span className="qnaTitle">Title : {qna.title}</span>
                             </Card>

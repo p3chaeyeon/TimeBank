@@ -29,6 +29,8 @@ export function InquiryPage() {
     const [filteringStatus, setFilteringStatus] = useState("")
     const [filteringTitle, setFilteringTitle] = useState("");
 
+    const accessToken = "1";
+
     const columns: ColumnsType<QNA> = [
         {
             title: '답변 상태',
@@ -84,7 +86,10 @@ export function InquiryPage() {
     ];
 
     const getQnas = () => {
-    axios.get<QNA[]>(PATH.SERVER + `api/v1/inquiries`, {
+    axios.get<QNA[]>(PATH.SERVER + `api/v1/inquiries`, {        
+        headers:{
+        'Authorization':`Bearer ${accessToken}`
+        }
     }).
     then(response => {
         //console.log(response.data);
@@ -128,7 +133,14 @@ export function InquiryPage() {
     }
 
     const handleClick = (record : QNA) =>{
-        navigate(`/inquiries/${record.inquiryid}`);
+        navigate(`/inquiries/${record.inquiryid}`, 
+        {state:{
+            inquiryId : record.inquiryid,
+            inquiryTitle: record.title,
+            inquiryContent : record.content,
+            inquiryDate: record.inquiryDate,
+            replyStatus: record.replyStatus,
+        }});
     }
 
     return (

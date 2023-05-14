@@ -14,7 +14,7 @@ Modal.setAppElement('#root');
 function TransferAmt() {
     const location = useLocation();
     const account = location.state.account;
-    const name = "옥상수";
+    const name = location.state.owner;
     const balance = 1000;
     const accessToken = 1;
 
@@ -56,7 +56,7 @@ function TransferAmt() {
                 <div>
                     <div className="accountInfo">
                         <span className="fontGrey">받는 분</span>
-                        <span className="fontBlack">{name}</span>
+                        <span className="fontBlack">{name}<span className="fontGrey">님</span></span>
                         <span className="fontOrange">{account}</span>
                     </div>
 
