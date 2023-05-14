@@ -103,6 +103,14 @@ class BankAccountReadService(
         return bankAccount.password == password
     }
 
+    fun validateBankAccountPassword(bankAccountNumber: String, password: String) {
+        val bankAccount = getBankAccountByBankAccountNumber(bankAccountNumber)
+
+        if (!isPasswordMatched(bankAccount, password)) {
+            throw UnauthorizedException(message = "비밀번호가 일치하지 않습니다.")
+        }
+    }
+
     // 은행 계좌 비밀번호 일치여부 반환
     fun verifyPassword(request: PasswordVerificationRequestData, ipAddress: String): VerificationResult {
         val bankAccount = getBankAccountByBankAccountNumber(request.bankAccountNumber)

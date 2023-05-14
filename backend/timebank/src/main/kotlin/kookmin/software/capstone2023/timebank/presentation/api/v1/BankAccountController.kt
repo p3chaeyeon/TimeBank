@@ -3,18 +3,22 @@ package kookmin.software.capstone2023.timebank.presentation.api.v1
 import jakarta.servlet.http.HttpServletRequest
 import kookmin.software.capstone2023.timebank.application.service.bank.account.BankAccountCreateService
 import kookmin.software.capstone2023.timebank.application.service.bank.account.BankAccountReadService
+import kookmin.software.capstone2023.timebank.application.service.bank.account.BankAccountUpdateService
 import kookmin.software.capstone2023.timebank.presentation.api.RequestAttributes
 import kookmin.software.capstone2023.timebank.presentation.api.auth.model.UserAuthentication
 import kookmin.software.capstone2023.timebank.presentation.api.auth.model.UserContext
 import kookmin.software.capstone2023.timebank.presentation.api.v1.model.bank.account.BankAccountCreateRequestData
 import kookmin.software.capstone2023.timebank.presentation.api.v1.model.bank.account.BankAccountCreateResponseData
 import kookmin.software.capstone2023.timebank.presentation.api.v1.model.bank.account.BankAccountReadResponseData
+import kookmin.software.capstone2023.timebank.presentation.api.v1.model.bank.account.PasswordUpdateRequestData
+import kookmin.software.capstone2023.timebank.presentation.api.v1.model.bank.account.PasswordUpdateResponseData
 import kookmin.software.capstone2023.timebank.presentation.api.v1.model.bank.account.PasswordVerificationRequestData
 import kookmin.software.capstone2023.timebank.presentation.api.v1.model.bank.account.PasswordVerificationResponseData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestAttribute
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -26,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController
 class BankAccountController(
     private val bankAccountCreateService: BankAccountCreateService,
     private val bankAccountReadService: BankAccountReadService,
+    private val bankAccountUpdateService: BankAccountUpdateService,
 ) {
 
     /***
@@ -122,6 +127,31 @@ class BankAccountController(
         return PasswordVerificationResponseData(
             resResultDesc = res.failedAttempts.toString(),
             resResultCode = res.isPasswordCorrect.toString(),
+        )
+    }
+
+    /***
+     * @Endpoint: PUT /api/v1/bank/account/password
+     * @Description: 은행 계좌 비밀 번호 변경 API
+     */
+    @PutMapping("/password")
+    fun updatePassword(
+        @RequestAttribute(RequestAttributes.USER_CONTEXT) userContext: UserContext,
+        @Validated @RequestBody
+        data: PasswordUpdateRequestData,
+    ): PasswordUpdateResponseData {
+
+        val updatedBankAccount = bankAccountUpdateService.updateBankAccountPassword(
+            accountId = userContext.accountId,
+            accountNumber = data.bankAccountNumber,
+            beforePassword = data.beforePassword,
+            afterPassword = data.afterPassword,
+        )
+
+        return PasswordUpdateResponseData(
+            bankAccountNumber = updatedBankAccount.bankAccountNumber,
+            updateAt = updatedBankAccount.updatedAt,
+            resResultCode = "1",
         )
     }
 
