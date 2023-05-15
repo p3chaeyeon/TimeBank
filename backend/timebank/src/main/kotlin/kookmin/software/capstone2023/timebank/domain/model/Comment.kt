@@ -29,9 +29,9 @@ data class Comment(
     @Column(nullable = false)
     var commentDate: LocalDateTime = LocalDateTime.now(),
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    var replyStatus: InquiryStatus = InquiryStatus.PENDING,
+//    @Enumerated(EnumType.STRING)
+//    @Column(nullable = false)
+//    var replyStatus: InquiryStatus = InquiryStatus.PENDING,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inquiry_id", nullable = false)

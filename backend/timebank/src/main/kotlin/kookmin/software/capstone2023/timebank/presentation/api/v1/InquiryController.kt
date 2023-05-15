@@ -27,8 +27,11 @@ class InquiryController(
      * 문의 작성
      */
     @PostMapping
-    fun createInquiry(@RequestBody request: InquiryService.InquiryCreateRequest): InquiryService.InquiryDto {
-        return inquiryService.createInquiry(request)
+    fun createInquiry(
+        @RequestAttribute(RequestAttributes.USER_CONTEXT) userContext: UserContext,
+        @RequestBody request: InquiryService.InquiryCreateRequest
+    ): InquiryService.InquiryDto {
+        return inquiryService.createInquiry(request, userContext)
     }
 
     /**
@@ -153,15 +156,9 @@ class InquiryController(
      */
     @DeleteMapping("/users/{userId}/{inquiryId}")
     fun deleteInquiryByUserId(
-//        @RequestAttribute(RequestAttributes.USER_CONTEXT) userContext: UserContext,
         @PathVariable userId: Long,
         @PathVariable inquiryId: Long,
     ): ResponseEntity<Unit> {
-//        if (userContext.accountType == AccountType.INDIVIDUAL) {
-//            if (userContext.userId != userId) {
-//                throw UnauthorizedException(message = "삭제 권한이 없습니다.")
-//            }
-//        }
         inquiryService.deleteInquiryByUserId(userId, inquiryId)
         return ResponseEntity.noContent().build()
     }
