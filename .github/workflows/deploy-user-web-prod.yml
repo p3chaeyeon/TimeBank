@@ -21,11 +21,13 @@ jobs:
             ${{ runner.OS }}-
 
       - name: Install Dependencies
-        run: npm install
+        run: yarn install
         working-directory: ${{ env.working-directory }}
 
       - name: Build
-        run: npm run build
+        run: yarn build
+        env:
+          NODE_ENV: production
         working-directory: ${{ env.working-directory }}
 
       - name: Deploy
