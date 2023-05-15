@@ -2,8 +2,6 @@ package kookmin.software.capstone2023.timebank.domain.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -28,10 +26,6 @@ data class Comment(
 
     @Column(nullable = false)
     var commentDate: LocalDateTime = LocalDateTime.now(),
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    var replyStatus: InquiryStatus = InquiryStatus.PENDING,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inquiry_id", nullable = false)

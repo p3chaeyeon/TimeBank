@@ -26,10 +26,11 @@ class CommentController(
      */
     @PostMapping
     fun createComment(
+        @RequestAttribute(RequestAttributes.USER_CONTEXT) userContext: UserContext,
         @PathVariable id: Long,
         @RequestBody request: CommentService.CommentCreateRequest,
     ): CommentService.CommentDto {
-        return commentService.createComment(id, request)
+        return commentService.createComment(id, request, userContext)
     }
 
     /**
