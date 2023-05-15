@@ -67,12 +67,10 @@ class CommentService(
         )
         if (userContext.accountType == AccountType.BRANCH) {
             inquiry.replyStatus = InquiryStatus.ANSWERED
-        }
-        else {
+        } else {
             if (userContext.userId != inquiry.userId) {
                 throw UnauthorizedException(message = "접근 권한이 없습니다.")
-            }
-            else {
+            } else {
                 inquiry.replyStatus = InquiryStatus.REPENDING
             }
         }
