@@ -40,17 +40,6 @@ class CommentService(
     )
 
     /**
-     * 댓글 생성Dto(Admin Reply)
-     */
-    data class CommentReplyRequest(
-        val content: String,
-        val userId: Long,
-        val inquiryId: Long,
-        val commentDate: LocalDateTime = LocalDateTime.now(),
-        val replyStatus: InquiryStatus = InquiryStatus.ANSWERED,
-    )
-
-    /**
      * 댓글 수정 Dto
      */
     data class CommentUpdateRequest(
@@ -87,17 +76,8 @@ class CommentService(
                 inquiry.replyStatus = InquiryStatus.REPENDING
             }
         }
-        //inquiry.replyStatus = InquiryStatus.ANSWERED
         val savedComment = commentRepository.save(comment)
         return commentToDto(savedComment)
-    }
-
-    /**
-     * 전체 댓글 조회 service(필요한지?)
-     */
-    fun getComments(): List<CommentDto> {
-        val comments = commentRepository.findAll()
-        return comments.map(::commentToDto)
     }
 
     /**
