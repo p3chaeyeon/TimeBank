@@ -4,6 +4,7 @@ import kookmin.software.capstone2023.timebank.application.exception.Unauthorized
 import kookmin.software.capstone2023.timebank.application.service.inqui.CommentService
 import kookmin.software.capstone2023.timebank.domain.model.AccountType
 import kookmin.software.capstone2023.timebank.presentation.api.RequestAttributes
+import kookmin.software.capstone2023.timebank.presentation.api.auth.model.UserAuthentication
 import kookmin.software.capstone2023.timebank.presentation.api.auth.model.UserContext
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+@UserAuthentication
 @RestController
 @RequestMapping("/api/v1/inquiries/{id}/comments")
 class CommentController(
