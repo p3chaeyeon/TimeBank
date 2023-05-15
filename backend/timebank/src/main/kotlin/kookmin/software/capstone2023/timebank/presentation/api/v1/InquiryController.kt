@@ -29,7 +29,7 @@ class InquiryController(
     @PostMapping
     fun createInquiry(
         @RequestAttribute(RequestAttributes.USER_CONTEXT) userContext: UserContext,
-        @RequestBody request: InquiryService.InquiryCreateRequest
+        @RequestBody request: InquiryService.InquiryCreateRequest,
     ): InquiryService.InquiryDto {
         return inquiryService.createInquiry(request, userContext)
     }
