@@ -28,6 +28,7 @@ jobs:
         run: yarn build
         env:
           NODE_ENV: production
+          CI: ""
         working-directory: ${{ env.working-directory }}
 
       - name: Deploy
