@@ -5,6 +5,7 @@ import kookmin.software.capstone2023.timebank.application.service.inqui.InquiryS
 import kookmin.software.capstone2023.timebank.domain.model.AccountType
 import kookmin.software.capstone2023.timebank.domain.model.Period
 import kookmin.software.capstone2023.timebank.presentation.api.RequestAttributes
+import kookmin.software.capstone2023.timebank.presentation.api.auth.model.UserAuthentication
 import kookmin.software.capstone2023.timebank.presentation.api.auth.model.UserContext
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
+@UserAuthentication
 @RestController
 @RequestMapping("/api/v1/inquiries")
 class InquiryController(
@@ -79,10 +81,16 @@ class InquiryController(
     }
 
     /**
-     * 문의 기간 조회 for brnach
+     * 문의 기간 조회 for branch
      */
     @GetMapping("/period")
-    fun getInquiriesByPeriod(@RequestParam("period") period: Period): List<InquiryService.InquiryDto> {
+    fun getInquiriesByPeriod(
+        @RequestAttribute(RequestAttributes.USER_CONTEXT) userContext: UserContext,
+        @RequestParam("period") period: Period,
+    ): List<InquiryService.InquiryDto> {
+        if (userContext.accountType != AccountType.BRANCH) {
+            throw UnauthorizedException(message = "접근 권한이 없습니다.")
+        }
         return inquiryService.getInquiriesByPeriod(period)
     }
 
@@ -95,6 +103,9 @@ class InquiryController(
         @RequestParam("period") period: Period,
         @PathVariable userId: Long,
     ): List<InquiryService.InquiryDto> {
+        if (userContext.userId != userId) {
+            throw UnauthorizedException(message = "접근 권한이 없습니다.")
+        }
         return inquiryService.getUserInquiriesByPeriod(period, userId)
     }
 
@@ -103,8 +114,12 @@ class InquiryController(
      */
     @GetMapping("/search")
     fun getInquiriesByTitle(
+        @RequestAttribute(RequestAttributes.USER_CONTEXT) userContext: UserContext,
         @RequestParam("title") title: String,
     ): List<InquiryService.InquiryDto> {
+        if (userContext.accountType != AccountType.BRANCH) {
+            throw UnauthorizedException(message = "접근 권한이 없습니다.")
+        }
         return inquiryService.getInquiryByTitle(title)
     }
 
@@ -113,10 +128,16 @@ class InquiryController(
      */
     @GetMapping("/multisearch")
     fun searchInquiries(
+        @RequestAttribute(RequestAttributes.USER_CONTEXT) userContext: UserContext,
         @RequestParam("title", required = false) title: String?,
         @RequestParam("period", required = false) period: Period?,
         @RequestParam("userId", required = false) userId: Long?,
     ): List<InquiryService.InquiryDto> {
+        if (userContext.accountType == AccountType.INDIVIDUAL) {
+            if (userContext.userId != userId) {
+                throw UnauthorizedException(message = "접근 권한이 없습니다.")
+            }
+        }
         return inquiryService.searchInquiries(title, period, userId)
     }
 
