@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    show-sql: false
+
+springdoc:
+  api-docs:
+    enabled: false
+  cache.disabled: true
+
+application:
+  authentication:
+    access-token:
+      secret-key: ${AUTH_ACCESS_TOKEN_SECRET_KEY}
