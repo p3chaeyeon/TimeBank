@@ -1,0 +1,44 @@
+name: Deploy Server Production
+on: workflow_dispatch
+
+env:
+  AWS_EB_APPLICATION_NAME: timebank
+  AWS_EB_ENVIRONMENT_NAME: timebank-prod
+  AWS_REGION: ap-northeast-2
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/timebank
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "corretto"
+          java-version: 17
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Set version
+        run: |
+          echo "VERSION_LABEL=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+
+      - name: Create deploy.zip
+        run: zip -r -j deploy.zip build/libs/*.jar Procfile
+
+      - name: Deploy to Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: ${{ env.AWS_EB_APPLICATION_NAME }}
+          environment_name: ${{ env.AWS_EB_ENVIRONMENT_NAME }}
+          version_label: ${{ env.VERSION_LABEL }}
+          region: ${{ env.AWS_REGION }}
+          deployment_package: backend/timebank/deploy.zip
