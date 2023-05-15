@@ -6,9 +6,8 @@ import { headerTitleState } from '../../states/uiState';
 
 import Card from "antd/es/card/Card";
 
-import "./transfer_account.css";
-import "./bgImage.css";
-import "./transfer_log.css";
+
+import "../../styles/css/Transfer/transfer_log.css";
 
 function TransferLog() {
     const location = useLocation();
@@ -26,6 +25,7 @@ function TransferLog() {
 
 
     return(
+        <>
             <div>
                 <div>
                 <span className="menuInfo">이체 완료</span>
@@ -43,6 +43,7 @@ function TransferLog() {
                 <Link to="/main"><button className="endButton">완료</button></Link>
                 </div>
             </div>
+        </>
     );
 
 

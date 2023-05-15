@@ -1,12 +1,15 @@
 import { useEffect, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
+import { Tooltip } from "antd";
+import axios from "axios";
+
 import { headerTitleState } from "../../states/uiState";
+import { PATH } from "../../utils/paths";
+
 import IconGear from "../../assets/images/icon-gear.svg";
 import Fav from "../../assets/images/fav.svg";
-import { PATH } from "../../utils/paths";
 import BaseMenu from "../../components/Menu/BaseMenu";
-import { Tooltip } from "antd";
 
 const UserMainPage = () => {
   const navigate = useNavigate();
@@ -53,9 +56,25 @@ const UserMainPage = () => {
     status: "Success",
   };
 
+  const accessToken = 1;
+  const getAccountInfo = () =>{
+    axios.get(PATH.SERVER + `api/v1/bank/account`, {
+      headers:{
+      'Authorization':`Bearer ${accessToken}`
+      }
+    }).
+    then(response => {
+      //console.log(response.data);
+    }).
+    catch(function(error){
+      console.log(error)
+    });
+  };
+
   const setHeaderTitle = useSetRecoilState(headerTitleState);
   useEffect(() => {
     setHeaderTitle(null);
+    getAccountInfo();
   });
   const handleOnClickLinkBtn = useCallback(
     (path: string) => {
@@ -103,7 +122,7 @@ const UserMainPage = () => {
           <div style={{ paddingTop: "20px" }}>
             {sampleData.items.map((x) => {
               return (
-                <>
+                <div key={x.id}>
                   <div className="list">
                     <div style={{ fontSize: "16px" }}>
                       <div style={{ display: "flex" }}>
@@ -120,7 +139,7 @@ const UserMainPage = () => {
                     </div>
                     <div className="date">{x.date}</div>
                   </div>
-                </>
+                </div>
               );
             })}
           </div>

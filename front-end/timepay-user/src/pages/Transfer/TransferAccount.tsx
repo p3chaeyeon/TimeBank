@@ -5,9 +5,9 @@ import { headerTitleState } from '../../states/uiState';
 import { PATH } from '../../utils/paths';
 import axios from "axios";
 
-import "./transfer_account.css";
+import "../../styles/css/Transfer/transfer_account.css";
 
-function TransferAcc() {
+function TransferAccount() {
     const [account, setAccount] = useState("");
     const [owner, setOwner] = useState("");
     const [error, setError] = useState("");
@@ -64,4 +64,4 @@ function TransferAcc() {
 
 }
 
-export default TransferAcc;
+export default TransferAccount;

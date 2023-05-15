@@ -7,7 +7,9 @@ export const cssBaseLayoutStyle = css`
   background: ${COMMON_COLOR.WHITE};
   overflow-x: hidden;
   width: 100wh;
+  min-width: 375px;
   height: 100vh;
+  min-height: 667px;
   main {
     font-family: unset !important;
     &.show-header {

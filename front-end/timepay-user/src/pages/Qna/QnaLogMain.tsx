@@ -5,7 +5,8 @@ import { headerTitleState } from '../../states/uiState';
 import { PATH } from '../../utils/paths';
 import { Select, Card } from 'antd';
 import axios from "axios";
-import "./qna_logmain.css";
+
+import "../../styles/css/Qna/qna_logmain.css";
 
 type QNA = {
     "inquiryid": string,
@@ -121,6 +122,7 @@ function QnaLogMain() {
     };  
 
     return(
+        <>
             <div>
 
                 <div>
@@ -143,7 +145,7 @@ function QnaLogMain() {
                 <div>
                 </div>
             </div>
-        
+        </>
     );
 
 

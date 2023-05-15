@@ -6,12 +6,13 @@ import { useSetRecoilState } from 'recoil';
 import { headerTitleState } from '../../states/uiState';
 import {PATH} from '../../utils/paths';
 
-import "./transfer_amount.css";
+import "../../styles/css/Transfer/transfer_amount.css";
+
 import Modal from 'react-modal';
 import axios from "axios";
 Modal.setAppElement('#root');
 
-function TransferAmt() {
+function TransferAmount() {
     const location = useLocation();
     const account = location.state.account;
     const name = location.state.owner;
@@ -106,4 +107,4 @@ function TransferAmt() {
 
 }
 
-export default TransferAmt;
+export default TransferAmount;

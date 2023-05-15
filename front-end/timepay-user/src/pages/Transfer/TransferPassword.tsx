@@ -5,11 +5,11 @@ import { headerTitleState } from '../../states/uiState';
 import { PATH } from '../../utils/paths';
 import axios from "axios";
 
-import "./transfer_account.css";
-import "./bgImage.css";
+
+import "../../styles/css/Transfer/transfer_account.css";
 
 
-function TransferPW() {
+function TransferPassword() {
     const location = useLocation();
     const account = location.state.account;
     const amount = location.state.amount;
@@ -58,6 +58,7 @@ function TransferPW() {
 
 
     return(
+        <>
             <div>
                 
                 <div>
@@ -71,9 +72,10 @@ function TransferPW() {
                 <button onClick={handleTransfer} className="nextButton">이체</button>
                 </div>
             </div>
+        </>
     );
 {/*<Link to="/transfer/log" state={{account : account, amount : amount, name : name}}>*/}
 
 }
 
-export default TransferPW;
+export default TransferPassword;

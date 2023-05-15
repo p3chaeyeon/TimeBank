@@ -17,14 +17,14 @@ function App() {
             <Route path={PATH.SIGN_UP} element={<PageRoutes.SignUp />} />
             <Route path={PATH.MAIN} element={<PageRoutes.UserMainPage />} />
             <Route path={PATH.PASSWORD} element={<PageRoutes.Password />} />
-            <Route path={PATH.TRANSFER} element={<PageRoutes.Transfer />} />
+            <Route path={PATH.TRANSFER} element={<PageRoutes.TransferAccount />} />
             <Route
               path={PATH.TRANSFERAMOUNT}
-              element={<PageRoutes.TransferAmt />}
+              element={<PageRoutes.TransferAmount />}
             />
             <Route
               path={PATH.TRANSFERPASSWORD}
-              element={<PageRoutes.TransferPW />}
+              element={<PageRoutes.TransferPassword />}
             />
             <Route
               path={PATH.TRANSFERLOG}
