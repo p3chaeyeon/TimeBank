@@ -1,0 +1,81 @@
+.mainGrid {
+    display:grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 40px 1fr;
+    grid-template-areas: "filter" "cards";
+}
+
+.filterGrid {
+    grid-area: filter;
+    margin: 4%;
+
+    /*
+    position:absolute;
+    top: 10%;
+    left: 4%;
+    width: 92%;
+    */
+    display:grid;
+    grid-template-rows: 100%;
+    grid-template-columns: 1fr 2fr 30px;
+    grid-template-areas: "term box button";
+}
+
+.selectTerm {
+    grid-area: term;
+    
+    width:99%;
+    min-width: 120px;
+    /* font */
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    line-height: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    color: #FFFFFF;
+}
+
+.searchBox {
+    grid-area: box;
+    margin-left: 3%;
+
+}
+
+.searchButton {
+    grid-area: button;
+    margin-left: 3%;
+
+    background-color:transparent ;
+    border-color:transparent;
+
+    cursor:pointer;
+}
+
+.mainBox {
+    /*
+    position: absolute;
+    top: 15%;
+    left: 4%;
+    width:92%;
+    height:80%;
+    */
+    grid-area: cards;
+    margin-top: 6%;
+    overflow: auto;
+}
+
+.clickableDetailBox{
+    margin-bottom:2%;
+    cursor:pointer;
+    width : 100%;
+
+}
+
+.qnaStatus {
+    margin-right:5%;
+}
+
+.qnaTitle {
+    color: black;
+}
