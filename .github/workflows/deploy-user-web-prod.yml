@@ -41,3 +41,13 @@ jobs:
             --region ap-northeast-2 \
             build s3://timebank-web
         working-directory: ${{ env.working-directory }}
+
+      - name: Invalidate Cache
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          DISTRIBUTION_ID: E1FF3UOTN4295A
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id $DISTRIBUTION_ID \
+            --paths "/*"
