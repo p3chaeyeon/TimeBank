@@ -331,6 +331,10 @@ button {
   font-size: 18px;
   line-height: 30px;
 }
+.unregist-page .edit-body .name input,
+.unregist-page .edit-body .gender input {
+  margin-left: 46px;
+}
 
 .unregist-page .edit-body input {
   border: none;

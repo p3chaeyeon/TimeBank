@@ -107,20 +107,16 @@ const ProfileEdit = () => {
 
           <div className="user-info">
             <div className="name">
-              이름ㅤㅤ
-              <input type="text" placeholder="이름" />
+            이름<input type="text" placeholder="이름" />
             </div>
             <div className="phone">
-              전화번호
-              <input type="text" placeholder="전화번호" />
+            전화번호<input type="text" placeholder=" 전화번호" />
             </div>
             <div className="gender">
-              성별ㅤㅤ
-              <input type="text" placeholder="성별" />
+            성별<input type="text" placeholder="성별" />
             </div>
             <div className="birth-date">
-              생년월일
-              <input type="text" placeholder="생년월일" />
+            생년월일 <input type="text" placeholder="생년월일" />
             </div>
           </div>
 
