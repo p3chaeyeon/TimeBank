@@ -6,7 +6,6 @@ import Profile from "../../assets/images/profile.svg";
 import Sheet from "react-modal-sheet";
 import axios from "axios";
 import { PATH } from "../../utils/paths";
-import { Avatar } from 'antd'
 
 async function setUserPassWord(password: string) {
   try {
@@ -39,21 +38,21 @@ const ProfileEdit = () => {
   const [password, setPassWord] = useState("");
   const [passwordCert, setPassWordCert] = useState("");
   const [dotStyle, setDotStyle] = useState(false);
-  
+
   const [imageSrc, setImageSrc]: any = useState(null);
 
   const onUpload = (e: any) => {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
 
-      return new Promise<void>((resolve) => { 
-          reader.onload = () => {	
-              setImageSrc(reader.result || null); // 파일의 컨텐츠
-              resolve();
-          };
-      });
-  }
+    return new Promise<void>((resolve) => {
+      reader.onload = () => {
+        setImageSrc(reader.result || null); // 파일의 컨텐츠
+        resolve();
+      };
+    });
+  };
 
   let [isSamePassword, setIsSamePassword] = useState(false);
 
@@ -89,10 +88,10 @@ const ProfileEdit = () => {
           <div className="user-title">
             <div className="circle-profile">
               <img
-                // src={imageSrc} 
+                // src={imageSrc}
                 src={Profile}
                 alt=""
-                style={{ top: "3px", position: "relative", width:"30px" }}
+                style={{ top: "3px", position: "relative", width: "30px" }}
               />
               {/* <label htmlFor="file" className="input-file-button"></label> 
               <input type="file" id="file" accept="image/*" onChange={e => onUpload(e)} style={{display:"none"}}></input> */}
@@ -108,15 +107,21 @@ const ProfileEdit = () => {
 
           <div className="user-info">
             <div className="name">
-              이름 <input type="text" placeholder="이름" />
+              이름ㅤㅤ
+              <input type="text" placeholder="이름" />
+            </div>
+            <div className="phone">
+              전화번호
+              <input type="text" placeholder="전화번호" />
             </div>
             <div className="gender">
-              성별 <input type="text" placeholder="성별" />
+              성별ㅤㅤ
+              <input type="text" placeholder="성별" />
             </div>
-            <div className="age">
-              나이 <input type="text" placeholder="나이" />
+            <div className="birth-date">
+              생년월일
+              <input type="text" placeholder="생년월일" />
             </div>
-            
           </div>
 
           <div className="user-account">
@@ -132,9 +137,11 @@ const ProfileEdit = () => {
                 00-00-00
               </span>
               <span
-                style={{ float: "right", fontSize: "13px", color: "#F1AF23" }}
-                onClick={() => {setOpen(true); 
-                  setDotStyle(false);}}
+                style={{ float: "right", fontSize: "15px", color: "#F1AF23" }}
+                onClick={() => {
+                  setOpen(true);
+                  setDotStyle(false);
+                }}
               >
                 비밀번호 변경
               </span>
@@ -149,8 +156,16 @@ const ProfileEdit = () => {
                   <Sheet.Content>
                     {checkPassWordModal ? (
                       <div id="check_password_modal_sheet">
-                        <div style={{padding:"20px 30px"}}>
-                          <span style={{fontFamily:"Lato", fontSize:"22px", fontWeight:"500"}}>현재 비밀번호</span>
+                        <div style={{ padding: "20px 30px" }}>
+                          <span
+                            style={{
+                              fontFamily: "Lato",
+                              fontSize: "22px",
+                              fontWeight: "500",
+                            }}
+                          >
+                            현재 비밀번호
+                          </span>
                         </div>
                         <input
                           onChange={(e) => setCurrentPassWord(e.target.value)}
@@ -158,13 +173,30 @@ const ProfileEdit = () => {
                           type="password"
                           maxLength={4}
                           value={currentPassWord || ""}
-                          className={dotStyle? "inputPass":"inputBox"}
-                          onFocus={(e) => {e.target.placeholder = ""; setDotStyle(true)}}
+                          className={dotStyle ? "inputPass" : "inputBox"}
+                          onFocus={(e) => {
+                            e.target.placeholder = "";
+                            setDotStyle(true);
+                          }}
                         />
-                        <div className="finish-btn" style={{ textAlign: "center" }}>
+                        <div
+                          className="finish-btn"
+                          style={{ textAlign: "center" }}
+                        >
                           <button
-                            style={{ marginTop: "60%", backgroundColor:"#f1af23", color:"#fff", padding: "13px 35px", borderRadius:"35px", fontFamily:"Lato", fontSize:"20px", boxShadow:"0px 4px 4px rgba(0, 0, 0, 0.25)", fontWeight:"700"}}
-                            onClick={() => {setCheckPassWordModal(false);
+                            style={{
+                              marginTop: "60%",
+                              backgroundColor: "#f1af23",
+                              color: "#fff",
+                              padding: "13px 35px",
+                              borderRadius: "35px",
+                              fontFamily: "Lato",
+                              fontSize: "20px",
+                              boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                              fontWeight: "700",
+                            }}
+                            onClick={() => {
+                              setCheckPassWordModal(false);
                             }}
                           >
                             다음
@@ -172,9 +204,19 @@ const ProfileEdit = () => {
                         </div>
                       </div>
                     ) : (
-                      <div id="change_password_modal_sheet" style={{display:"flex", flexDirection:"column"}}>
-                        <div style={{padding:"20px 30px"}}>
-                          <label style={{fontFamily:"Lato", fontSize:"22px", fontWeight:"500", lineHeight:"2em"}}>
+                      <div
+                        id="change_password_modal_sheet"
+                        style={{ display: "flex", flexDirection: "column" }}
+                      >
+                        <div style={{ padding: "20px 30px" }}>
+                          <label
+                            style={{
+                              fontFamily: "Lato",
+                              fontSize: "22px",
+                              fontWeight: "500",
+                              lineHeight: "2em",
+                            }}
+                          >
                             변경할 비밀번호
                             <input
                               type="password"
@@ -183,16 +225,26 @@ const ProfileEdit = () => {
                               onChange={(e) => {
                                 setPassWord(e.target.value);
                               }}
-                              className={dotStyle? "inputPass":"inputBox"}
-                              onFocus={(e) => {e.target.placeholder = ""; setDotStyle(true)}}
-                              style={{position:"relative"}}
+                              className={dotStyle ? "inputPass" : "inputBox"}
+                              onFocus={(e) => {
+                                e.target.placeholder = "";
+                                setDotStyle(true);
+                              }}
+                              style={{ position: "relative" }}
                             />
                           </label>
                         </div>
 
-                        <div style={{padding:"20px 30px"}}>
-                          <label style={{fontFamily:"Lato", fontSize:"22px", fontWeight:"500", lineHeight:"2em"}}>
-                                변경할 비밀번호 확인
+                        <div style={{ padding: "20px 30px" }}>
+                          <label
+                            style={{
+                              fontFamily: "Lato",
+                              fontSize: "22px",
+                              fontWeight: "500",
+                              lineHeight: "2em",
+                            }}
+                          >
+                            변경할 비밀번호 확인
                             <input
                               type="password"
                               maxLength={4}
@@ -200,18 +252,43 @@ const ProfileEdit = () => {
                               onChange={(e) => {
                                 setPassWordCert(e.target.value);
                               }}
-                              className={dotStyle? "inputPass":"inputBox"}
-                              onFocus={(e) => {e.target.placeholder = ""; setDotStyle(true)}}
-                              style={{position:"relative"}}
+                              className={dotStyle ? "inputPass" : "inputBox"}
+                              onFocus={(e) => {
+                                e.target.placeholder = "";
+                                setDotStyle(true);
+                              }}
+                              style={{ position: "relative" }}
                             />
                           </label>
                         </div>
                         {isSamePassword && (
-                          <div style={{textAlign:"center", color:"#FF2E00", fontFamily:"Lato", fontSize:"18px"}}>비밀번호 오류. 다시 입력해주세요.</div>
+                          <div
+                            style={{
+                              textAlign: "center",
+                              color: "#FF2E00",
+                              fontFamily: "Lato",
+                              fontSize: "18px",
+                            }}
+                          >
+                            비밀번호 오류. 다시 입력해주세요.
+                          </div>
                         )}
                         <button
-                            style={{ width:"fit-content", margin:"0 auto", position:"relative", top:"45px", backgroundColor:"#f1af23", color:"#fff", padding: "13px 35px", borderRadius:"35px", fontFamily:"Lato", fontSize:"20px", boxShadow:"0px 4px 4px rgba(0, 0, 0, 0.25)", fontWeight:"700"}}
-                            onClick={() => {
+                          style={{
+                            width: "fit-content",
+                            margin: "0 auto",
+                            position: "relative",
+                            top: "45px",
+                            backgroundColor: "#f1af23",
+                            color: "#fff",
+                            padding: "13px 35px",
+                            borderRadius: "35px",
+                            fontFamily: "Lato",
+                            fontSize: "20px",
+                            boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                            fontWeight: "700",
+                          }}
+                          onClick={() => {
                             handleOnClickChangePasswordBtn(
                               password,
                               passwordCert
