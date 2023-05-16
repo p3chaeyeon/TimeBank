@@ -10,11 +10,13 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import kookmin.software.capstone2023.timebank.domain.model.auth.AuthenticationType
 import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Entity
 @Table(name = "user")
+@Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE user SET deleted_at = now() WHERE id = ?")
 class User(
     @Id

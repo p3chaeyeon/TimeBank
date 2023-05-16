@@ -10,10 +10,12 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 import java.time.LocalDateTime
 
 @Entity
 @Table(name = "account")
+@Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE account SET deleted_at = now() WHERE id = ?")
 class Account(
     @Id
