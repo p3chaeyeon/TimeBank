@@ -1,152 +1,100 @@
 import { useEffect, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import { Tooltip } from "antd";
-import axios from "axios";
-
 import { headerTitleState } from "../../states/uiState";
 import { PATH } from "../../utils/paths";
+import axios from "axios";
+import { async } from "rxjs";
 
-import IconGear from "../../assets/images/icon-gear.svg";
-import Fav from "../../assets/images/fav.svg";
-import BaseMenu from "../../components/Menu/BaseMenu";
-
-const UserMainPage = () => {
-  const navigate = useNavigate();
-  const [title, setTitle] = useState<String>("정릉지점");
-  const [accountNum, setAccountNum] = useState<String>(
-    "계좌번호 00-00-00"
-  );
-  const [amount, setAmount] = useState<String>("000,000");
-
-  const sampleData = {
-    items: [
-      {
-        id: "김미영",
-        accountNum: "00-00-00",
-        date: "2023-04-05",
+async function setUserPassWord(password: string) {
+  try {
+    const access_token = window.localStorage.getItem("access_token");
+    await axios({
+      method: "POST",
+      url: PATH.SERVER + "/api/v1/bank/account",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + access_token,
       },
-      {
-        id: "박채연",
-        accountNum: "00-00-00",
-        date: "2023-04-05",
+      data: {
+        password: password,
       },
-      {
-        id: "박보검",
-        accountNum: "00-00-00",
-        date: "2023-04-05",
-      },
-      {
-        id: "ㅁㄴㅇ",
-        accountNum: "00-00-00",
-        date: "2023-04-05",
-      },
-      {
-        id: "ㄹㅇ",
-        accountNum: "00-00-00",
-        date: "2023-04-05",
-      },
-    ],
-    title: "New",
-    longTitle: "New",
-    titleId: 3,
-    pagingInfo: {
-      totalItems: 278,
-    },
-    status: "Success",
-  };
-
-  const accessToken = 1;
-  const getAccountInfo = () =>{
-    axios.get(PATH.SERVER + `api/v1/bank/account`, {
-      headers:{
-      'Authorization':`Bearer ${accessToken}`
-      }
-    }).
-    then(response => {
-      //console.log(response.data);
-    }).
-    catch(function(error){
-      console.log(error)
+    }).then((res) => {
+      console.log(`status code : ${res.status}\nresponse data: ${res.data}`);
+      const data = res.data;
+      window.localStorage.setItem("balance", data.balance);
+      window.localStorage.setItem("accountNumber", data.accountNumber);
+      window.localStorage.setItem("bankAccountId", data.bankAccountId);
     });
-  };
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+const Password = () => {
+  const navigate = useNavigate();
+  let [password, setPassWord] = useState("");
+  let [passwordCert, setPassWordCert] = useState("");
+  let [isSamePassword, setIsSamePassword] = useState(false);
 
   const setHeaderTitle = useSetRecoilState(headerTitleState);
   useEffect(() => {
     setHeaderTitle(null);
-    getAccountInfo();
   });
   const handleOnClickLinkBtn = useCallback(
-    (path: string) => {
-      navigate(path);
+    async (path: string, password: string, passwordCert: string) => {
+      if (
+        password === passwordCert &&
+        password.length == 4 &&
+        passwordCert.length == 4
+      ) {
+        await setUserPassWord(password);
+        navigate(path);
+      } else {
+        setIsSamePassword(true);
+      }
+      console.log(isSamePassword);
     },
     [navigate]
   );
 
   return (
     <>
-      <div className="main-page">
-        <div className="main-header">
-          <div className="menu">
-            <Tooltip placement="bottom">
-              <BaseMenu />
-            </Tooltip>
-          </div>
-          <img
-            src={IconGear}
-            alt=""
-            onClick={() => handleOnClickLinkBtn(PATH.PROFILEEDIT)}
+      <div className="sign-up">
+        <span className="title">초기 비밀번호를 설정해주세요</span>
+        <div className="info-box">
+          <label>초기 비밀번호</label>
+          <input
+            type="password"
+            value={password}
+            maxLength={4}
+            onChange={(e) => {
+              setPassWord(e.target.value);
+            }}
+          />
+          <label style={{ marginTop: "10px" }}>초기 비밀번호 확인</label>
+          <input
+            type="password"
+            maxLength={4}
+            value={passwordCert}
+            onChange={(e) => {
+              setPassWordCert(e.target.value);
+            }}
           />
         </div>
-
-        <div className="user-account">
-          <div className="user-info">
-            <div className="title">{title}</div>
-            <div className="account-num">{accountNum}</div>
-            <div className="main-amount">
-              {amount}
-              <span style={{ color: "#F1AF23", paddingLeft: "5px" }}>TP</span>
-            </div>
-          </div>
-
-          <div
-            className="bottom-btn"
-            onClick={() => handleOnClickLinkBtn(PATH.TRANSFER)}
+        {isSamePassword && <label>비밀번호 오류. 다시 입력해주세요.</label>}
+        <div className="finish-btn">
+          <button
+            onClick={() =>
+              handleOnClickLinkBtn(PATH.MAIN, password, passwordCert)
+            }
           >
-            이체
-          </div>
-        </div>
-
-        <div className="recent-list">
-          <span className="title">최근 송금한 계좌</span>
-          <div style={{ paddingTop: "20px" }}>
-            {sampleData.items.map((x) => {
-              return (
-                <div key={x.id}>
-                  <div className="list">
-                    <div style={{ fontSize: "16px" }}>
-                      <div style={{ display: "flex" }}>
-                        <span style={{ fontWeight: "bold" }}>{x.id}</span> 님{" "}
-                        <br />
-                        <img
-                          src={Fav}
-                          alt=""
-                          style={{ position: "absolute", right: "20px" }}
-                        />
-                      </div>
-                      <span style={{ fontWeight: "bold" }}>계좌번호</span>{" "}
-                      <span style={{ color: "#F1AF23" }}>{x.accountNum}</span>
-                    </div>
-                    <div className="date">{x.date}</div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+            계좌생성
+          </button>
         </div>
       </div>
     </>
   );
 };
 
-export default UserMainPage;
+export default Password;

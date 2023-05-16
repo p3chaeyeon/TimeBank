@@ -4,6 +4,7 @@ import { useSetRecoilState } from "recoil";
 import { headerTitleState } from "../../states/uiState";
 import { PATH } from "../../utils/paths";
 import axios from "axios";
+import { async } from "rxjs";
 
 async function setUserPassWord(password: string) {
   try {
@@ -41,9 +42,13 @@ const Password = () => {
     setHeaderTitle(null);
   });
   const handleOnClickLinkBtn = useCallback(
-    (path: string, password: string, passwordCert: string) => {
-      if (password === passwordCert) {
-        setUserPassWord(password);
+    async (path: string, password: string, passwordCert: string) => {
+      if (
+        password === passwordCert &&
+        password.length == 4 &&
+        passwordCert.length == 4
+      ) {
+        await setUserPassWord(password);
         navigate(path);
       } else {
         setIsSamePassword(true);
@@ -84,7 +89,7 @@ const Password = () => {
               handleOnClickLinkBtn(PATH.MAIN, password, passwordCert)
             }
           >
-            가입하기
+            계좌생성
           </button>
         </div>
       </div>
