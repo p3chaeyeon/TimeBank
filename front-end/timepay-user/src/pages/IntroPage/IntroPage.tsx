@@ -41,7 +41,7 @@ const IntroPage = () => {
       <div className="intro-page">
         <div className="top">
           <img src={Logo} alt="" />
-          시간은행
+          마을시간은행
         </div>
         <div className="main-title">
           시간을
