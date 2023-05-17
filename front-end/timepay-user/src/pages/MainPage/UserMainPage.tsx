@@ -20,7 +20,6 @@ async function getRecentRemittanceAccount(
       method: "GET",
       url: PATH.SERVER + `/api/v1/bank/account/transaction/${accountNumber}`,
       headers: {
-        "Content-Type": "application/json",
         Authorization: "Bearer " + access_token,
       },
     }).then((res) => {
@@ -39,12 +38,37 @@ const UserMainPage = () => {
   const accountNumber = window.localStorage.getItem("accountNumber") ?? "";
   const [title, setTitle] = useState<string>("정릉지점");
   const [accountNum, setAccountNum] = useState<string>(
-    `계좌번호 ${window.localStorage.getItem("accountNumber")}`
+    `계좌번호 ${accountNumber}`
   );
-  const [amount, setAmount] = useState<string>(
-    `${window.localStorage.getItem("balance")}`
-  );
+  const [balance, setBalance] = useState<number>(0);
+  
+  async function getUserAccount() {
+    try {
+      const accessToken = window.localStorage.getItem("access_token");
+      await axios({
+        method: "GET",
+        url: PATH.SERVER + "/api/v1/users/me",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }).then((res) => {
+        console.log(
+          `getUserAccount status code : ${res.status}\ndata : ${res.data}`
+        );
+        if (res.data.size != 0) {
+          setAccountNumber(res.data[0].bankAccountNumber);
+          setAccountNum(`계좌번호 ${accountNumber}`);
+          setBalance(res.data[0].bankAccountNumber.balance);
+        }
+      });
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  }
 
+
+  getUserAccount();
   const recentRemittanceAccount = getRecentRemittanceAccount(accountNumber);
 
   console.log(`recentRemittanceAccount : ${recentRemittanceAccount}`);

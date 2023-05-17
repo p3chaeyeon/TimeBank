@@ -31,6 +31,25 @@ async function getTimepayAccessToken(kakaoAccesToken: string) {
   }
 }
 
+async function checkIsSignUpedUser() {
+  try {
+    const accessToken = window.localStorage.getItem("access_token");
+    await axios({
+      method: "GET",
+      url: PATH.SERVER + "/api/v1/users/me",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }).then((res) => {
+      console.log(`status code : ${res.status}\nresponse data: ${res.data}`);
+      return res.status == 204;
+    });
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
+
 const kakaoLogin = () => {
   window.Kakao.Auth.login({
     scope: "profile_nickname, profile_image",
@@ -44,7 +63,8 @@ const kakaoLogin = () => {
             Kakao.Auth.getAccessToken()
           );
           await getTimepayAccessToken(Kakao.Auth.getAccessToken());
-          window.location.href = "./SignUp"; //리다이렉트 되는 코드
+          if (await checkIsSignUpedUser()) window.location.href = "./SignUp";
+          else window.location.href = "./main";
         },
       });
     },
