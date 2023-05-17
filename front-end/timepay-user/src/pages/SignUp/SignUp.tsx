@@ -77,6 +77,7 @@ const SignUp = () => {
           <label>이름</label>
           <input
             type="text"
+            placeholder="이름"
             onChange={(e) => {
               setName(e.target.value);
             }}
@@ -84,6 +85,7 @@ const SignUp = () => {
           <label style={{ marginTop: "10px" }}>전화번호</label>
           <input
             type="text"
+            placeholder="tntwk 11자리"
             value={phoneNumber}
             maxLength={11}
             onChange={(e) => {
@@ -102,6 +104,7 @@ const SignUp = () => {
           <label style={{ marginTop: "10px" }}>생년월일</label>
           <input
             type="text"
+            placeholder="숫자 8자리"
             maxLength={8}
             onChange={(e) => {
               setBirthday(e.target.value);
