@@ -1,10 +1,35 @@
-import { useEffect, useCallback } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { headerTitleState } from '../../states/uiState';
-import MainImg from '../../assets/images/intro_page.svg';
-import Logo from '../../assets/images/timepay_logo.svg';
-import KaKaoImg from '../../assets/images/kakao_login_large_wide.svg'
-import { PATH } from '../../utils/paths';
+import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import { headerTitleState } from "../../states/uiState";
+import MainImg from "../../assets/images/intro_page.svg";
+import Logo from "../../assets/images/timepay_logo.svg";
+import KaKaoImg from "../../assets/images/kakao_login_large_wide.svg";
+import axios from "axios";
+import { PATH } from "../../utils/paths";
+
+async function getTimepayAccessToken(kakaoAccesToken: string) {
+  try {
+    console.log(kakaoAccesToken);
+    await axios({
+      method: "POST",
+      url: PATH.SERVER + "/api/v1/users/login",
+      data: {
+        authenticationType: "social",
+        socialPlatformType: "KAKAO",
+        accessToken: "9xI7D6q2OwXVuRaZsj_BRsLHjmdy1yFub7bWLNFsCj1y6gAAAYgluGJw",
+      },
+      headers: {
+        Authorization: `Bearer ${kakaoAccesToken}`,
+      },
+    }).then((res) => {
+      console.log(`status code : ${res.status}\nresponse data: ${res.data}`);
+      const data = res.data;
+      window.localStorage.setItem("access_token", data.accessToken);
+    });
+  } catch (e) {
+    console.error(e);
+  }
+}
 
 const kakaoLogin = () => {
   window.Kakao.Auth.login({
@@ -13,13 +38,12 @@ const kakaoLogin = () => {
       console.log(authObj);
       window.Kakao.API.request({
         url: "/v2/user/me",
-        success: (res) => {
-          const kakao_account = res.kakao_account;
-          console.log(kakao_account);
+        success: async (res) => {
           window.localStorage.setItem(
-            "access_token",
+            "kakao_access_token",
             Kakao.Auth.getAccessToken()
           );
+          await getTimepayAccessToken(Kakao.Auth.getAccessToken());
           window.location.href = "./SignUp"; //리다이렉트 되는 코드
         },
       });
@@ -41,7 +65,7 @@ const IntroPage = () => {
       <div className="intro-page">
         <div className="top">
           <img src={Logo} alt="" />
-          마을시간은행
+          시간은행
         </div>
         <div className="main-title">
           시간을
