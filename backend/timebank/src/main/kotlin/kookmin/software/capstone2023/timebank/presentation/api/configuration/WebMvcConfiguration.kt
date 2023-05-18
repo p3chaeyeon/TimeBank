@@ -1,5 +1,6 @@
 package kookmin.software.capstone2023.timebank.presentation.api.configuration
 
+import kookmin.software.capstone2023.timebank.presentation.api.auth.interceptor.ManagerAuthenticationInterceptor
 import kookmin.software.capstone2023.timebank.presentation.api.auth.interceptor.UserAuthenticationInterceptor
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.CorsRegistry
@@ -9,9 +10,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 class WebMvcConfiguration(
     private val userAuthenticationInterceptor: UserAuthenticationInterceptor,
+    private val managerAuthenticationInterceptor: ManagerAuthenticationInterceptor,
 ) : WebMvcConfigurer {
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(userAuthenticationInterceptor)
+            .addPathPatterns("/api/**")
+
+        registry.addInterceptor(managerAuthenticationInterceptor)
             .addPathPatterns("/api/**")
     }
 
