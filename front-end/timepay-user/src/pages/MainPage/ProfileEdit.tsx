@@ -204,7 +204,7 @@ const ProfileEdit = () => {
               </select>
             </div>
             <div className="birth-date">
-              생년월일{" "}
+              생년월일
               <input
                 type="text"
                 placeholder={birthday}
