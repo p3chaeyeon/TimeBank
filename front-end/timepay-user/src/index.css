@@ -1,15 +1,21 @@
-@import url("./styles/fonts/pretendard/pretendard.css");
+@import url('./styles/fonts/pretendard/pretendard.css');
 
 html {
   -ms-content-zooming: none;
   /* -ms-touch-action: pan-x pan-y; */
 }
 
+* {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
 body {
   margin: 0;
   font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto,
-    "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR",
-    "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR',
+    'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
     sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -21,7 +27,9 @@ button {
   outline: 0;
 }
 
-input:focus { outline: none; }
+input:focus {
+  outline: none;
+}
 
 .intro-page {
   display: flex;
@@ -37,7 +45,7 @@ input:focus { outline: none; }
 }
 
 .intro-page .top {
-  font-family: "Pretendard";
+  font-family: 'Pretendard';
   font-style: normal;
   font-size: 20px;
   font-weight: 600;
@@ -53,7 +61,7 @@ input:focus { outline: none; }
 }
 
 .intro-page .main-title {
-  font-family: "Lato";
+  font-family: 'Lato';
   font-style: normal;
   font-size: 38px;
   line-height: 42px;
@@ -75,7 +83,7 @@ input:focus { outline: none; }
   top: 20%;
   position: relative;
   padding: 30px;
-  font-family: "Lato";
+  font-family: 'Lato';
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
@@ -105,7 +113,7 @@ input:focus { outline: none; }
   /* bottom: 10%;
   position: fixed; */
   margin-top: 60%;
-  font-family: "Lato";
+  font-family: 'Lato';
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
@@ -121,12 +129,12 @@ input:focus { outline: none; }
   justify-content: space-between;
   border-bottom: 1px solid #cdcdcd;
   margin-bottom: 10%;
-  top:0; 
-  top:constant(safe-area-inset-top); 
-  top:env(safe-area-inset-top);
-  right:0; 
-  right:constant(safe-area-inset-right); 
-  right:env(safe-area-inset-right);
+  top: 0;
+  top: constant(safe-area-inset-top);
+  top: env(safe-area-inset-top);
+  right: 0;
+  right: constant(safe-area-inset-right);
+  right: env(safe-area-inset-right);
 }
 
 .main-page .main-header img {
@@ -136,7 +144,7 @@ input:focus { outline: none; }
 }
 
 .main-page .main-header .menu {
-  font-family: "Lato";
+  font-family: 'Lato';
   font-size: 15px;
   font-weight: bold;
   color: #000;
@@ -157,7 +165,7 @@ input:focus { outline: none; }
 
 .main-page .user-account .user-info .title {
   color: #f1af23;
-  font-family: "Inter";
+  font-family: 'Inter';
   font-weight: bold;
   font-size: 18px;
   line-height: 30px;
@@ -168,7 +176,7 @@ input:focus { outline: none; }
 }
 
 .main-page .user-account .user-info .main-amount {
-  font-family: "Inter";
+  font-family: 'Inter';
   font-size: 32px;
   padding: 20px;
   text-align: center;
@@ -179,7 +187,7 @@ input:focus { outline: none; }
   padding: 15px;
   text-align: center;
   color: #fff;
-  font-family: "Inter";
+  font-family: 'Inter';
   font-weight: bold;
   font-size: 20px;
   border-bottom-left-radius: 10px;
@@ -203,7 +211,7 @@ input:focus { outline: none; }
   margin-bottom: 10px;
   line-height: 25px;
   color: #787878;
-  font-family: "Lato";
+  font-family: 'Lato';
   border-radius: 10px;
 }
 
@@ -211,20 +219,20 @@ input:focus { outline: none; }
   display: flex;
   justify-content: flex-end;
   color: #787878;
-  font-family: "Lato";
+  font-family: 'Lato';
   font-size: 15px;
   padding-top: 20px;
 }
 
 .main-page .recent-list .title {
-  font-family: "Lato";
+  font-family: 'Lato';
   font-size: 16px;
   font-weight: 400;
   color: #787878;
 }
 
 .unregist-page .main-header {
-  font-family: "Lato";
+  font-family: 'Lato';
   font-size: 20px;
   font-weight: bold;
   color: #f1af23;
@@ -234,7 +242,7 @@ input:focus { outline: none; }
 }
 
 .unregist-page .regist-body {
-  font-family: "Lato";
+  font-family: 'Lato';
   font-size: 16px;
 }
 
@@ -245,7 +253,7 @@ input:focus { outline: none; }
   margin: 20px;
 }
 .unregist-page .regist-body .info .list {
-  font-family: "Lato";
+  font-family: 'Lato';
   font-size: 16px;
   display: flex;
 }
@@ -256,7 +264,7 @@ input:focus { outline: none; }
   /* bottom: 10%;
   position: fixed; */
   margin-top: 60%;
-  font-family: "Lato";
+  font-family: 'Lato';
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
@@ -266,7 +274,7 @@ input:focus { outline: none; }
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.check input[type="checkbox"] {
+.check input[type='checkbox'] {
   -webkit-appearance: none;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -278,8 +286,8 @@ input:focus { outline: none; }
   border: 1px solid #9999;
   vertical-align: middle;
 }
-.check input[type="checkbox"]::before {
-  content: "\2713";
+.check input[type='checkbox']::before {
+  content: '\2713';
   position: absolute;
   top: 50%;
   left: 50%;
@@ -287,12 +295,12 @@ input:focus { outline: none; }
   transform: scale(0) translate(-50%, -50%);
   line-height: 1;
 }
-.check input[type="checkbox"]:checked {
+.check input[type='checkbox']:checked {
   background-color: #787878;
   border-color: rgba(255, 255, 255, 0.3);
   color: white;
 }
-.check input[type="checkbox"]:checked::before {
+.check input[type='checkbox']:checked::before {
   border-radius: 4px;
   transform: scale(1) translate(-50%, -50%);
 }
@@ -315,7 +323,7 @@ input:focus { outline: none; }
 }
 
 .unregist-page .edit-body .user-title .name-title {
-  font-family: "Lato";
+  font-family: 'Lato';
   font-size: 32px;
   color: #858585;
   line-height: 25px;
@@ -329,7 +337,7 @@ input:focus { outline: none; }
   margin-top: 40px;
   border: 1px solid #e5e5e5;
   border-radius: 20px;
-  font-family: "Lato";
+  font-family: 'Lato';
   font-size: 18px;
   line-height: 30px;
 }
@@ -341,7 +349,7 @@ input:focus { outline: none; }
   position: relative;
   font-size: 16px;
 }
-#dropdown{
+#dropdown {
   margin-left: 52px;
 }
 
@@ -350,11 +358,10 @@ input:focus { outline: none; }
   margin-top: 10px;
   border: 1px solid #e5e5e5;
   border-radius: 15px;
-  font-family: "Lato";
+  font-family: 'Lato';
   font-size: 18px;
   line-height: 30px;
 }
 .ant-dropdown .ant-dropdown-menu .ant-dropdown-menu-item {
   font-size: 25px;
 }
-
