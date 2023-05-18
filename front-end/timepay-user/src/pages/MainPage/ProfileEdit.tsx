@@ -6,29 +6,7 @@ import Profile from "../../assets/images/profile.svg";
 import Sheet from "react-modal-sheet";
 import axios from "axios";
 import { PATH } from "../../utils/paths";
-
-async function setUserPassWord(password: string) {
-  try {
-    const timepayAccessToken = window.localStorage.getItem(
-      "timepay_access_token"
-    );
-    await axios
-      .post(PATH.SERVER + "/api/v1/account", {
-        accessToken: timepayAccessToken,
-        password: password,
-      })
-      .then((res) => {
-        const {
-          data: { id: accountId, number: accountNumber, balance: balance },
-        } = res;
-        window.localStorage.setItem("account_id", accountId);
-        window.localStorage.setItem("account_number", accountNumber);
-        window.localStorage.setItem("balance", balance);
-      });
-  } catch (e) {
-    console.error(e);
-  }
-}
+import { getFormattedBirthday } from "../SignUp/SignUp";
 
 const ProfileEdit = () => {
   const navigate = useNavigate();
@@ -38,28 +16,20 @@ const ProfileEdit = () => {
   const [password, setPassWord] = useState("");
   const [passwordCert, setPassWordCert] = useState("");
   const [dotStyle, setDotStyle] = useState(false);
-
+  const [name, setName] = useState("이름");
+  const [phoneNumber, setPhoneNumber] = useState(" 전화번호");
+  const [gender, setGender] = useState("성별");
+  const [birthday, setBirthday] = useState("생년월일");
+  const [accountNumber, setAccountNumber] = useState("현재 계좌 없음");
+  const access_token = window.localStorage.getItem("access_token");
   const [imageSrc, setImageSrc]: any = useState(null);
-
-  const onUpload = (e: any) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-
-    return new Promise<void>((resolve) => {
-      reader.onload = () => {
-        setImageSrc(reader.result || null); // 파일의 컨텐츠
-        resolve();
-      };
-    });
-  };
-
   let [isSamePassword, setIsSamePassword] = useState(false);
 
   const setHeaderTitle = useSetRecoilState(headerTitleState);
   useEffect(() => {
     setHeaderTitle("내 정보 수정");
   });
+
   const handleOnClickChangePasswordBtn = useCallback(
     (password: string, passwordCert: string) => {
       if (password === passwordCert) {
@@ -73,6 +43,114 @@ const ProfileEdit = () => {
     [navigate]
   );
 
+  const handleOnClickUpdateBtn = useCallback(
+    async (
+      name: string,
+      phoneNumber: string,
+      gender: string,
+      birthday: string
+    ) => {
+      await updateUserProfile(name, phoneNumber, gender, birthday);
+      navigate(PATH.MAIN);
+    },
+    [navigate]
+  );
+
+  async function getUserProfile() {
+    try {
+      await axios({
+        method: "GET",
+        url: PATH.SERVER + "/api/v1/users/me",
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }).then((res) => {
+        console.log("getUserProfile status code : " + res.status);
+        setName(res.data.name);
+        setGender(res.data.gender);
+        setPhoneNumber(res.data.phoneNumber);
+        setBirthday(res.data.birthday.replaceAll("-", ""));
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function setUserPassWord(password: string) {
+    try {
+      await axios({
+        method: "PUT",
+        url: PATH.SERVER + "/api/v1/users/me",
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+        data: {
+          name: name,
+          phoneNumber: phoneNumber,
+          gender: gender,
+          birthday: getFormattedBirthday(birthday),
+        },
+      }).then((res) => {
+        console.log("status code : " + res.status);
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function updateUserProfile(
+    name: string,
+    phoneNumber: string,
+    gender: string,
+    birthday: string
+  ) {
+    try {
+      await axios({
+        method: "PUT",
+        url: PATH.SERVER + "/api/v1/users/me",
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+        data: {
+          name: name,
+          phoneNumber: phoneNumber,
+          gender: gender,
+          birthday: getFormattedBirthday(birthday),
+        },
+      }).then((res) => {
+        console.log("updateUserProfile status code : " + res.status);
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function getUserAccount() {
+    try {
+      const accessToken = window.localStorage.getItem("access_token");
+      await axios({
+        method: "GET",
+        url: PATH.SERVER + "/api/v1/bank/account",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }).then((res) => {
+        console.log(
+          `getUserAccount status code : ${res.status}\ndata : ${res.data}`
+        );
+        let index = 0;
+        res.data.map((account: any) => {
+          if (index > 0) return;
+          setAccountNumber(account.bankAccountNumber);
+          index++;
+        });
+      });
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  }
+
   const initVariables = () => {
     setCheckPassWordModal(true);
     setCurrentPassWord("");
@@ -80,6 +158,9 @@ const ProfileEdit = () => {
     setPassWordCert("");
     setOpen(false);
   };
+
+  getUserProfile();
+  getUserAccount();
 
   return (
     <>
@@ -97,7 +178,7 @@ const ProfileEdit = () => {
               <input type="file" id="file" accept="image/*" onChange={e => onUpload(e)} style={{display:"none"}}></input> */}
             </div>
             <div className="name-title">
-              홍길동
+              {name}
               <br />
               <span style={{ color: "#cdcdcd", fontSize: "16px" }}>
                 #123456789
@@ -106,17 +187,30 @@ const ProfileEdit = () => {
           </div>
 
           <div className="user-info">
-            <div className="name">
-            이름<input type="text" placeholder="이름" />
-            </div>
             <div className="phone">
-            전화번호<input type="text" placeholder=" 전화번호" />
+              전화번호
+              <input
+                type="text"
+                maxLength={11}
+                placeholder={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
             </div>
             <div className="gender">
-            성별<input type="text" placeholder="성별" />
+              성별
+              <select id="dropdown" onChange={(e) => setGender(e.target.value)}>
+                <option value="MALE">남성</option>
+                <option value="FEMALE">여성</option>
+              </select>
             </div>
             <div className="birth-date">
-            생년월일 <input type="text" placeholder="생년월일" />
+              생년월일{" "}
+              <input
+                type="text"
+                placeholder={birthday}
+                maxLength={8}
+                onChange={(e) => setBirthday(e.target.value)}
+              />
             </div>
           </div>
 
@@ -130,7 +224,7 @@ const ProfileEdit = () => {
                   marginLeft: "25px",
                 }}
               >
-                00-00-00
+                {accountNumber}
               </span>
               <span
                 style={{ float: "right", fontSize: "15px", color: "#F1AF23" }}
@@ -289,7 +383,6 @@ const ProfileEdit = () => {
                               password,
                               passwordCert
                             );
-                            // setDotStyle(false);
                           }}
                         >
                           확인
@@ -305,7 +398,14 @@ const ProfileEdit = () => {
           </div>
         </div>
         <div className="finish-btn" style={{ textAlign: "center" }}>
-          <button style={{ marginTop: "50%" }}>수정완료</button>
+          <button
+            style={{ marginTop: "50%" }}
+            onClick={() =>
+              handleOnClickUpdateBtn(name, phoneNumber, gender, birthday)
+            }
+          >
+            수정완료
+          </button>
         </div>
       </div>
     </>

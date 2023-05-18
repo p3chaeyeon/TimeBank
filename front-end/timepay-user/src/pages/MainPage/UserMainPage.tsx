@@ -10,44 +10,22 @@ import { Tooltip } from "antd";
 import axios from "axios";
 import { BankAccountTransaction } from "../../data/BankAccountTransaction";
 
-async function getRecentRemittanceAccount(
-  accountNumber: string
-): Promise<BankAccountTransaction[]> {
-  try {
-    const access_token = window.localStorage.getItem("access_token");
-    console.log(`${accountNumber}`);
-    await axios({
-      method: "GET",
-      url: PATH.SERVER + `/api/v1/bank/account/transaction/${accountNumber}`,
-      headers: {
-        Authorization: "Bearer " + access_token,
-      },
-    }).then((res) => {
-      console.log(`status code : ${res.status}\nresponse data: ${res.data}`);
-      return res.data;
-    });
-  } catch (e) {
-    console.error(e);
-    return [];
-  }
-  return [];
-}
-
 const UserMainPage = () => {
   const navigate = useNavigate();
-  const accountNumber = window.localStorage.getItem("accountNumber") ?? "";
+  const [accountNumber, setAccountNumber] = useState<string>("");
   const [title, setTitle] = useState<string>("정릉지점");
   const [accountNum, setAccountNum] = useState<string>(
     `계좌번호 ${accountNumber}`
   );
   const [balance, setBalance] = useState<number>(0);
-  
+  const [recentRemittanceAccount, setRecentRemittanceAccount] = useState([]);
+
   async function getUserAccount() {
     try {
       const accessToken = window.localStorage.getItem("access_token");
       await axios({
         method: "GET",
-        url: PATH.SERVER + "/api/v1/users/me",
+        url: PATH.SERVER + "/api/v1/bank/account",
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -55,11 +33,15 @@ const UserMainPage = () => {
         console.log(
           `getUserAccount status code : ${res.status}\ndata : ${res.data}`
         );
-        if (res.data.size != 0) {
-          setAccountNumber(res.data[0].bankAccountNumber);
+        let index = 0;
+        res.data.map((account: any) => {
+          if (index > 0) return;
+          setAccountNumber(account.bankAccountNumber);
           setAccountNum(`계좌번호 ${accountNumber}`);
-          setBalance(res.data[0].bankAccountNumber.balance);
-        }
+          setBalance(account.balance);
+          index++;
+        });
+        getRecentRemittanceAccount(accountNumber);
       });
     } catch (e) {
       console.error(e);
@@ -67,48 +49,32 @@ const UserMainPage = () => {
     }
   }
 
+  async function getRecentRemittanceAccount(
+    accountNumber: string
+  ): Promise<BankAccountTransaction[]> {
+    try {
+      const access_token = window.localStorage.getItem("access_token");
+      console.log(`${accountNumber}`);
+      await axios({
+        method: "GET",
+        url: PATH.SERVER + `/api/v1/bank/account/transaction/${accountNumber}`,
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }).then((res) => {
+        console.log(
+          `getRecentRemittanceAccount status code : ${res.status}\nresponse data: ${res.data}`
+        );
+        setRecentRemittanceAccount(res.data);
+      });
+    } catch (e) {
+      console.error(e);
+      return [];
+    }
+    return [];
+  }
 
   getUserAccount();
-  const recentRemittanceAccount = getRecentRemittanceAccount(accountNumber);
-
-  console.log(`recentRemittanceAccount : ${recentRemittanceAccount}`);
-
-  const sampleData = {
-    items: [
-      {
-        id: "김미영",
-        accountNum: "00-00-00",
-        date: "2023-04-05",
-      },
-      {
-        id: "박채연",
-        accountNum: "00-00-00",
-        date: "2023-04-05",
-      },
-      {
-        id: "박보검",
-        accountNum: "00-00-00",
-        date: "2023-04-05",
-      },
-      {
-        id: "짜장면",
-        accountNum: "00-00-00",
-        date: "2023-04-05",
-      },
-      {
-        id: "탕수육",
-        accountNum: "00-00-00",
-        date: "2023-04-05",
-      },
-    ],
-    title: "New",
-    longTitle: "New",
-    titleId: 3,
-    pagingInfo: {
-      totalItems: 278,
-    },
-    status: "Success",
-  };
 
   const setHeaderTitle = useSetRecoilState(headerTitleState);
   useEffect(() => {
@@ -157,7 +123,7 @@ const UserMainPage = () => {
                 </span>
               ) : (
                 <span>
-                  {amount}
+                  {balance}
                   <span style={{ color: "#F1AF23", paddingLeft: "5px" }}>
                     TP
                   </span>
@@ -177,24 +143,23 @@ const UserMainPage = () => {
         <div className="recent-list">
           <span className="title">최근 송금한 계좌</span>
           <div style={{ paddingTop: "20px" }}>
-            {sampleData.items.map((x) => {
+            {recentRemittanceAccount.map((transaction: any) => {
               return (
                 <>
                   <div className="list">
                     <div style={{ fontSize: "16px" }}>
                       <div style={{ display: "flex" }}>
-                        <span style={{ fontWeight: "bold" }}>{x.id}</span> 님{" "}
-                        <br />
-                        <img
-                          src={Fav}
-                          alt=""
-                          style={{ position: "absolute", right: "20px" }}
-                        />
+                        <span style={{ fontWeight: "bold" }}>
+                          {transaction.receiverAccountNumber}
+                        </span>{" "}
+                        님 <br />
                       </div>
                       <span style={{ fontWeight: "bold" }}>계좌번호</span>{" "}
-                      <span style={{ color: "#F1AF23" }}>{x.accountNum}</span>
+                      <span style={{ color: "#F1AF23" }}>
+                        {transaction.senderAccountNumber}
+                      </span>
                     </div>
-                    <div className="date">{x.date}</div>
+                    <div className="date">{transaction.transactionAt}</div>
                   </div>
                 </>
               );

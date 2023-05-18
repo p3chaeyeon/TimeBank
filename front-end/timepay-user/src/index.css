@@ -21,6 +21,8 @@ button {
   outline: 0;
 }
 
+input:focus { outline: none; }
+
 .intro-page {
   display: flex;
   text-align: center;
@@ -331,17 +333,16 @@ button {
   font-size: 18px;
   line-height: 30px;
 }
-.unregist-page .edit-body .name input,
-.unregist-page .edit-body .gender input {
-  margin-left: 46px;
-}
 
 .unregist-page .edit-body input {
   border: none;
-  margin-left: 50px;
+  margin-left: 20px;
   top: -2px;
   position: relative;
   font-size: 16px;
+}
+#dropdown{
+  margin-left: 52px;
 }
 
 .unregist-page .edit-body .user-account {

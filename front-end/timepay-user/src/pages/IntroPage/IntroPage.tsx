@@ -16,7 +16,7 @@ async function getTimepayAccessToken(kakaoAccesToken: string) {
       data: {
         authenticationType: "social",
         socialPlatformType: "KAKAO",
-        accessToken: "9xI7D6q2OwXVuRaZsj_BRsLHjmdy1yFub7bWLNFsCj1y6gAAAYgluGJw",
+        accessToken: kakaoAccesToken,
       },
       headers: {
         Authorization: `Bearer ${kakaoAccesToken}`,
@@ -85,7 +85,7 @@ const IntroPage = () => {
       <div className="intro-page">
         <div className="top">
           <img src={Logo} alt="" />
-          시간은행
+          마을시간은행
         </div>
         <div className="main-title">
           시간을
