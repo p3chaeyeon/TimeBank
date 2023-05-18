@@ -365,3 +365,8 @@ input:focus {
 .ant-dropdown .ant-dropdown-menu .ant-dropdown-menu-item {
   font-size: 25px;
 }
+
+#check_password_modal_sheet > div {
+  padding: 20px 30px;
+  text-align: center;
+}

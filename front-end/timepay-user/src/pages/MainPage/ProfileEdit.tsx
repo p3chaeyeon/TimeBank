@@ -307,19 +307,23 @@ const ProfileEdit = () => {
                       </div>
                     ) : (
                       <div
-                        id="change_password_modal_sheet"
-                        style={{ display: "flex", flexDirection: "column" }}
-                      >
-                        <div style={{ padding: "20px 30px" }}>
-                          <label
-                            style={{
-                              fontFamily: "Lato",
-                              fontSize: "22px",
-                              fontWeight: "500",
-                              lineHeight: "2em",
-                            }}
-                          >
+                            id="change_password_modal_sheet"
+                            style={{ display: "flex", flexDirection: "column",textAlign: "center" }}
+                        >
+                          <div style={{ padding: "20px 30px" }}>
+                            <label
+                                style={{
+                                  alignItems: "center",
+                                  fontFamily: "Lato",
+                                  fontSize: "22px",
+                                  fontWeight: "500",
+                                  lineHeight: "2em",
+                                  textAlign: "center",
+                                  margin: "auto"
+                                }}
+                            >
                             변경할 비밀번호
+
                             <input
                               type="password"
                               value={password}
@@ -332,7 +336,7 @@ const ProfileEdit = () => {
                                 e.target.placeholder = "";
                                 setDotStyle(true);
                               }}
-                              style={{ position: "relative" }}
+                                style={{ position: "relative"}}
                             />
                           </label>
                         </div>
@@ -359,7 +363,7 @@ const ProfileEdit = () => {
                                 e.target.placeholder = "";
                                 setDotStyle(true);
                               }}
-                              style={{ position: "relative" }}
+                                style={{ position: "relative"}}
                             />
                           </label>
                         </div>
