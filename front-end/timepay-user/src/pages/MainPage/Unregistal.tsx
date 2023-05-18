@@ -1,179 +1,123 @@
-import { useEffect, useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { headerTitleState } from "../../states/uiState";
-import IconGear from "../../assets/images/icon-gear.svg";
-import Fav from "../../assets/images/fav.svg";
-import { PATH } from "../../utils/paths";
-import BaseMenu from "../../components/Menu/BaseMenu";
-import { Tooltip } from "antd";
 import axios from "axios";
-import { BankAccountTransaction } from "../../data/BankAccountTransaction";
+import { PATH } from "../../utils/paths";
+import { useNavigate } from "react-router-dom";
 
-async function getRecentRemittanceAccount(
-  accountNumber: string
-): Promise<BankAccountTransaction[]> {
+async function unregistalTimePay() {
   try {
     const access_token = window.localStorage.getItem("access_token");
-    console.log(`${accountNumber}`);
     await axios({
-      method: "GET",
-      url: PATH.SERVER + `/api/v1/bank/account/transaction/${accountNumber}`,
+      method: "DELETE",
+      url: PATH.SERVER + "/api/v1/users/me",
       headers: {
-        "Content-Type": "application/json",
         Authorization: "Bearer " + access_token,
       },
     }).then((res) => {
-      console.log(`status code : ${res.status}\nresponse data: ${res.data}`);
-      return res.data;
+      console.log(`status code : ${res.status}`);
     });
   } catch (e) {
     console.error(e);
-    return [];
   }
-  return [];
 }
 
-const UserMainPage = () => {
-  const navigate = useNavigate();
-  const accountNumber = window.localStorage.getItem("accountNumber") ?? "";
-  const [title, setTitle] = useState<string>("정릉지점");
-  const [accountNum, setAccountNum] = useState<string>(
-    `계좌번호 ${window.localStorage.getItem("accountNumber")}`
-  );
-  const [amount, setAmount] = useState<string>(
-    `${window.localStorage.getItem("balance")}`
-  );
-
-  const recentRemittanceAccount = getRecentRemittanceAccount(accountNumber);
-
-  console.log(`recentRemittanceAccount : ${recentRemittanceAccount}`);
-
-  const sampleData = {
-    items: [
-      {
-        id: "김미영",
-        accountNum: "00-00-00",
-        date: "2023-04-05",
-      },
-      {
-        id: "박채연",
-        accountNum: "00-00-00",
-        date: "2023-04-05",
-      },
-      {
-        id: "박보검",
-        accountNum: "00-00-00",
-        date: "2023-04-05",
-      },
-      {
-        id: "짜장면",
-        accountNum: "00-00-00",
-        date: "2023-04-05",
-      },
-      {
-        id: "탕수육",
-        accountNum: "00-00-00",
-        date: "2023-04-05",
-      },
-    ],
-    title: "New",
-    longTitle: "New",
-    titleId: 3,
-    pagingInfo: {
-      totalItems: 278,
-    },
-    status: "Success",
-  };
-
+const Unregistal = () => {
   const setHeaderTitle = useSetRecoilState(headerTitleState);
+  const navigate = useNavigate();
   useEffect(() => {
-    setHeaderTitle(null);
+    setHeaderTitle("탈퇴하기");
   });
-  const handleOnClickLinkBtn = useCallback(
-    (accountNumber: string) => {
-      if (accountNumber == "") navigate(PATH.PASSWORD);
-      else navigate(PATH.TRANSFER);
+  const [isUnregistalBtnActived, setUnregistalBtnActived] = useState(false);
+
+  const handleOnClickUnregisterBtn = useCallback(
+    async (path: string, isActive: boolean) => {
+      if (isActive) {
+        await unregistalTimePay();
+        navigate(path);
+      }
     },
     [navigate]
   );
 
   return (
     <>
-      <div className="main-page">
-        <div className="main-header">
-          <div className="menu">
-            <Tooltip placement="bottom">
-              <BaseMenu />
-            </Tooltip>
-          </div>
-          <img
-            src={IconGear}
-            alt=""
-            onClick={() => handleOnClickLinkBtn(PATH.PROFILEEDIT)}
-          />
-        </div>
-
-        <div className="user-account">
-          <div className="user-info">
-            <div className="title">{title}</div>
-            <div className="account-num">
-              {accountNumber == "" ? accountNumber : accountNum}
-            </div>
-            <div className="main-amount">
-              {accountNumber == "" ? (
-                <span style={{ color: "#787878", paddingLeft: "5px" }}>
-                  현재 계좌가 없어요
-                </span>
-              ) : (
-                <span>
-                  {amount}
-                  <span style={{ color: "#F1AF23", paddingLeft: "5px" }}>
-                    TP
-                  </span>
-                </span>
-              )}
-            </div>
-          </div>
-
+      <div className="unregist-page">
+        <div className="regist-body">
           <div
-            className="bottom-btn"
-            onClick={() => handleOnClickLinkBtn(accountNumber)}
+            style={{
+              textAlign: "center",
+              paddingTop: "30px",
+              lineHeight: "33px",
+            }}
           >
-            {accountNumber == "" ? <div>계좌 생성하기</div> : <div>이체</div>}
+            <div
+              style={{
+                fontSize: "18px",
+                fontFamily: "Lato",
+                filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
+              }}
+            >
+              시간은행을 탈퇴하시겠습니까?
+            </div>
+            <div style={{ color: "#787878", fontSize: "13px" }}>
+              아래 내용을 읽고 동의해주세요
+            </div>
+          </div>
+          <div className="info">
+            <div className="list">
+              {" "}
+              <div>✔️&nbsp;</div> 보유하고 계신 페이가 모두 사라집니다.
+            </div>
+            <br />
+            <div className="list">
+              {" "}
+              <div>✔️&nbsp;</div> 현재 진행중인 거래가 존재할 경우 회원 탈퇴가
+              불가능합니다.
+            </div>
+            <br />
+            <div className="list">
+              {" "}
+              <div>✔️&nbsp;</div> 탈퇴 후에는 시간은행의 서비스를 이용하실 수
+              없습니다. 재가입하셔도 기존 거래이력을 조회하실 수 없습니다.
+            </div>
+            <br />
+          </div>
+          <div style={{ padding: "0 20px" }}>
+            <p className="check">
+              <input
+                type="checkbox"
+                id="chk1"
+                onChange={(e) => setUnregistalBtnActived(e.target.checked)}
+              />
+              <label
+                htmlFor="chk1"
+                style={{
+                  fontFamily: "Lato",
+                  fontSize: "16px",
+                  margin: "5px",
+                  top: "2px",
+                  position: "relative",
+                }}
+              >
+                동의합니다
+              </label>
+            </p>
           </div>
         </div>
-
-        <div className="recent-list">
-          <span className="title">최근 송금한 계좌</span>
-          <div style={{ paddingTop: "20px" }}>
-            {sampleData.items.map((x) => {
-              return (
-                <>
-                  <div className="list">
-                    <div style={{ fontSize: "16px" }}>
-                      <div style={{ display: "flex" }}>
-                        <span style={{ fontWeight: "bold" }}>{x.id}</span> 님{" "}
-                        <br />
-                        <img
-                          src={Fav}
-                          alt=""
-                          style={{ position: "absolute", right: "20px" }}
-                        />
-                      </div>
-                      <span style={{ fontWeight: "bold" }}>계좌번호</span>{" "}
-                      <span style={{ color: "#F1AF23" }}>{x.accountNum}</span>
-                    </div>
-                    <div className="date">{x.date}</div>
-                  </div>
-                </>
-              );
-            })}
-          </div>
+        <div className="finish-btn" style={{ textAlign: "center" }}>
+          <button
+            onClick={() =>
+              handleOnClickUnregisterBtn(PATH.HOME, isUnregistalBtnActived)
+            }
+            color={isUnregistalBtnActived ? "#f1af23" : "#787878"}
+          >
+            탈퇴하기
+          </button>
         </div>
       </div>
     </>
   );
 };
 
-export default UserMainPage;
+export default Unregistal;
