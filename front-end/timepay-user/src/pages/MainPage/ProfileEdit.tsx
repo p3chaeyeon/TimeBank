@@ -9,6 +9,7 @@ import { PATH } from "../../utils/paths";
 import { getFormattedBirthday } from "../SignUp/SignUp";
 
 let countGetUserProfile = 0;
+const accessToken = window.localStorage.getItem("access_token");
 
 const ProfileEdit = () => {
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ const ProfileEdit = () => {
   const [accountNumber, setAccountNumber] = useState("현재 계좌 없음");
   const access_token = window.localStorage.getItem("access_token");
   const [imageSrc, setImageSrc]: any = useState(null);
+  const [isInvalidPassword, setIsInvalidPassword] = useState(false);
+  const [showPasswordError, setShowPasswordError] = useState(false);
   let [isSamePassword, setIsSamePassword] = useState(false);
 
   const setHeaderTitle = useSetRecoilState(headerTitleState);
@@ -33,12 +36,18 @@ const ProfileEdit = () => {
   });
 
   const handleOnClickChangePasswordBtn = useCallback(
-    (password: string, passwordCert: string) => {
-      if (password === passwordCert) {
-        setUserPassWord(password);
+    (
+      beforePassword: string,
+      curPassword: string,
+      passwordCert: string,
+      accountNumber: string
+    ) => {
+      if (curPassword === passwordCert) {
+        setUserPassWord(beforePassword, curPassword, accountNumber);
         initVariables();
       } else {
         setIsSamePassword(true);
+        setShowPasswordError(true);
       }
       console.log(isSamePassword);
     },
@@ -81,22 +90,29 @@ const ProfileEdit = () => {
     }
   }
 
-  async function setUserPassWord(password: string) {
+  async function setUserPassWord(
+    beforePassword: string,
+    curPassword: string,
+    accountNumber: string
+  ) {
     try {
+      console.log(currentPassWord);
+      console.log(password);
+      console.log(accountNumber);
       await axios({
         method: "PUT",
-        url: PATH.SERVER + "/api/v1/users/me",
+        url: PATH.SERVER + "/api/v1/bank/account/password",
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
         data: {
-          name: name,
-          phoneNumber: phoneNumber,
-          gender: gender,
-          birthday: getFormattedBirthday(birthday),
+          beforePassword: beforePassword,
+          afterPassword: curPassword,
+          bankAccountNumber: accountNumber,
         },
       }).then((res) => {
         console.log("status code : " + res.status);
+        console.log(res.data);
       });
     } catch (e) {
       console.error(e);
@@ -132,7 +148,6 @@ const ProfileEdit = () => {
 
   async function getUserAccount() {
     try {
-      const accessToken = window.localStorage.getItem("access_token");
       await axios({
         method: "GET",
         url: PATH.SERVER + "/api/v1/bank/account",
@@ -156,8 +171,33 @@ const ProfileEdit = () => {
     }
   }
 
+  async function checkPasswordValidation(password: string) {
+    try {
+      setIsInvalidPassword(false);
+      await axios({
+        method: "POST",
+        url: PATH.SERVER + "/api/v1/bank/account/account-password-verification",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        data: {
+          bankAccountNumber: accountNumber,
+          password: password,
+        },
+      }).then((res) => {
+        if (res.data.resResultCode === "1") {
+          setCheckPassWordModal(false);
+          setShowPasswordError(false);
+        } else setShowPasswordError(true);
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   const initVariables = () => {
     setCheckPassWordModal(true);
+    setShowPasswordError(false);
     setCurrentPassWord("");
     setPassWord("");
     setPassWordCert("");
@@ -274,13 +314,26 @@ const ProfileEdit = () => {
                           placeholder="현재 비밀번호를 입력해주세요."
                           type="password"
                           maxLength={4}
-                          value={currentPassWord || ""}
                           className={dotStyle ? "inputPass" : "inputBox"}
                           onFocus={(e) => {
                             e.target.placeholder = "";
                             setDotStyle(true);
                           }}
                         />
+                        {showPasswordError ? (
+                          <div
+                            style={{
+                              textAlign: "center",
+                              color: "#FF2E00",
+                              fontFamily: "Lato",
+                              fontSize: "18px",
+                            }}
+                          >
+                            비밀번호 오류. 다시 입력해주세요.
+                          </div>
+                        ) : (
+                          <div></div>
+                        )}
                         <div
                           className="finish-btn"
                           style={{ textAlign: "center" }}
@@ -298,7 +351,7 @@ const ProfileEdit = () => {
                               fontWeight: "700",
                             }}
                             onClick={() => {
-                              setCheckPassWordModal(false);
+                              checkPasswordValidation(currentPassWord);
                             }}
                           >
                             다음
@@ -367,7 +420,7 @@ const ProfileEdit = () => {
                             />
                           </label>
                         </div>
-                        {isSamePassword && (
+                        {showPasswordError ? (
                           <div
                             style={{
                               textAlign: "center",
@@ -378,6 +431,8 @@ const ProfileEdit = () => {
                           >
                             비밀번호 오류. 다시 입력해주세요.
                           </div>
+                        ) : (
+                          <div></div>
                         )}
                         <button
                           style={{
@@ -396,8 +451,10 @@ const ProfileEdit = () => {
                           }}
                           onClick={() => {
                             handleOnClickChangePasswordBtn(
+                              currentPassWord,
                               password,
-                              passwordCert
+                              passwordCert,
+                              accountNumber
                             );
                           }}
                         >
