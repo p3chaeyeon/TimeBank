@@ -14,10 +14,10 @@ function QnaRegister() {
 
     const [qnaTitle, setQnaTitle] = useState("");
     const [qnaDetail, setQnaDetail] = useState("");
-    const accessToken = 1;
+    const accessToken = window.localStorage.getItem("access_token");
 
     const handleRegister = (e:React.MouseEvent<HTMLButtonElement>) => {
-        axios.post(PATH.SERVER + `api/v1/inquiries`, 
+        axios.post(PATH.SERVER + `/api/v1/inquiries`, 
         {
             title: qnaTitle,
             content: qnaDetail,

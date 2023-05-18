@@ -58,7 +58,6 @@ export function InquiryDetail() {
     if (inquiryStatus === '답변 대기') statchanger = 'PENDING';
     else statchanger = 'ANSWERED';
 
-    console.log(inquiryStatus + "reply stat " + replyStatus);
     if (inquiryStatus !== replyStatus) {
       axios.put(PATH.SERVER + `api/v1/inquiries/${inquiryId}/status`,{
         'status': statchanger
@@ -66,7 +65,7 @@ export function InquiryDetail() {
         'Authorization': `Bearer ${accessToken}`        
       }}
       ).then(response => {
-        console.log(response);
+        //console.log(response);
       }).catch(function(error){
         console.log(error);
       });
@@ -76,12 +75,9 @@ export function InquiryDetail() {
     if (commentDetail !== ''){
       axios.post(PATH.SERVER + `api/v1/inquiries/${inquiryId}/comments`,{
         'content': commentDetail,
-        'userId': adminId,
-        'inquiryId': inquiryId,
-        'commentDate': "2023-05-13T12:39:26.556Z"
-      },{
-
-      })
+      },{headers:{
+        'Authorization': `Bearer ${accessToken}` 
+      }});
     }
   };
 

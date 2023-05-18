@@ -14,8 +14,8 @@ function TransferPassword() {
     const account = location.state.account;
     const amount = location.state.amount;
     const name = location.state.name;
-    const accessToken = 1;
-    const userAccount = "123456";
+    const accessToken = window.localStorage.getItem("access_token");
+    const userAccount = window.localStorage.getItem("accountNumber");
 
     const navigate = useNavigate();
 
@@ -26,7 +26,7 @@ function TransferPassword() {
     const handleTransfer = async () => {
 
         try{
-        await axios.post(PATH.SERVER + `api/v1/bank/account/transfer`, {
+        await axios.post(PATH.SERVER + `/api/v1/bank/account/transfer`, {
             senderBankAccountNumber: userAccount,
             receiverBankAccountNumber: account,
             amount: amount,

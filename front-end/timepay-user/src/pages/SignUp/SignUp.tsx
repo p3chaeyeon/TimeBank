@@ -44,7 +44,7 @@ async function signByUserData(
   }
 }
 
-const getFormattedBirthday = (birthday: String) => {
+export const getFormattedBirthday = (birthday: String) => {
   const year = birthday.slice(0, 4);
   const month = birthday.slice(4, 6);
   const day = birthday.slice(6, 8);

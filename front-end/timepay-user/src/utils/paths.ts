@@ -14,5 +14,5 @@ export const PATH = {
   QNAREGISTER: "/qna/register",
   QNAMAIN: "/qna/main",
   QNADETAIL: "/qna/detail/:no",
-  SERVER: "http://api.kookmin-timebank.com",
+  SERVER: "https://api.kookmin-timebank.com",
 };

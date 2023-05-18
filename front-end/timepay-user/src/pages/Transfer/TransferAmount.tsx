@@ -16,8 +16,11 @@ function TransferAmount() {
     const location = useLocation();
     const account = location.state.account;
     const name = location.state.owner;
-    const balance = 1000;
-    const accessToken = 1;
+    const accessToken = location.state.accessToken;
+    const getbalance = window.localStorage.getItem("balance");
+
+    const balance = getbalance === null ? "0" : getbalance;
+
 
     const [amount, setAmount] = useState(0);
 
@@ -29,7 +32,7 @@ function TransferAmount() {
     const [errorModal, setErrorModal] = useState(false);
 
     const handleNext = (amount : number) =>{
-        if(amount===0 || isNaN(amount) || amount > balance){
+        if(amount===0 || isNaN(amount) || amount > parseInt(balance)){
             setError("금액을 다시 확인해주세요.")
             setErrorModal(true);
         }

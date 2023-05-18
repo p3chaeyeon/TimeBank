@@ -12,21 +12,22 @@ function TransferAccount() {
     const [owner, setOwner] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    const accessToken = 1;
+
+    const accessToken = window.localStorage.getItem("access_token")
 
     const [accountExist, setAccountExist] = useState(false);
 
     const handleNext =  async () =>{
-        await axios.get(PATH.SERVER + `api/v1/bank/account/${account}`, {
+        await axios.get(PATH.SERVER + `/api/v1/bank/account/${account}`, {
             headers:{
             'Authorization':`Bearer ${accessToken}`
             }
         }).
         then(response => {
-            console.log(response.data);
+            //console.log(response.data);
             if(response.status === 200) {
                 setAccountExist(true);
-                navigate("/transfer/amount", {state : {account: account, owner: response.data['ownerName']}});
+                navigate("/transfer/amount", {state : {accessToken : accessToken, account: account, owner: response.data['ownerName']}});
             }
         }).
         catch(function(error){
