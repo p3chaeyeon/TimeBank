@@ -1,43 +1,64 @@
-import { useEffect, useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { headerTitleState } from "../../states/uiState";
-import axios from "axios";
-import { PATH } from "../../utils/paths";
+import { useEffect, useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { headerTitleState } from '../../states/uiState';
+import axios from 'axios';
+import { PATH } from '../../utils/paths';
+
+async function getTimepayAccessToken(kakaoAccesToken: string) {
+  try {
+    const response = await axios({
+      method: 'POST',
+      url: PATH.SERVER + '/api/v1/users/login',
+      data: {
+        authenticationType: 'social',
+        socialPlatformType: 'KAKAO',
+        accessToken: kakaoAccesToken,
+      },
+      headers: {
+        Authorization: `Bearer ${kakaoAccesToken}`,
+      },
+    });
+
+    const data = response.data;
+    window.localStorage.setItem('access_token', data.accessToken);
+  } catch (e) {
+    console.error(e);
+  }
+}
 
 async function signByUserData(
   name: String,
   phoneNumber: String,
   gender: String,
-  birthday: String
+  birthday: String,
 ) {
   try {
-    const access_token = window.localStorage.getItem("access_token")
-      ? window.localStorage.getItem("access_token")
-      : "";
-    const kakao_access_token =
-      window.localStorage.getItem("kakao_access_token");
-    const formattedBirthday = getFormattedBirthday(birthday);
-    console.log(`${name}, ${phoneNumber}, ${gender}, ${formattedBirthday}`);
-    if (access_token != "") {
-      await axios({
-        method: "POST",
-        url: PATH.SERVER + "/api/v1/users/register",
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-        data: {
-          authenticationType: "social",
-          socialPlatformType: "KAKAO",
-          accessToken: kakao_access_token,
-          name: name,
-          phoneNumber: phoneNumber,
-          gender: gender,
-          birthday: formattedBirthday,
-        },
-      }).then((res) => {
-        console.log("status code : " + res.status);
-      });
+    const kakaoAccessToken = window.localStorage.getItem('kakao_access_token');
+    if (kakaoAccessToken == null) {
+      window.location.href = './IntroPage';
+      return;
+    }
+
+    const response = await axios({
+      method: 'POST',
+      url: PATH.SERVER + '/api/v1/users/register',
+      data: {
+        authenticationType: 'social',
+        socialPlatformType: 'KAKAO',
+        accessToken: kakaoAccessToken,
+        name: name,
+        phoneNumber: phoneNumber,
+        gender: gender,
+        birthday: getFormattedBirthday(birthday),
+      },
+    });
+
+    console.log('signByUserData response : ', response);
+
+    if (response.status === 201) {
+      await getTimepayAccessToken(kakaoAccessToken);
+      window.location.href = './main';
     }
   } catch (e) {
     console.error(e);
@@ -54,10 +75,10 @@ export const getFormattedBirthday = (birthday: String) => {
 
 const SignUp = () => {
   const navigate = useNavigate();
-  let [name, setName] = useState("");
-  let [phoneNumber, setPhoneNumber] = useState("");
-  let [gender, setGender] = useState("MALE");
-  let [birthday, setBirthday] = useState("");
+  let [name, setName] = useState('');
+  let [phoneNumber, setPhoneNumber] = useState('');
+  let [gender, setGender] = useState('MALE');
+  let [birthday, setBirthday] = useState('');
 
   const setHeaderTitle = useSetRecoilState(headerTitleState);
   useEffect(() => {
@@ -70,7 +91,7 @@ const SignUp = () => {
       name: string,
       phoneNumber: string,
       gender: string,
-      birthday: string
+      birthday: string,
     ) => {
       console.log(`${name} ${phoneNumber} ${birthday} ${gender}`);
       if (name.length > 0 && phoneNumber.length > 0 && birthday.length > 0) {
@@ -78,12 +99,12 @@ const SignUp = () => {
         navigate(path);
       }
     },
-    [navigate]
+    [navigate],
   );
 
   const onNumberChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const onlyNumber = value.replace(/[^0-9]/g, "");
+    const onlyNumber = value.replace(/[^0-9]/g, '');
     setPhoneNumber(onlyNumber);
   };
 
@@ -100,7 +121,7 @@ const SignUp = () => {
               setName(e.target.value);
             }}
           />
-          <label style={{ marginTop: "10px" }}>전화번호</label>
+          <label style={{ marginTop: '10px' }}>전화번호</label>
           <input
             type="text"
             placeholder="숫자 11자리"
@@ -119,7 +140,7 @@ const SignUp = () => {
             <option value="MALE">남성</option>
             <option value="FEMALE">여성</option>
           </select>
-          <label style={{ marginTop: "10px" }}>생년월일</label>
+          <label style={{ marginTop: '10px' }}>생년월일</label>
           <input
             type="text"
             placeholder="YYYY-MM-DD"

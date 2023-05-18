@@ -7,45 +7,28 @@ import KaKaoImg from '../../assets/images/kakao_login_large_wide.svg';
 import axios from 'axios';
 import { PATH } from '../../utils/paths';
 
-async function getTimepayAccessToken(kakaoAccesToken: string) {
+async function checkIsSignUpedUser() {
   try {
-    console.log(kakaoAccesToken);
-    await axios({
+    const kakaoAccessToken = window.localStorage.getItem('kakao_access_token');
+    if (kakaoAccessToken == null) {
+      return false;
+    }
+
+    const response = await axios({
       method: 'POST',
       url: PATH.SERVER + '/api/v1/users/login',
       data: {
         authenticationType: 'social',
         socialPlatformType: 'KAKAO',
-        accessToken: kakaoAccesToken,
+        accessToken: kakaoAccessToken,
       },
-      headers: {
-        Authorization: `Bearer ${kakaoAccesToken}`,
-      },
-    }).then((res) => {
-      console.log(`status code : ${res.status}\nresponse data: ${res.data}`);
-      const data = res.data;
-      window.localStorage.setItem('access_token', data.accessToken);
     });
-  } catch (e) {
-    console.error(e);
-  }
-}
 
-async function checkIsSignUpedUser() {
-  try {
-    const accessToken = window.localStorage.getItem('access_token');
-    await axios({
-      method: 'GET',
-      url: PATH.SERVER + '/api/v1/users/me',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }).then((res) => {
-      console.log(`status code : ${res.status}\nresponse data: ${res.data}`);
-      return res.status == 200;
-    });
+    const data = response.data;
+    window.localStorage.setItem('access_token', data.accessToken);
+
+    return response.status === 200;
   } catch (e) {
-    console.error(e);
     return false;
   }
 }
@@ -57,12 +40,12 @@ const kakaoLogin = () => {
       console.log(authObj);
       window.Kakao.API.request({
         url: '/v2/user/me',
-        success: async (res) => {
+        success: async () => {
           window.localStorage.setItem(
             'kakao_access_token',
             Kakao.Auth.getAccessToken(),
           );
-          await getTimepayAccessToken(Kakao.Auth.getAccessToken());
+
           if (await checkIsSignUpedUser()) {
             window.location.href = './main';
           } else {
