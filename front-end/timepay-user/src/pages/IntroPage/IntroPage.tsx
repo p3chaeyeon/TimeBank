@@ -1,21 +1,21 @@
-import { useEffect } from "react";
-import { useSetRecoilState } from "recoil";
-import { headerTitleState } from "../../states/uiState";
-import MainImg from "../../assets/images/intro_page.svg";
-import Logo from "../../assets/images/timepay_logo.svg";
-import KaKaoImg from "../../assets/images/kakao_login_large_wide.svg";
-import axios from "axios";
-import { PATH } from "../../utils/paths";
+import { useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { headerTitleState } from '../../states/uiState';
+import MainImg from '../../assets/images/intro_page.svg';
+import Logo from '../../assets/images/timepay_logo.svg';
+import KaKaoImg from '../../assets/images/kakao_login_large_wide.svg';
+import axios from 'axios';
+import { PATH } from '../../utils/paths';
 
 async function getTimepayAccessToken(kakaoAccesToken: string) {
   try {
     console.log(kakaoAccesToken);
     await axios({
-      method: "POST",
-      url: PATH.SERVER + "/api/v1/users/login",
+      method: 'POST',
+      url: PATH.SERVER + '/api/v1/users/login',
       data: {
-        authenticationType: "social",
-        socialPlatformType: "KAKAO",
+        authenticationType: 'social',
+        socialPlatformType: 'KAKAO',
         accessToken: kakaoAccesToken,
       },
       headers: {
@@ -24,7 +24,7 @@ async function getTimepayAccessToken(kakaoAccesToken: string) {
     }).then((res) => {
       console.log(`status code : ${res.status}\nresponse data: ${res.data}`);
       const data = res.data;
-      window.localStorage.setItem("access_token", data.accessToken);
+      window.localStorage.setItem('access_token', data.accessToken);
     });
   } catch (e) {
     console.error(e);
@@ -33,16 +33,16 @@ async function getTimepayAccessToken(kakaoAccesToken: string) {
 
 async function checkIsSignUpedUser() {
   try {
-    const accessToken = window.localStorage.getItem("access_token");
+    const accessToken = window.localStorage.getItem('access_token');
     await axios({
-      method: "GET",
-      url: PATH.SERVER + "/api/v1/users/me",
+      method: 'GET',
+      url: PATH.SERVER + '/api/v1/users/me',
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     }).then((res) => {
       console.log(`status code : ${res.status}\nresponse data: ${res.data}`);
-      return res.status == 204;
+      return res.status == 200;
     });
   } catch (e) {
     console.error(e);
@@ -52,19 +52,22 @@ async function checkIsSignUpedUser() {
 
 const kakaoLogin = () => {
   window.Kakao.Auth.login({
-    scope: "profile_nickname, profile_image",
+    scope: 'profile_nickname, profile_image',
     success: function (authObj) {
       console.log(authObj);
       window.Kakao.API.request({
-        url: "/v2/user/me",
+        url: '/v2/user/me',
         success: async (res) => {
           window.localStorage.setItem(
-            "kakao_access_token",
-            Kakao.Auth.getAccessToken()
+            'kakao_access_token',
+            Kakao.Auth.getAccessToken(),
           );
           await getTimepayAccessToken(Kakao.Auth.getAccessToken());
-          if (await checkIsSignUpedUser()) window.location.href = "./SignUp";
-          else window.location.href = "./main";
+          if (await checkIsSignUpedUser()) {
+            window.location.href = './main';
+          } else {
+            window.location.href = './SignUp';
+          }
         },
       });
     },
@@ -94,7 +97,7 @@ const IntroPage = () => {
         </div>
         <img src={MainImg} alt="" className="main-img" />
         <div className="kakao-img" onClick={kakaoLogin}>
-          {" "}
+          {' '}
           {/* kakaologin */}
           <img src={KaKaoImg} alt="" />
         </div>
