@@ -133,7 +133,7 @@ const SignUp = () => {
           />
           <label>성별</label>
           <select
-            id="dropdown"
+            id="dropbox"
             value={gender}
             onChange={(e) => setGender(e.target.value)}
           >
@@ -143,7 +143,7 @@ const SignUp = () => {
           <label style={{ marginTop: '10px' }}>생년월일</label>
           <input
             type="text"
-            placeholder="YYYY-MM-DD"
+            placeholder="숫자 8자리"
             maxLength={8}
             onChange={(e) => {
               setBirthday(e.target.value);
