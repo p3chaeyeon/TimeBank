@@ -1,8 +1,8 @@
-package kookmin.software.capstone2023.timebank.presentation.api.v1
+package kookmin.software.capstone2023.timebank.presentation.api.v1.manager
 
 import kookmin.software.capstone2023.timebank.application.service.auth.AccountLoginService
-import kookmin.software.capstone2023.timebank.presentation.api.v1.model.ManagerLoginRequestData
-import kookmin.software.capstone2023.timebank.presentation.api.v1.model.ManagerLoginResponseData
+import kookmin.software.capstone2023.timebank.presentation.api.v1.manager.model.ManagerLoginRequestData
+import kookmin.software.capstone2023.timebank.presentation.api.v1.manager.model.ManagerLoginResponseData
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

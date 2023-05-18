@@ -20,7 +20,7 @@ class DefaultUserAuthenticator(
         val account = accountJpaRepository.findByIdOrNull(claims.accountId)
             ?: throw UnauthorizedException(message = null)
 
-        if (user.accountId != account.id) {
+        if (user.account.id != account.id) {
             throw UnauthorizedException(message = null)
         }
 

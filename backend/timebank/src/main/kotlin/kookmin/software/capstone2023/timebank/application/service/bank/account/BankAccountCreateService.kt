@@ -5,9 +5,12 @@ import kookmin.software.capstone2023.timebank.application.exception.NotFoundExce
 import kookmin.software.capstone2023.timebank.domain.model.Account
 import kookmin.software.capstone2023.timebank.domain.model.AccountType
 import kookmin.software.capstone2023.timebank.domain.model.BankAccount
+import kookmin.software.capstone2023.timebank.domain.model.BankBranch
 import kookmin.software.capstone2023.timebank.domain.model.OwnerType
 import kookmin.software.capstone2023.timebank.domain.repository.AccountJpaRepository
 import kookmin.software.capstone2023.timebank.domain.repository.BankAccountJpaRepository
+import kookmin.software.capstone2023.timebank.domain.repository.BankBranchJpaRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
@@ -17,53 +20,46 @@ import java.time.LocalDateTime
 class BankAccountCreateService(
     private val bankAcoountReadService: BankAccountReadService,
     private val bankAccountRepository: BankAccountJpaRepository,
+    private val bankBranchJpaRepository: BankBranchJpaRepository,
     private val AccountRepository: AccountJpaRepository,
 ) {
     @Transactional
     fun createBankAccount(
         accountId: Long,
         password: String,
-        branchId: Long = 0,
+        branchId: Long,
     ): CreatedBankAccount {
-        // 계정이 존재하는지 확인
-        val account: Account = getAccountByAccountId(accountId)
-        var bankAccount: BankAccount
+        val account: Account = AccountRepository.findByIdOrNull(accountId)
+            ?: throw NotFoundException(message = "계정을 찾을 수 없습니다.")
 
-        if (account.type == AccountType.INDIVIDUAL) {
-            // PIN 번호와 함께 계정을 생성하여 저장합니다.
-            bankAccount = BankAccount(
-                accountId = account.id,
-                branchId = branchId,
-                balance = BigDecimal(300.0),
-                ownerName = account.name,
-                ownerType = OwnerType.USER,
-                accountNumber = generateAccountNumber(accountId, branchId),
-                password = password,
-            )
-        } else {
-            // PIN 번호와 함께 계정을 생성하여 저장합니다.
-            bankAccount = BankAccount(
-                accountId = account.id,
-                branchId = branchId,
-                balance = BigDecimal.ZERO,
-                ownerName = account.name,
-                ownerType = OwnerType.BRANCH,
-                accountNumber = generateAccountNumber(accountId, branchId),
-                password = password,
-            )
-        }
+        val branch: BankBranch = bankBranchJpaRepository.findByIdOrNull(branchId)
+            ?: throw NotFoundException(message = "지점이 존재하지 않습니다.")
+
+        val bankAccount = BankAccount(
+            account = account,
+            branch = branch,
+            balance = BigDecimal(300.0),
+            ownerName = account.name,
+            ownerType = if (account.type == AccountType.INDIVIDUAL) {
+                OwnerType.USER
+            } else {
+                OwnerType.BRANCH
+            },
+            accountNumber = generateAccountNumber(accountId, branchId),
+            password = password,
+        )
 
         // 계좌 생성
         val createdBankAccount = bankAccountRepository.save(bankAccount)
 
         return CreatedBankAccount(
             bankAccountId = createdBankAccount.id,
-            branchId = createdBankAccount.branchId,
+            branchId = createdBankAccount.branch.id,
             balance = createdBankAccount.balance,
-            createdAt = createdBankAccount.createdAt,
             ownerName = createdBankAccount.ownerName,
             ownerType = createdBankAccount.ownerType,
             bankAccountNumber = createdBankAccount.accountNumber,
+            createdAt = createdBankAccount.createdAt,
         )
     }
 
@@ -80,10 +76,6 @@ class BankAccountCreateService(
         }
 
         return accountNumber
-    }
-
-    private fun getAccountByAccountId(accountId: Long): Account {
-        return AccountRepository.getAccountById(accountId) ?: throw NotFoundException(message = "계정을 찾을 수 없습니다.")
     }
 
     data class CreatedBankAccount(
