@@ -8,6 +8,8 @@ import axios from "axios";
 import { PATH } from "../../utils/paths";
 import { getFormattedBirthday } from "../SignUp/SignUp";
 
+let countGetUserProfile = 0;
+
 const ProfileEdit = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -67,12 +69,15 @@ const ProfileEdit = () => {
       }).then((res) => {
         console.log("getUserProfile status code : " + res.status);
         setName(res.data.name);
+        console.log(res.data.gender);
         setGender(res.data.gender);
         setPhoneNumber(res.data.phoneNumber);
         setBirthday(res.data.birthday.replaceAll("-", ""));
+        return gender;
       });
     } catch (e) {
       console.error(e);
+      return "MALE";
     }
   }
 
@@ -159,8 +164,11 @@ const ProfileEdit = () => {
     setOpen(false);
   };
 
-  getUserProfile();
-  getUserAccount();
+  if (countGetUserProfile == 0 || name === "이름") {
+    getUserProfile();
+    getUserAccount();
+    countGetUserProfile++;
+  }
 
   return (
     <>
@@ -198,7 +206,11 @@ const ProfileEdit = () => {
             </div>
             <div className="gender">
               성별
-              <select id="dropdown" onChange={(e) => setGender(e.target.value)}>
+              <select
+                id="dropdown"
+                onChange={(e) => setGender(e.target.value)}
+                value={gender}
+              >
                 <option value="MALE">남성</option>
                 <option value="FEMALE">여성</option>
               </select>
