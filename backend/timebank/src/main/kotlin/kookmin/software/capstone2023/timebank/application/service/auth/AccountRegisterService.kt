@@ -44,7 +44,7 @@ class AccountRegisterService(
         val user = userJpaRepository.save(
             User(
                 authenticationType = authentication.type,
-                accountId = account.id,
+                account = account,
                 name = name,
                 phoneNumber = phoneNumber,
                 gender = gender,

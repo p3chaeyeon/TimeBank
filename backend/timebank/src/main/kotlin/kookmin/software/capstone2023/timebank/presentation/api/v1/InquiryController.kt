@@ -33,7 +33,7 @@ class InquiryController(
         @RequestAttribute(RequestAttributes.USER_CONTEXT) userContext: UserContext,
         @RequestBody request: InquiryService.InquiryCreateRequest,
     ): InquiryService.InquiryDto {
-        return inquiryService.createInquiry(request, userContext.userId)
+        return inquiryService.createInquiry(request, userContext)
     }
 
     /**

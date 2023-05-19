@@ -1,19 +1,24 @@
 package kookmin.software.capstone2023.timebank.domain.model
 
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 import java.time.LocalDateTime
 
 @Entity
 @Table(name = "account")
+@Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE account SET deleted_at = now() WHERE id = ?")
 class Account(
     @Id
@@ -32,6 +37,19 @@ class Account(
 
     @Column(nullable = true, updatable = true)
     var deletedAt: LocalDateTime? = null,
+
+    @OneToMany(
+        mappedBy = "account",
+        fetch = FetchType.LAZY,
+    )
+    val users: Set<User> = emptySet(),
+
+    @OneToMany(
+        mappedBy = "account",
+        fetch = FetchType.LAZY,
+        cascade = [CascadeType.ALL],
+    )
+    val bankAccounts: Set<BankAccount> = emptySet(),
 ) : BaseTimeEntity() {
     fun updateName(name: String) {
         this.name = name

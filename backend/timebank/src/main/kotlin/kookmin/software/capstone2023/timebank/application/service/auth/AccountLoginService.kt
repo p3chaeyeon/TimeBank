@@ -37,7 +37,7 @@ class AccountLoginService(
         val user = userJpaRepository.findByIdOrNull(userId)
             ?: throw UnauthorizedException(message = "등록되지 않은 사용자입니다.")
 
-        val account = accountJpaRepository.findByIdOrNull(user.accountId)
+        val account = accountJpaRepository.findByIdOrNull(user.account.id)
             ?: throw UnauthorizedException(message = "등록되지 않은 사용자입니다.")
 
         authenticationRequest.accountType?.let {
@@ -50,7 +50,7 @@ class AccountLoginService(
 
         val accessToken = accessTokenService.issue(
             userId = user.id,
-            accountId = user.accountId,
+            accountId = user.account.id,
             expiresAt = expiresAt,
         )
 

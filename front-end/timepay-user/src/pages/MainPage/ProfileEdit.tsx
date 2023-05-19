@@ -6,30 +6,10 @@ import Profile from "../../assets/images/profile.svg";
 import Sheet from "react-modal-sheet";
 import axios from "axios";
 import { PATH } from "../../utils/paths";
-import { Avatar } from 'antd'
+import { getFormattedBirthday } from "../SignUp/SignUp";
 
-async function setUserPassWord(password: string) {
-  try {
-    const timepayAccessToken = window.localStorage.getItem(
-      "timepay_access_token"
-    );
-    await axios
-      .post(PATH.SERVER + "/api/v1/account", {
-        accessToken: timepayAccessToken,
-        password: password,
-      })
-      .then((res) => {
-        const {
-          data: { id: accountId, number: accountNumber, balance: balance },
-        } = res;
-        window.localStorage.setItem("account_id", accountId);
-        window.localStorage.setItem("account_number", accountNumber);
-        window.localStorage.setItem("balance", balance);
-      });
-  } catch (e) {
-    console.error(e);
-  }
-}
+let countGetUserProfile = 0;
+const accessToken = window.localStorage.getItem("access_token");
 
 const ProfileEdit = () => {
   const navigate = useNavigate();
@@ -39,48 +19,196 @@ const ProfileEdit = () => {
   const [password, setPassWord] = useState("");
   const [passwordCert, setPassWordCert] = useState("");
   const [dotStyle, setDotStyle] = useState(false);
-  
+  const [name, setName] = useState("이름");
+  const [phoneNumber, setPhoneNumber] = useState(" 전화번호");
+  const [gender, setGender] = useState("성별");
+  const [birthday, setBirthday] = useState("생년월일");
+  const [accountNumber, setAccountNumber] = useState("현재 계좌 없음");
+  const access_token = window.localStorage.getItem("access_token");
   const [imageSrc, setImageSrc]: any = useState(null);
-
-  const onUpload = (e: any) => {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-
-      return new Promise<void>((resolve) => { 
-          reader.onload = () => {	
-              setImageSrc(reader.result || null); // 파일의 컨텐츠
-              resolve();
-          };
-      });
-  }
-
+  const [isInvalidPassword, setIsInvalidPassword] = useState(false);
+  const [showPasswordError, setShowPasswordError] = useState(false);
   let [isSamePassword, setIsSamePassword] = useState(false);
 
   const setHeaderTitle = useSetRecoilState(headerTitleState);
   useEffect(() => {
     setHeaderTitle("내 정보 수정");
   });
+
   const handleOnClickChangePasswordBtn = useCallback(
-    (password: string, passwordCert: string) => {
-      if (password === passwordCert) {
-        setUserPassWord(password);
+    (
+      beforePassword: string,
+      curPassword: string,
+      passwordCert: string,
+      accountNumber: string
+    ) => {
+      if (curPassword === passwordCert) {
+        setUserPassWord(beforePassword, curPassword, accountNumber);
         initVariables();
       } else {
         setIsSamePassword(true);
+        setShowPasswordError(true);
       }
       console.log(isSamePassword);
     },
     [navigate]
   );
 
+  const handleOnClickUpdateBtn = useCallback(
+    async (
+      name: string,
+      phoneNumber: string,
+      gender: string,
+      birthday: string
+    ) => {
+      await updateUserProfile(name, phoneNumber, gender, birthday);
+      navigate(PATH.MAIN);
+    },
+    [navigate]
+  );
+
+  async function getUserProfile() {
+    try {
+      await axios({
+        method: "GET",
+        url: PATH.SERVER + "/api/v1/users/me",
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }).then((res) => {
+        console.log("getUserProfile status code : " + res.status);
+        setName(res.data.name);
+        console.log(res.data.gender);
+        setGender(res.data.gender);
+        setPhoneNumber(res.data.phoneNumber);
+        setBirthday(res.data.birthday.replaceAll("-", ""));
+        return gender;
+      });
+    } catch (e) {
+      console.error(e);
+      return "MALE";
+    }
+  }
+
+  async function setUserPassWord(
+    beforePassword: string,
+    curPassword: string,
+    accountNumber: string
+  ) {
+    try {
+      console.log(currentPassWord);
+      console.log(password);
+      console.log(accountNumber);
+      await axios({
+        method: "PUT",
+        url: PATH.SERVER + "/api/v1/bank/account/password",
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+        data: {
+          beforePassword: beforePassword,
+          afterPassword: curPassword,
+          bankAccountNumber: accountNumber,
+        },
+      }).then((res) => {
+        console.log("status code : " + res.status);
+        console.log(res.data);
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function updateUserProfile(
+    name: string,
+    phoneNumber: string,
+    gender: string,
+    birthday: string
+  ) {
+    try {
+      await axios({
+        method: "PUT",
+        url: PATH.SERVER + "/api/v1/users/me",
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+        data: {
+          name: name,
+          phoneNumber: phoneNumber,
+          gender: gender,
+          birthday: getFormattedBirthday(birthday),
+        },
+      }).then((res) => {
+        console.log("updateUserProfile status code : " + res.status);
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function getUserAccount() {
+    try {
+      await axios({
+        method: "GET",
+        url: PATH.SERVER + "/api/v1/bank/account",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }).then((res) => {
+        console.log(
+          `getUserAccount status code : ${res.status}\ndata : ${res.data}`
+        );
+        let index = 0;
+        res.data.map((account: any) => {
+          if (index > 0) return;
+          setAccountNumber(account.bankAccountNumber);
+          index++;
+        });
+      });
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  }
+
+  async function checkPasswordValidation(password: string) {
+    try {
+      setIsInvalidPassword(false);
+      await axios({
+        method: "POST",
+        url: PATH.SERVER + "/api/v1/bank/account/account-password-verification",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        data: {
+          bankAccountNumber: accountNumber,
+          password: password,
+        },
+      }).then((res) => {
+        if (res.data.resResultCode === "1") {
+          setCheckPassWordModal(false);
+          setShowPasswordError(false);
+        } else setShowPasswordError(true);
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   const initVariables = () => {
     setCheckPassWordModal(true);
+    setShowPasswordError(false);
     setCurrentPassWord("");
     setPassWord("");
     setPassWordCert("");
     setOpen(false);
   };
+
+  if (countGetUserProfile == 0 || name === "이름") {
+    getUserProfile();
+    getUserAccount();
+    countGetUserProfile++;
+  }
 
   return (
     <>
@@ -89,16 +217,16 @@ const ProfileEdit = () => {
           <div className="user-title">
             <div className="circle-profile">
               <img
-                // src={imageSrc} 
+                // src={imageSrc}
                 src={Profile}
                 alt=""
-                style={{ top: "3px", position: "relative", width:"30px" }}
+                style={{ top: "3px", position: "relative", width: "30px" }}
               />
               {/* <label htmlFor="file" className="input-file-button"></label> 
               <input type="file" id="file" accept="image/*" onChange={e => onUpload(e)} style={{display:"none"}}></input> */}
             </div>
             <div className="name-title">
-              홍길동
+              {name}
               <br />
               <span style={{ color: "#cdcdcd", fontSize: "16px" }}>
                 #123456789
@@ -107,16 +235,35 @@ const ProfileEdit = () => {
           </div>
 
           <div className="user-info">
-            <div className="name">
-              이름 <input type="text" placeholder="이름" />
+            <div className="phone">
+              전화번호
+              <input
+                type="text"
+                maxLength={11}
+                placeholder={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
             </div>
             <div className="gender">
-              성별 <input type="text" placeholder="성별" />
+              성별
+              <select
+                id="dropdown"
+                onChange={(e) => setGender(e.target.value)}
+                value={gender}
+              >
+                <option value="MALE">남성</option>
+                <option value="FEMALE">여성</option>
+              </select>
             </div>
-            <div className="age">
-              나이 <input type="text" placeholder="나이" />
+            <div className="birth-date">
+              생년월일
+              <input
+                type="text"
+                placeholder={birthday}
+                maxLength={8}
+                onChange={(e) => setBirthday(e.target.value)}
+              />
             </div>
-            
           </div>
 
           <div className="user-account">
@@ -129,12 +276,14 @@ const ProfileEdit = () => {
                   marginLeft: "25px",
                 }}
               >
-                00-00-00
+                {accountNumber}
               </span>
               <span
-                style={{ float: "right", fontSize: "13px", color: "#F1AF23" }}
-                onClick={() => {setOpen(true); 
-                  setDotStyle(false);}}
+                style={{ float: "right", fontSize: "15px", color: "#F1AF23" }}
+                onClick={() => {
+                  setOpen(true);
+                  setDotStyle(false);
+                }}
               >
                 비밀번호 변경
               </span>
@@ -149,22 +298,60 @@ const ProfileEdit = () => {
                   <Sheet.Content>
                     {checkPassWordModal ? (
                       <div id="check_password_modal_sheet">
-                        <div style={{padding:"20px 30px"}}>
-                          <span style={{fontFamily:"Lato", fontSize:"22px", fontWeight:"500"}}>현재 비밀번호</span>
+                        <div style={{ padding: "20px 30px" }}>
+                          <span
+                            style={{
+                              fontFamily: "Lato",
+                              fontSize: "22px",
+                              fontWeight: "500",
+                            }}
+                          >
+                            현재 비밀번호
+                          </span>
                         </div>
                         <input
                           onChange={(e) => setCurrentPassWord(e.target.value)}
                           placeholder="현재 비밀번호를 입력해주세요."
                           type="password"
                           maxLength={4}
-                          value={currentPassWord || ""}
-                          className={dotStyle? "inputPass":"inputBox"}
-                          onFocus={(e) => {e.target.placeholder = ""; setDotStyle(true)}}
+                          className={dotStyle ? "inputPass" : "inputBox"}
+                          onFocus={(e) => {
+                            e.target.placeholder = "";
+                            setDotStyle(true);
+                          }}
                         />
-                        <div className="finish-btn" style={{ textAlign: "center" }}>
+                        {showPasswordError ? (
+                          <div
+                            style={{
+                              textAlign: "center",
+                              color: "#FF2E00",
+                              fontFamily: "Lato",
+                              fontSize: "18px",
+                            }}
+                          >
+                            비밀번호 오류. 다시 입력해주세요.
+                          </div>
+                        ) : (
+                          <div></div>
+                        )}
+                        <div
+                          className="finish-btn"
+                          style={{ textAlign: "center" }}
+                        >
                           <button
-                            style={{ marginTop: "60%", backgroundColor:"#f1af23", color:"#fff", padding: "13px 35px", borderRadius:"35px", fontFamily:"Lato", fontSize:"20px", boxShadow:"0px 4px 4px rgba(0, 0, 0, 0.25)", fontWeight:"700"}}
-                            onClick={() => {setCheckPassWordModal(false);
+                            style={{
+                              marginTop: "60%",
+                              backgroundColor: "#f1af23",
+                              color: "#fff",
+                              padding: "13px 35px",
+                              borderRadius: "35px",
+                              fontFamily: "Lato",
+                              fontSize: "20px",
+                              boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                              fontWeight: "700",
+                            }}
+                            onClick={() => {
+                              checkPasswordValidation(currentPassWord);
                             }}
                           >
                             다음
@@ -172,10 +359,24 @@ const ProfileEdit = () => {
                         </div>
                       </div>
                     ) : (
-                      <div id="change_password_modal_sheet" style={{display:"flex", flexDirection:"column"}}>
-                        <div style={{padding:"20px 30px"}}>
-                          <label style={{fontFamily:"Lato", fontSize:"22px", fontWeight:"500", lineHeight:"2em"}}>
+                      <div
+                            id="change_password_modal_sheet"
+                            style={{ display: "flex", flexDirection: "column",textAlign: "center" }}
+                        >
+                          <div style={{ padding: "20px 30px" }}>
+                            <label
+                                style={{
+                                  alignItems: "center",
+                                  fontFamily: "Lato",
+                                  fontSize: "22px",
+                                  fontWeight: "500",
+                                  lineHeight: "2em",
+                                  textAlign: "center",
+                                  margin: "auto"
+                                }}
+                            >
                             변경할 비밀번호
+
                             <input
                               type="password"
                               value={password}
@@ -183,16 +384,26 @@ const ProfileEdit = () => {
                               onChange={(e) => {
                                 setPassWord(e.target.value);
                               }}
-                              className={dotStyle? "inputPass":"inputBox"}
-                              onFocus={(e) => {e.target.placeholder = ""; setDotStyle(true)}}
-                              style={{position:"relative"}}
+                              className={dotStyle ? "inputPass" : "inputBox"}
+                              onFocus={(e) => {
+                                e.target.placeholder = "";
+                                setDotStyle(true);
+                              }}
+                                style={{ position: "relative"}}
                             />
                           </label>
                         </div>
 
-                        <div style={{padding:"20px 30px"}}>
-                          <label style={{fontFamily:"Lato", fontSize:"22px", fontWeight:"500", lineHeight:"2em"}}>
-                                변경할 비밀번호 확인
+                        <div style={{ padding: "20px 30px" }}>
+                          <label
+                            style={{
+                              fontFamily: "Lato",
+                              fontSize: "22px",
+                              fontWeight: "500",
+                              lineHeight: "2em",
+                            }}
+                          >
+                            변경할 비밀번호 확인
                             <input
                               type="password"
                               maxLength={4}
@@ -200,23 +411,51 @@ const ProfileEdit = () => {
                               onChange={(e) => {
                                 setPassWordCert(e.target.value);
                               }}
-                              className={dotStyle? "inputPass":"inputBox"}
-                              onFocus={(e) => {e.target.placeholder = ""; setDotStyle(true)}}
-                              style={{position:"relative"}}
+                              className={dotStyle ? "inputPass" : "inputBox"}
+                              onFocus={(e) => {
+                                e.target.placeholder = "";
+                                setDotStyle(true);
+                              }}
+                                style={{ position: "relative"}}
                             />
                           </label>
                         </div>
-                        {isSamePassword && (
-                          <div style={{textAlign:"center", color:"#FF2E00", fontFamily:"Lato", fontSize:"18px"}}>비밀번호 오류. 다시 입력해주세요.</div>
+                        {showPasswordError ? (
+                          <div
+                            style={{
+                              textAlign: "center",
+                              color: "#FF2E00",
+                              fontFamily: "Lato",
+                              fontSize: "18px",
+                            }}
+                          >
+                            비밀번호 오류. 다시 입력해주세요.
+                          </div>
+                        ) : (
+                          <div></div>
                         )}
                         <button
-                            style={{ width:"fit-content", margin:"0 auto", position:"relative", top:"45px", backgroundColor:"#f1af23", color:"#fff", padding: "13px 35px", borderRadius:"35px", fontFamily:"Lato", fontSize:"20px", boxShadow:"0px 4px 4px rgba(0, 0, 0, 0.25)", fontWeight:"700"}}
-                            onClick={() => {
+                          style={{
+                            width: "fit-content",
+                            margin: "0 auto",
+                            position: "relative",
+                            top: "45px",
+                            backgroundColor: "#f1af23",
+                            color: "#fff",
+                            padding: "13px 35px",
+                            borderRadius: "35px",
+                            fontFamily: "Lato",
+                            fontSize: "20px",
+                            boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                            fontWeight: "700",
+                          }}
+                          onClick={() => {
                             handleOnClickChangePasswordBtn(
+                              currentPassWord,
                               password,
-                              passwordCert
+                              passwordCert,
+                              accountNumber
                             );
-                            // setDotStyle(false);
                           }}
                         >
                           확인
@@ -232,7 +471,14 @@ const ProfileEdit = () => {
           </div>
         </div>
         <div className="finish-btn" style={{ textAlign: "center" }}>
-          <button style={{ marginTop: "50%" }}>수정완료</button>
+          <button
+            style={{ marginTop: "50%" }}
+            onClick={() =>
+              handleOnClickUpdateBtn(name, phoneNumber, gender, birthday)
+            }
+          >
+            수정완료
+          </button>
         </div>
       </div>
     </>

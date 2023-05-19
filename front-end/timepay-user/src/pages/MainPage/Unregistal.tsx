@@ -1,12 +1,44 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { headerTitleState } from "../../states/uiState";
+import axios from "axios";
+import { PATH } from "../../utils/paths";
+import { useNavigate } from "react-router-dom";
+
+async function unregistalTimePay() {
+  try {
+    const access_token = window.localStorage.getItem("access_token");
+    await axios({
+      method: "DELETE",
+      url: PATH.SERVER + "/api/v1/users/me",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+    }).then((res) => {
+      console.log(`status code : ${res.status}`);
+    });
+  } catch (e) {
+    console.error(e);
+  }
+}
 
 const Unregistal = () => {
   const setHeaderTitle = useSetRecoilState(headerTitleState);
+  const navigate = useNavigate();
   useEffect(() => {
     setHeaderTitle("탈퇴하기");
   });
+  const [isUnregistalBtnActived, setUnregistalBtnActived] = useState(false);
+
+  const handleOnClickUnregisterBtn = useCallback(
+    async (path: string, isActive: boolean) => {
+      if (isActive) {
+        await unregistalTimePay();
+        navigate(path);
+      }
+    },
+    [navigate]
+  );
 
   return (
     <>
@@ -53,7 +85,11 @@ const Unregistal = () => {
           </div>
           <div style={{ padding: "0 20px" }}>
             <p className="check">
-              <input type="checkbox" id="chk1" />
+              <input
+                type="checkbox"
+                id="chk1"
+                onChange={(e) => setUnregistalBtnActived(e.target.checked)}
+              />
               <label
                 htmlFor="chk1"
                 style={{
@@ -70,7 +106,14 @@ const Unregistal = () => {
           </div>
         </div>
         <div className="finish-btn" style={{ textAlign: "center" }}>
-          <button>탈퇴하기</button>
+          <button
+            onClick={() =>
+              handleOnClickUnregisterBtn(PATH.HOME, isUnregistalBtnActived)
+            }
+            color={isUnregistalBtnActived ? "#f1af23" : "#787878"}
+          >
+            탈퇴하기
+          </button>
         </div>
       </div>
     </>

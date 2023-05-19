@@ -5,28 +5,29 @@ import { headerTitleState } from '../../states/uiState';
 import { PATH } from '../../utils/paths';
 import axios from "axios";
 
-import "./transfer_account.css";
+import "../../styles/css/Transfer/transfer_account.css";
 
-function TransferAcc() {
+function TransferAccount() {
     const [account, setAccount] = useState("");
     const [owner, setOwner] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    const accessToken = 1;
+
+    const accessToken = window.localStorage.getItem("access_token")
 
     const [accountExist, setAccountExist] = useState(false);
 
     const handleNext =  async () =>{
-        await axios.get(PATH.SERVER + `api/v1/bank/account/${account}`, {
+        await axios.get(PATH.SERVER + `/api/v1/bank/account/${account}`, {
             headers:{
             'Authorization':`Bearer ${accessToken}`
             }
         }).
         then(response => {
-            console.log(response.data);
+            //console.log(response.data);
             if(response.status === 200) {
                 setAccountExist(true);
-                navigate("/transfer/amount", {state : {account: account, owner: response.data['ownerName']}});
+                navigate("/transfer/amount", {state : {accessToken : accessToken, account: account, owner: response.data['ownerName']}});
             }
         }).
         catch(function(error){
@@ -64,4 +65,4 @@ function TransferAcc() {
 
 }
 
-export default TransferAcc;
+export default TransferAccount;

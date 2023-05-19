@@ -49,6 +49,7 @@ class BankAccountController(
             bankAccountCreateService.createBankAccount(
                 accountId = userContext.accountId,
                 password = data.password,
+                branchId = 1,
             )
 
         return BankAccountCreateResponseData(

@@ -9,7 +9,7 @@ import Modal from "react-modal";
 import axios from "axios";
 import moment from 'moment';
 
-import "./qna_logdetail.css";
+import "../../styles/css/Qna/qna_logdetail.css";
 
 type QNADETAIL = {
     "commentid": string,

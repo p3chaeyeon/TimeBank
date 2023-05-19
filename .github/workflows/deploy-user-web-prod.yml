@@ -21,20 +21,32 @@ jobs:
             ${{ runner.OS }}-
 
       - name: Install Dependencies
-        run: npm install
+        run: yarn install
         working-directory: ${{ env.working-directory }}
 
       - name: Build
-        run: npm run build
+        run: yarn build
+        env:
+          NODE_ENV: production
+          CI: ""
         working-directory: ${{ env.working-directory }}
 
       - name: Deploy
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
-          aws s3 cp ./build \
+          aws s3 cp \
             --recursive \
             --region ap-northeast-2 \
             build s3://timebank-web
         working-directory: ${{ env.working-directory }}
+
+      - name: Invalidate CloudFront
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: E1FF3UOTN4295A
+          PATHS: "/*"
+          AWS_REGION: "us-east-1"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

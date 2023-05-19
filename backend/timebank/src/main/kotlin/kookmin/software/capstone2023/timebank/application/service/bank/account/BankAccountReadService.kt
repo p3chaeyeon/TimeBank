@@ -29,7 +29,7 @@ class BankAccountReadService(
         // 소유주 여부 조회
         val isOwner: Boolean = isOwnerAccountOfBankAccount(accountId, bankAccount)
 
-        val readedBankAccount: ReadedBankAccount = ReadedBankAccount(
+        val readedBankAccount = ReadedBankAccount(
             ownerName = bankAccount.ownerName,
             ownerType = bankAccount.ownerType,
             bankAccountNumber = bankAccount.accountNumber,
@@ -37,7 +37,7 @@ class BankAccountReadService(
 
         if (isOwner) { // 소유주라면
             readedBankAccount.bankAccountId = bankAccount.id // 은행 계좌 id
-            readedBankAccount.branchId = bankAccount.branchId // 지점 id
+            readedBankAccount.branchId = bankAccount.branch.id // 지점 id
             readedBankAccount.balance = bankAccount.balance // 잔액
             readedBankAccount.createdAt = bankAccount.createdAt // 생성일자
         }
@@ -56,7 +56,7 @@ class BankAccountReadService(
         bankAccountRepository.findAllByAccountId(accountId).map {
             ReadedBankAccount(
                 bankAccountId = it.id,
-                branchId = it.branchId,
+                branchId = it.branch.id,
                 balance = it.balance,
                 createdAt = it.createdAt,
                 ownerName = it.ownerName,
@@ -86,7 +86,7 @@ class BankAccountReadService(
     }
 
     fun isOwnerAccountOfBankAccount(accountId: Long, bankAccount: BankAccount): Boolean {
-        return bankAccount.accountId == accountId
+        return bankAccount.account.id == accountId
     }
 
     fun validateAccountIsBankAccountOwner(accountId: Long, bankAccountNumber: String) {

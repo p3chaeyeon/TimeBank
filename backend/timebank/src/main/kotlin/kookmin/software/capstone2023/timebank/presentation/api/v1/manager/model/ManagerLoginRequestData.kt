@@ -1,4 +1,4 @@
-package kookmin.software.capstone2023.timebank.presentation.api.v1.model
+package kookmin.software.capstone2023.timebank.presentation.api.v1.manager.model
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.JsonTypeName

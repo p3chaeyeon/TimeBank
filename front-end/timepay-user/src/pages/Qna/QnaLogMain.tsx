@@ -5,7 +5,8 @@ import { headerTitleState } from '../../states/uiState';
 import { PATH } from '../../utils/paths';
 import { Select, Card } from 'antd';
 import axios from "axios";
-import "./qna_logmain.css";
+
+import "../../styles/css/Qna/qna_logmain.css";
 
 type QNA = {
     "inquiryid": string,
@@ -36,7 +37,7 @@ function QnaLogMain() {
     const [selectedContent, setSelectedContent] = useState("");
     const [selectedTitle, setSelectedTitle] = useState("");
     const prevValue = useRef({selectedQna, selectedContent});
-    const accessToken = 1;
+    const accessToken = window.localStorage.getItem("access_token");
     const userID = 1;
 
 
@@ -53,7 +54,20 @@ function QnaLogMain() {
         //console.log(value);
     };
 
-    const getQnas = () => {axios.get<QNA[]>(PATH.SERVER + `api/v1/inquiries/users/${userID}`, {
+    const getUserId = () =>{
+        axios.get(PATH.SERVER + `/api/v1/users/me`, {
+            headers:{
+                'Authorization' : `Bearer ${accessToken}`
+            }
+        }
+        ).then(response => {
+            console.log(response.data);
+        }).catch(function(error){
+
+        });
+    }
+
+    const getQnas = () => {axios.get<QNA[]>(PATH.SERVER + `/api/v1/inquiries/users/${userID}`, {
         headers:{
         'Authorization':`Bearer ${accessToken}`
         }
@@ -76,6 +90,7 @@ function QnaLogMain() {
     const setHeaderTitle = useSetRecoilState(headerTitleState);
     useEffect(() => {
         setHeaderTitle("문의 내역");
+        getUserId();
         getQnas();
         if(selectedQna!==""&&(prevValue.current.selectedQna!==selectedQna && prevValue.current.selectedContent!==selectedContent)){
             handleCard(selectedQna);
@@ -121,6 +136,7 @@ function QnaLogMain() {
     };  
 
     return(
+        <>
             <div>
 
                 <div>
@@ -143,7 +159,7 @@ function QnaLogMain() {
                 <div>
                 </div>
             </div>
-        
+        </>
     );
 
 

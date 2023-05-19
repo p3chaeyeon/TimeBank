@@ -1,7 +1,6 @@
 package kookmin.software.capstone2023.timebank.application.service.user
 
 import kookmin.software.capstone2023.timebank.application.exception.NotFoundException
-import kookmin.software.capstone2023.timebank.domain.model.Account
 import kookmin.software.capstone2023.timebank.domain.model.AccountType
 import kookmin.software.capstone2023.timebank.domain.model.Gender
 import kookmin.software.capstone2023.timebank.domain.model.User
@@ -33,9 +32,6 @@ class UserUpdateService(
         val user: User = userJpaRepository.findByIdOrNull(userId)
             ?: throw NotFoundException(message = "사용자를 찾을 수 없습니다.")
 
-        val account: Account = accountJpaRepository.findByIdOrNull(user.accountId)
-            ?: throw NotFoundException(message = "계정을 찾을 수 없습니다.")
-
         user.updateUserInfo(
             name = name,
             phoneNumber = phoneNumber,
@@ -44,8 +40,8 @@ class UserUpdateService(
         )
 
         // 개인 계정의 경우 계정 이름 변경
-        if (account.type == AccountType.INDIVIDUAL) {
-            account.updateName(
+        if (user.account.type == AccountType.INDIVIDUAL) {
+            user.account.updateName(
                 name = name,
             )
         }

@@ -77,16 +77,13 @@ class UserController(
         val user = userFinder.findById(userContext.userId)
             ?: throw NotFoundException(message = "유저 정보를 찾을 수 없습니다.")
 
-        val account = accountFinder.findById(user.accountId)
-            ?: throw NotFoundException(message = "계정 정보를 찾을 수 없습니다.")
-
         return CurrentUserResponseData(
             id = user.id,
             name = user.name,
             phoneNumber = user.phoneNumber,
             gender = user.gender,
             birthday = user.birthday,
-            account = AccountResponseData.fromDomain(account),
+            account = AccountResponseData.fromDomain(user.account),
         )
     }
 
