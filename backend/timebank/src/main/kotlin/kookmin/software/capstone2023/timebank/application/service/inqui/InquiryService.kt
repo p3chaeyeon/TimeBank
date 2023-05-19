@@ -66,9 +66,9 @@ class InquiryService(
      * 문의 생성 service
      */
     @Transactional
-    fun createInquiry(request: InquiryCreateRequest, userContext: UserContext): InquiryDto {
-        val user = userJpaRepository.findByIdOrNull(userContext.userId)
-            ?: throw NotFoundException(message = "\"User not found with id: ${userContext.userId}\"")
+    fun createInquiry(request: InquiryCreateRequest, userId: Long): InquiryDto {
+        val user = userJpaRepository.findByIdOrNull(userId)
+            ?: throw NotFoundException(message = "\"User not found with id: ${userId}\"")
         val inquiry = Inquiry(
             title = request.title,
             content = request.content,
