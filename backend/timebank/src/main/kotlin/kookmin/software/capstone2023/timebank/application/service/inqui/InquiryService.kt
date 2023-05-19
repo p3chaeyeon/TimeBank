@@ -7,7 +7,6 @@ import kookmin.software.capstone2023.timebank.domain.model.InquiryStatus
 import kookmin.software.capstone2023.timebank.domain.model.Period
 import kookmin.software.capstone2023.timebank.domain.repository.InquiryRepository
 import kookmin.software.capstone2023.timebank.domain.repository.UserJpaRepository
-import kookmin.software.capstone2023.timebank.presentation.api.auth.model.UserContext
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -66,7 +65,6 @@ class InquiryService(
      * 문의 생성 service
      */
     @Transactional
-
     fun createInquiry(request: InquiryCreateRequest, userId: Long): InquiryDto {
         val user = userJpaRepository.findByIdOrNull(userId)
             ?: throw NotFoundException(message = "\"User not found with id: ${userId}\"")
