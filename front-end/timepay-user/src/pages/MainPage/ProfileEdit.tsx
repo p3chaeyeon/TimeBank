@@ -323,6 +323,9 @@ const ProfileEdit = () => {
                         {showPasswordError ? (
                           <div
                             style={{
+                              position: "absolute",
+                              top: "28%",
+                              left: "10%",
                               textAlign: "center",
                               color: "#FF2E00",
                               fontFamily: "Lato",
